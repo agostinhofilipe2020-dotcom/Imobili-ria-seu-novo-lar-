@@ -96,8 +96,8 @@ document.getElementById("go").onclick=run;run()}
 
 /* ---------- DETALHE ---------- */
 async function detalhe(id){A.textContent="A carregar…";
-var r=await sb.from("anuncios").select("*,fotografias(caminho,ordem),perfis(nome,tipo_conta,verificacao)").eq("id",id).maybeSingle();
-if(r.error||!r.data){A.innerHTML='<div class="box">Anúncio não encontrado.</div>';return}
+var r=await sb.from("anuncios").select("*,fotografias(caminho,ordem),perfis!anunciante_id(nome,tipo_conta,verificacao)").eq("id",id).maybeSingle();
+if(r.error||!r.data){A.innerHTML='<div class="box">Anúncio não encontrado.'+(r.error?'<div class="msg">'+esc(r.error.message)+'</div>':'')+'</div>';return}
 var a=r.data,fs=ordf(a),res=U?await sb.from("anuncios_reservado").select("*").eq("anuncio_id",id).maybeSingle():{data:null},V=res.data;
 var ver=a.perfis&&a.perfis.verificacao==="verificado"?"Verificado":"Não verificado";
 A.innerHTML='<a href="#/" class="mut">← Voltar</a><div class="box" style="margin-top:8px"><div class="big" id="bg" '+(fs[0]?'style="background-image:url('+foto(fs[0].caminho)+')"':"")+'></div>'+
