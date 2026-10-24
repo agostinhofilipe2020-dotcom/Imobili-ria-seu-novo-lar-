@@ -118,7 +118,7 @@ function publicar(){A.innerHTML='<div class="box"><h1>Publicar imóvel</h1><p cl
 '<div class="fld"><label for="ti">Título (10–100 caracteres)</label><input id="ti" maxlength="100"></div><div class="fld"><label for="dp">Descrição pública (resumida)</label><textarea id="dp" maxlength="2000"></textarea></div>'+
 '<div class="fld"><label for="dc">Descrição completa (só para subscritores, opcional)</label><textarea id="dc"></textarea></div>'+
 '<div class="row"><div class="fld"><label for="pv">Província</label><input id="pv" placeholder="Luanda"></div><div class="fld"><label for="mu">Município</label><input id="mu"></div><div class="fld"><label for="zo">Zona (opcional)</label><input id="zo"></div></div>'+
-'<div class="row"><div class="fld"><label for="qu">Quartos</label><input id="qu" type="number" min="0"></div><div class="fld"><label for="wc">Casas de banho</label><input id="wc" type="number" min="0"></div><div class="fld"><label for="ar">Área (m²)</label><input id="ar" type="number" min="1"></div>'+
+'<div class="row"><div class="fld"><label for="qu">Quartos</label><input id="qu" type="number" min="0"></div><div class="fld"><label for="wc">Casas de banho</label><input id="wc" type="number" min="0"></div><div class="fld"><label for="ar">Área (m², opcional)</label><input id="ar" type="number" min="1"></div>'+
 '<div class="fld"><label for="mo">Mobilado</label><select id="mo"><option value="">—</option><option value="s">Sim</option><option value="n">Não</option></select></div><div class="fld"><label for="pr">Preço em Kz (opcional)</label><input id="pr" type="number" min="0"></div></div>'+
 '<div class="fld"><label for="tc">Telefone de contacto (só para subscritores)</label><input id="tc" type="tel"></div>'+
 '<div class="fld"><label for="fo">Fotografias (JPG/PNG, até 10 MB cada, a primeira é a principal)</label><input id="fo" type="file" accept="image/jpeg,image/png" multiple></div>'+
@@ -128,11 +128,11 @@ var fl=[].slice.call(fo.files);
 if(ti.value.trim().length<10){m.textContent="O título precisa de pelo menos 10 caracteres.";return}
 if(!dp.value.trim()){m.textContent="Escreve uma descrição pública.";return}
 if(!pv.value.trim()||!mu.value.trim()){m.textContent="Indica província e município.";return}
-if(!(+ar.value>0)){m.textContent="Indica a área em m².";return}
+
 if(!fl.length){m.textContent="Adiciona pelo menos uma fotografia.";return}
 for(var i=0;i<fl.length;i++){if(["image/jpeg","image/png"].indexOf(fl[i].type)<0||fl[i].size>10485760){m.textContent="Fotografia inválida: "+fl[i].name+" (JPG/PNG até 10 MB).";return}}
 b.disabled=true;b.textContent="A publicar…";
-var r=await sb.from("anuncios").insert({anunciante_id:U.id,finalidade:pf.value,tipo:pt.value,titulo:ti.value.trim(),descricao_publica:dp.value.trim(),preco:pr.value?+pr.value:null,provincia:pv.value.trim(),municipio:mu.value.trim(),zona:zo.value.trim()||null,quartos:qu.value===""?null:+qu.value,casas_banho:wc.value===""?null:+wc.value,area_m2:+ar.value,mobilado:mo.value?mo.value==="s":null,estado:"publicado"}).select().single();
+var r=await sb.from("anuncios").insert({anunciante_id:U.id,finalidade:pf.value,tipo:pt.value,titulo:ti.value.trim(),descricao_publica:dp.value.trim(),preco:pr.value?+pr.value:null,provincia:pv.value.trim(),municipio:mu.value.trim(),zona:zo.value.trim()||null,quartos:qu.value===""?null:+qu.value,casas_banho:wc.value===""?null:+wc.value,area_m2:ar.value?+ar.value:null,mobilado:mo.value?mo.value==="s":null,estado:"publicado"}).select().single();
 if(r.error){m.textContent=r.error.message;b.disabled=false;b.textContent="Publicar anúncio";return}
 var id=r.data.id;
 if(dc.value.trim()||tc.value.trim())await sb.from("anuncios_reservado").insert({anuncio_id:id,descricao_completa:dc.value.trim()||null,telefone_contacto:tc.value.trim()||null});
