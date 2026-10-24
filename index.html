@@ -81,7 +81,7 @@ document.getElementById("rc").onclick=async function(e){e.preventDefault();if(!e
 /* ---------- RESULTADOS ---------- */
 async function home(){A.innerHTML='<div class="box"><h1>Encontra o lugar ideal para viver.</h1><p class="mut">Imóveis para comprar ou arrendar em Angola.</p>'+
 '<div class="row"><div class="fld"><label for="f">Finalidade</label><select id="f"><option value="">Venda e arrendamento</option><option value="venda">Venda</option><option value="arrendamento">Arrendamento</option></select></div>'+
-'<div class="fld"><label for="t">Tipo</label><select id="t"><option value="">Todos</option><option value="apartamento">Apartamento</option><option value="moradia">Moradia</option><option value="terreno">Terreno</option><option value="comercial">Comercial</option><option value="escritorio">Escritório</option></select></div>'+
+'<div class="fld"><label for="t">Tipo</label><select id="t"><option value="">Todos</option><option value="apartamento">Apartamento</option><option value="moradia">Moradia</option><option value="terreno">Terreno</option><option value="comercial">Comercial</option><option value="escritorio">Escritório</option><option value="salao_festas">Salão de festas</option></select></div>'+
 '<div class="fld"><label for="l">Município</label><input id="l" placeholder="Ex.: Talatona"></div><div class="fld"><label for="q">Quartos (mín.)</label><input id="q" type="number" min="0"></div>'+
 '<div class="fld"><label for="pa">Preço máx. (Kz)</label><input id="pa" type="number" min="0"></div></div><button class="btn" id="go" type="button">Pesquisar</button></div><div id="rs" class="grid"></div>';
 async function run(){var rs=document.getElementById("rs");rs.innerHTML='<p class="mut">A procurar…</p>';
@@ -114,7 +114,7 @@ document.getElementById("dn").onclick=async function(){if(!U){location.hash="#/e
 /* ---------- PUBLICAR ---------- */
 function publicar(){A.innerHTML='<div class="box"><h1>Publicar imóvel</h1><p class="mut">É rápido, simples e gratuito. Fica visível logo após o envio.</p>'+
 '<div class="row"><div class="fld"><label for="pf">Tipo de anúncio</label><select id="pf"><option value="venda">Venda</option><option value="arrendamento">Arrendamento</option></select></div>'+
-'<div class="fld"><label for="pt">Tipo de imóvel</label><select id="pt"><option value="apartamento">Apartamento</option><option value="moradia">Moradia</option><option value="terreno">Terreno</option><option value="comercial">Comercial</option><option value="escritorio">Escritório</option></select></div></div>'+
+'<div class="fld"><label for="pt">Tipo de imóvel</label><select id="pt"><option value="apartamento">Apartamento</option><option value="moradia">Moradia</option><option value="terreno">Terreno</option><option value="comercial">Comercial</option><option value="escritorio">Escritório</option><option value="salao_festas">Salão de festas</option></select></div></div>'+
 '<div class="fld"><label for="ti">Título (10–100 caracteres)</label><input id="ti" maxlength="100"></div><div class="fld"><label for="dp">Descrição pública (resumida)</label><textarea id="dp" maxlength="2000"></textarea></div>'+
 '<div class="fld"><label for="dc">Descrição completa (só para subscritores, opcional)</label><textarea id="dc"></textarea></div>'+
 '<div class="row"><div class="fld"><label for="pv">Província</label><input id="pv" placeholder="Luanda"></div><div class="fld"><label for="mu">Município</label><input id="mu"></div><div class="fld"><label for="zo">Zona (opcional)</label><input id="zo"></div></div>'+
