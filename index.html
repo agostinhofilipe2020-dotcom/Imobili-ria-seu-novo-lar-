@@ -68,12 +68,12 @@ if(h==="/admin"){if(need())admin();return}home()}
 
 /* ---------- ENTRAR ---------- */
 function entrar(){A.innerHTML='<div class="box" style="max-width:420px;margin:auto"><h1>Entrar</h1><p class="mut">Cria conta ou entra para publicar anúncios.</p>'+
-'<button class="btn" id="gh" type="button" style="width:100%">Continuar com GitHub</button><p class="mut" style="text-align:center">ou com e-mail</p>'+
+'<button class="btn" id="gh" type="button" style="width:100%">Continuar com Google</button><p class="mut" style="text-align:center">ou com e-mail</p>'+
 '<div class="fld"><label for="em">E-mail</label><input id="em" type="email" autocomplete="email"></div><div class="fld"><label for="pw">Palavra-passe (mín. 8)</label><input id="pw" type="password" autocomplete="current-password"></div>'+
 '<div class="msg" id="m" role="alert"></div><div class="row"><button class="btn" id="si" type="button">Entrar</button><button class="btn out" id="su" type="button">Criar conta</button></div>'+
 '<p><a href="#" id="rc" class="mut" style="text-decoration:underline">Esqueci a palavra-passe</a></p></div>';
 var m=document.getElementById("m");
-document.getElementById("gh").onclick=function(){sb.auth.signInWithOAuth({provider:"github",options:{redirectTo:location.origin+location.pathname}})};
+document.getElementById("gh").onclick=function(){sb.auth.signInWithOAuth({provider:"google",options:{redirectTo:location.origin+location.pathname}})};
 document.getElementById("si").onclick=async function(){var r=await sb.auth.signInWithPassword({email:em.value.trim(),password:pw.value});if(r.error)m.textContent=r.error.message;else location.hash="#/"};
 document.getElementById("su").onclick=async function(){if(pw.value.length<8){m.textContent="A palavra-passe precisa de 8 caracteres.";return}var r=await sb.auth.signUp({email:em.value.trim(),password:pw.value,options:{emailRedirectTo:location.origin+location.pathname}});m.className="msg "+(r.error?"":"ok");m.textContent=r.error?r.error.message:"Conta criada. Se pedido, confirma o teu e-mail e depois entra."};
 document.getElementById("rc").onclick=async function(e){e.preventDefault();if(!em.value){m.textContent="Escreve o teu e-mail primeiro.";return}var r=await sb.auth.resetPasswordForEmail(em.value.trim(),{redirectTo:location.origin+location.pathname});m.className="msg "+(r.error?"":"ok");m.textContent=r.error?r.error.message:"Enviámos um e-mail para recuperar a palavra-passe."}}
