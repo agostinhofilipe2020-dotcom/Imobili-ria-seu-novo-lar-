@@ -58,6 +58,7 @@ footer{background:var(--gd);color:#fff;margin-top:40px;padding:32px 0 24px;font-
 .lock{background:var(--soft);color:var(--gd);border-radius:10px;padding:12px 14px;margin:10px 0}
 .feat{display:grid;grid-template-columns:1fr 1fr;gap:12px}.feat div{font-size:13px;color:var(--mut)}.feat b{display:block;color:var(--ink);font-size:15px}
 table{width:100%;border-collapse:collapse;font-size:14px;min-width:560px}th,td{text-align:left;padding:8px;border-bottom:1px solid var(--line)}.tw{overflow-x:auto}
+.badge.s-suspenso,.badge.s-removido,.badge.s-correcao_solicitada,.badge.s-aberta{background:#FEE2E2;color:#991B1B}.badge.s-mantido{background:#D1FAE5;color:#065F46}
 .tabbar{display:none}
 @media(max-width:900px){.dg{grid-template-columns:1fr}.ben{grid-template-columns:1fr 1fr}.fg{grid-template-columns:1fr 1fr}}
 @media(max-width:720px){
@@ -99,7 +100,7 @@ document.getElementById("tb").innerHTML=tb.map(function(x){return '<a href="#'+x
 var o=document.getElementById("out");if(o)o.onclick=function(){sb.auth.signOut()}}
 async function load(){var s=await sb.auth.getSession();U=s.data.session?s.data.session.user:null;PF=null;
 if(U){var p=await sb.from("perfis").select("*").eq("id",U.id).maybeSingle();PF=p.data;await loadFav()}route()}
-sb.auth.onAuthStateChange(function(){load()});
+sb.auth.onAuthStateChange(function(ev,s){var id=s&&s.user?s.user.id:null;if(id===(U?U.id:null))return;load()});
 window.addEventListener("hashchange",route);
 function need(){if(!U){A.innerHTML='<div class="box"><h2>Entra para continuar</h2><a class="btn" href="#/entrar">Entrar ou criar conta</a></div>';return false}return true}
 async function route(){nav();var h=location.hash.slice(1)||"/";
@@ -224,9 +225,9 @@ await sb.from("fotografias").insert({anuncio_id:aid,caminho:path,ordem:base+j})}
 location.hash="#/anuncio/"+aid}}
 
 /* ---------- OS MEUS ANÚNCIOS ---------- */
-async function meus(){var r=await sb.from("anuncios").select("id,titulo,estado,preco,municipio,criado").eq("anunciante_id",U.id).order("criado",{ascending:false});
+async function meus(){var r=await sb.from("anuncios").select("id,titulo,estado,preco,municipio,criado,motivo_moderacao").eq("anunciante_id",U.id).order("criado",{ascending:false});
 if(r.error){A.innerHTML='<div class="box msg">'+esc(r.error.message)+'</div>';return}
-A.innerHTML='<div class="box"><h1>Os meus anúncios</h1>'+(r.data.length?r.data.map(function(a){return '<div style="border-bottom:1px solid var(--line);padding:12px 0"><b>'+esc(a.titulo)+'</b><div class="mut">'+esc(a.municipio)+' · '+kz(a.preco)+' · <span class="badge">'+esc(a.estado)+'</span></div><div class="row" style="margin-top:8px"><a class="btn out" href="#/anuncio/'+a.id+'">Ver</a><a class="btn" href="#/editar/'+a.id+'">Editar</a><a class="btn out" href="#/destacar/'+a.id+'">Destacar</a><button class="btn no" type="button" data-del="'+a.id+'">Apagar</button></div></div>'}).join(""):'<p class="mut">Ainda não publicaste anúncios.</p>')+'<a class="btn" style="margin-top:12px" href="#/publicar">Publicar novo anúncio</a></div>'}
+A.innerHTML='<div class="box"><h1>Os meus anúncios</h1>'+(r.data.length?r.data.map(function(a){return '<div style="border-bottom:1px solid var(--line);padding:12px 0"><b>'+esc(a.titulo)+'</b><div class="mut">'+esc(a.municipio)+' · '+kz(a.preco)+' · <span class="badge s-'+esc(a.estado)+'">'+esc(a.estado)+'</span></div>'+(a.motivo_moderacao?'<div class="msg">Motivo da moderação: '+esc(a.motivo_moderacao)+'</div>':'')+'<div class="row" style="margin-top:8px"><a class="btn out" href="#/anuncio/'+a.id+'">Ver</a><a class="btn" href="#/editar/'+a.id+'">Editar</a><a class="btn out" href="#/destacar/'+a.id+'">Destacar</a><button class="btn no" type="button" data-del="'+a.id+'">Apagar</button></div></div>'}).join(""):'<p class="mut">Ainda não publicaste anúncios.</p>')+'<a class="btn" style="margin-top:12px" href="#/publicar">Publicar novo anúncio</a></div>'}
 
 /* ---------- FAVORITOS ---------- */
 async function loadFav(){FAV={};if(!U)return;var r=await sb.from("favoritos").select("anuncio_id");(r.data||[]).forEach(function(x){FAV[x.anuncio_id]=1})}
@@ -258,15 +259,32 @@ A.innerHTML='<div class="box"><h1>Subscrição mensal</h1><p>Desbloqueia as info
 var b=document.getElementById("pd");if(b)b.onclick=async function(){var x=await sb.from("pagamentos").insert({utilizador_id:U.id,produto:"subscricao",metodo:me.value});if(x.error){document.getElementById("m").textContent=x.error.message;return}subscricao()}}
 
 /* ---------- ADMIN ---------- */
+var AT="pagamentos";
 async function admin(){if(!PF||PF.papel!=="admin"){A.innerHTML='<div class="box">Sem permissão de administrador.</div>';return}
-var r=await sb.from("pagamentos").select("*,anuncios(titulo)").order("criado",{ascending:false}).limit(100);
-if(r.error){A.innerHTML='<div class="box msg">'+esc(r.error.message)+'</div>';return}
-A.innerHTML='<div class="box"><h1>Painel administrativo</h1><h2>Pagamentos</h2><div class="msg" id="m" role="alert"></div><div class="tw"><table><tr><th>Data</th><th>Produto</th><th>Método</th><th>Estado</th><th></th></tr>'+
-(r.data.length?r.data.map(function(x){var op=x.estado==="pendente"||x.estado==="em_analise";return '<tr><td>'+new Date(x.criado).toLocaleDateString("pt-PT")+'</td><td>'+esc(x.produto)+(x.anuncios?" · "+esc(x.anuncios.titulo):"")+'</td><td>'+esc(x.metodo)+'</td><td><span class="badge s-'+esc(x.estado)+'">'+esc(x.estado)+'</span></td><td>'+(op?'<button class="btn" data-a="ok" data-i="'+x.id+'">Aprovar</button> <button class="btn no" data-a="no" data-i="'+x.id+'">Rejeitar</button>':'')+'</td></tr>'}).join(""):'<tr><td colspan="5" class="mut">Sem pedidos.</td></tr>')+'</table></div></div>';
-A.onclick=async function(e){var b=e.target.closest("button[data-a]");if(!b)return;var m=document.getElementById("m"),x;
-if(b.dataset.a==="ok")x=await sb.rpc("aprovar_pagamento",{p_id:b.dataset.i});
-else{var mo=prompt("Motivo da rejeição (obrigatório):");if(!mo)return;x=await sb.rpc("rejeitar_pagamento",{p_id:b.dataset.i,p_motivo:mo})}
-if(x.error){m.textContent=x.error.message;return}A.onclick=null;admin()}}
+var T=[["pagamentos","Pagamentos"],["denuncias","Denúncias"],["anuncios","Anúncios"],["utilizadores","Utilizadores"]];
+A.innerHTML='<div class="box"><h1>Painel administrativo</h1><div class="row" id="at" style="margin-bottom:10px">'+T.map(function(t){return '<button class="btn '+(AT===t[0]?"":"out")+'" type="button" data-t="'+t[0]+'">'+t[1]+'</button>'}).join("")+'</div><div class="msg" id="m" role="alert"></div><div class="tw" id="ab">A carregar…</div></div>';
+var ab=document.getElementById("ab"),W=function(r){return new Date(r).toLocaleDateString("pt-PT")},bd=function(s){return '<span class="badge s-'+esc(s)+'">'+esc(s)+'</span>'},bt=function(c,a,i,t){return '<button class="btn '+c+'" style="min-height:36px;padding:0 10px;margin:2px" type="button" data-a="'+a+'" data-i="'+i+'">'+t+'</button>'};
+if(AT==="pagamentos"){var r=await sb.from("pagamentos").select("*,anuncios(titulo)").order("criado",{ascending:false}).limit(100);if(r.error){ab.innerHTML='<span class="msg">'+esc(r.error.message)+'</span>';return}
+ab.innerHTML='<table><tr><th>Data</th><th>Produto</th><th>Método</th><th>Estado</th><th></th></tr>'+(r.data.length?r.data.map(function(x){var op=x.estado==="pendente"||x.estado==="em_analise";return '<tr><td>'+W(x.criado)+'</td><td>'+esc(x.produto)+(x.anuncios?" · "+esc(x.anuncios.titulo):"")+'</td><td>'+esc(x.metodo)+'</td><td>'+bd(x.estado)+'</td><td>'+(op?bt("","pok",x.id,"Aprovar")+bt("no","pno",x.id,"Rejeitar"):"")+'</td></tr>'}).join(""):'<tr><td colspan="5" class="mut">Sem pedidos.</td></tr>')+'</table>'}
+if(AT==="denuncias"){var r=await sb.from("denuncias").select("*,anuncios(titulo,estado)").order("criado",{ascending:false}).limit(100);if(r.error){ab.innerHTML='<span class="msg">'+esc(r.error.message)+'</span>';return}
+ab.innerHTML='<p class="mut">Uma denúncia é um alerta e não prova fraude. Analisa o anúncio antes de decidir.</p><table><tr><th>Data</th><th>Anúncio</th><th>Motivo</th><th>Estado</th><th></th></tr>'+(r.data.length?r.data.map(function(x){var op=x.estado==="aberta"||x.estado==="em_revisao";return '<tr><td>'+W(x.criado)+'</td><td>'+(x.anuncios?'<a href="#/anuncio/'+x.anuncio_id+'" style="text-decoration:underline">'+esc(x.anuncios.titulo)+'</a>':'—')+'</td><td>'+esc(x.motivo)+'</td><td>'+bd(x.estado)+(x.decisao?'<div class="mut">'+esc(x.decisao)+'</div>':'')+'</td><td>'+(op?bt("out","dm",x.id,"Manter")+bt("out","dc",x.id,"Pedir correção")+bt("no","ds",x.id,"Suspender")+bt("no","dr",x.id,"Remover"):"")+'</td></tr>'}).join(""):'<tr><td colspan="5" class="mut">Sem denúncias.</td></tr>')+'</table>'}
+if(AT==="anuncios"){var r=await sb.from("anuncios").select("id,titulo,estado,municipio,criado").order("criado",{ascending:false}).limit(100);if(r.error){ab.innerHTML='<span class="msg">'+esc(r.error.message)+'</span>';return}
+ab.innerHTML='<table><tr><th>Data</th><th>Anúncio</th><th>Estado</th><th></th></tr>'+(r.data.length?r.data.map(function(x){return '<tr><td>'+W(x.criado)+'</td><td><a href="#/anuncio/'+x.id+'" style="text-decoration:underline">'+esc(x.titulo)+'</a><div class="mut">'+esc(x.municipio)+'</div></td><td>'+bd(x.estado)+'</td><td>'+(x.estado==="publicado"?bt("no","as",x.id,"Suspender")+bt("no","ar",x.id,"Remover"):bt("out","ap",x.id,"Reativar"))+'</td></tr>'}).join(""):'<tr><td colspan="4" class="mut">Sem anúncios.</td></tr>')+'</table>'}
+if(AT==="utilizadores"){var r=await sb.from("perfis").select("*").order("criado",{ascending:false}).limit(100);if(r.error){ab.innerHTML='<span class="msg">'+esc(r.error.message)+'</span>';return}
+ab.innerHTML='<table><tr><th>Utilizador</th><th>Tipo</th><th>Verificação</th><th>Papel</th><th></th></tr>'+r.data.map(function(x){return '<tr><td>'+esc(x.nome||"—")+'<div class="mut">'+esc(x.id.slice(0,8))+'</div></td><td>'+esc(x.tipo_conta)+'</td><td>'+esc(x.verificacao)+'</td><td>'+esc(x.papel)+'</td><td>'+(x.verificacao==="verificado"?bt("out","vn",x.id,"Retirar verificação"):bt("","vv",x.id,"Verificar"))+'</td></tr>'}).join("")+'</table><p class="mut">Só marca “Verificar” depois de uma verificação de identidade realmente concluída.</p>'}
+}
+document.addEventListener("click",async function(e){var t=e.target.closest("#at [data-t]");if(t){AT=t.dataset.t;admin();return}
+var b=e.target.closest("#ab [data-a]");if(!b)return;var a=b.dataset.a,i=b.dataset.i,m=document.getElementById("m"),x,mo;m.textContent="";
+function pm(){return prompt("Motivo (obrigatório):")}
+if(a==="pok")x=await sb.rpc("aprovar_pagamento",{p_id:i});
+else if(a==="pno"){mo=pm();if(!mo)return;x=await sb.rpc("rejeitar_pagamento",{p_id:i,p_motivo:mo})}
+else if(a==="dm")x=await sb.rpc("decidir_denuncia",{p_id:i,p_acao:"manter",p_motivo:prompt("Nota (opcional):")||""});
+else if(a==="dc"||a==="ds"||a==="dr"){mo=pm();if(!mo)return;x=await sb.rpc("decidir_denuncia",{p_id:i,p_acao:{dc:"correcao",ds:"suspender",dr:"remover"}[a],p_motivo:mo})}
+else if(a==="as"||a==="ar"){mo=pm();if(!mo)return;x=await sb.rpc("alterar_anuncio_estado",{p_id:i,p_estado:a==="as"?"suspenso":"removido",p_motivo:mo})}
+else if(a==="ap")x=await sb.rpc("alterar_anuncio_estado",{p_id:i,p_estado:"publicado",p_motivo:""});
+else if(a==="vv"||a==="vn")x=await sb.rpc("definir_verificacao",{p_id:i,p_valor:a==="vv"?"verificado":"nao_verificado"});
+else return;
+if(x.error){m.textContent=x.error.message;return}admin()});
 async function apagar(id){if(!confirm("Apagar este anúncio? Esta ação não pode ser desfeita."))return;
 var f=await sb.from("fotografias").select("caminho").eq("anuncio_id",id);
 if(f.data&&f.data.length)await sb.storage.from("fotos-anuncios").remove(f.data.map(function(x){return x.caminho}));
