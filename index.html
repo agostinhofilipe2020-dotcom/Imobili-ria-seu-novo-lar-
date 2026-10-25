@@ -59,6 +59,12 @@ footer{background:var(--gd);color:#fff;margin-top:40px;padding:32px 0 24px;font-
 .feat{display:grid;grid-template-columns:1fr 1fr;gap:12px}.feat div{font-size:13px;color:var(--mut)}.feat b{display:block;color:var(--ink);font-size:15px}
 table{width:100%;border-collapse:collapse;font-size:14px;min-width:560px}th,td{text-align:left;padding:8px;border-bottom:1px solid var(--line)}.tw{overflow-x:auto}
 .badge.s-suspenso,.badge.s-removido,.badge.s-correcao_solicitada,.badge.s-aberta{background:#FEE2E2;color:#991B1B}.badge.s-mantido{background:#D1FAE5;color:#065F46}
+.rl{display:grid;grid-template-columns:280px 1fr;gap:20px;align-items:start}.fp{position:sticky;top:80px}.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.list{display:flex;flex-direction:column;gap:16px}.list .pl{display:grid;grid-template-columns:260px 1fr}.list .ph{aspect-ratio:auto;min-height:170px}
+.pg{display:flex;gap:8px;justify-content:center;margin:20px 0}.pg button{min-width:40px;min-height:40px;border-radius:8px;border:1px solid var(--line);background:#fff;cursor:pointer}.pg button.on{background:var(--g);color:#fff;border-color:var(--g)}.pg button[disabled]{opacity:.4}
+#ftg{display:none}
+@media(max-width:900px){.rl{grid-template-columns:1fr}.fp{position:static}}
+@media(max-width:720px){#ftg{display:block}.fp{display:none}.fp.open{display:block}.list .pl{grid-template-columns:1fr}.list .ph{aspect-ratio:16/9;min-height:0}}
 .tabbar{display:none}
 @media(max-width:900px){.dg{grid-template-columns:1fr}.ben{grid-template-columns:1fr 1fr}.fg{grid-template-columns:1fr 1fr}}
 @media(max-width:720px){
@@ -104,7 +110,7 @@ sb.auth.onAuthStateChange(function(ev,s){var id=s&&s.user?s.user.id:null;if(id==
 window.addEventListener("hashchange",route);
 function need(){if(!U){A.innerHTML='<div class="box"><h2>Entra para continuar</h2><a class="btn" href="#/entrar">Entrar ou criar conta</a></div>';return false}return true}
 async function route(){nav();var h=location.hash.slice(1)||"/";
-if(h==="/")return home();if(h==="/imoveis")return home(true);if(h==="/conta"){if(need())conta();return}if(h==="/entrar")return entrar();if(h.indexOf("/anuncio/")===0)return detalhe(h.slice(9));
+if(h==="/")return home();if(h==="/imoveis")return imoveis();if(h==="/conta"){if(need())conta();return}if(h==="/entrar")return entrar();if(h.indexOf("/anuncio/")===0)return detalhe(h.slice(9));
 if(h==="/publicar"){if(need())publicar();return}if(h==="/favoritos"){if(need())favoritos();return}if(h.indexOf("/destacar/")===0){if(need())destacar(h.slice(10));return}if(h==="/meus"){if(need())meus();return}if(h.indexOf("/editar/")===0){if(need())publicar(h.slice(8));return}if(h==="/subscricao"){if(need())subscricao();return}
 if(h==="/admin"){if(need())admin();return}home()}
 
@@ -134,21 +140,60 @@ async function home(goRes){A.innerHTML='<div class="full hero"><h1>Encontra o lu
 '<div class="sf"><label for="l">Localização (município)</label><input id="l" placeholder="Todas as cidades"></div><button class="btn" id="go" type="button">Pesquisar</button></div>'+
 '<details class="mf"><summary>Mais filtros</summary><div class="row"><div class="fld"><label for="q">Quartos (mín.)</label><input id="q" type="number" min="0"></div><div class="fld"><label for="pa">Preço máx. (Kz)</label><input id="pa" type="number" min="0"></div></div></details></div>'+
 '<div class="ben"><div class="bi"><span class="ic">⌂</span><span><b>Venda e arrendamento</b>Imóveis em Angola</span></div><div class="bi"><span class="ic">✓</span><span><b>Anunciantes verificados</b>(quando aplicável)</span></div><div class="bi"><span class="ic">🔒</span><span><b>Mais segurança</b>Nas tuas negociações</span></div><div class="bi"><span class="ic">☎</span><span><b>Contacto direto</b>Por chamada telefónica</span></div></div>'+
-'<section id="dst"></section><section id="res"><div class="sh"><h2>Todos os imóveis</h2><span class="mut" id="cn"></span></div><div id="rs" class="grid"></div></section>'+
+'<section id="dst"></section><section id="res"><div class="sh"><h2>Imóveis recentes</h2><a href="#/imoveis" style="color:var(--g);font-weight:600">Ver todos →</a></div><div id="rs" class="grid"></div></section>'+
 '<div class="cta"><div><h2>Queres anunciar o teu imóvel?</h2><p>Publica o teu anúncio de forma simples e rápida.</p></div><a class="btn wh" href="#/publicar">Publicar anúncio →</a></div>'+
 '<section><div class="sh"><h2>Categorias populares</h2></div><div class="cats">'+Object.keys(TIPOS).map(function(k){return '<button class="cat" type="button" data-tipo="'+k+'"><span class="ic">⌂</span>'+TIPOS[k]+'</button>'}).join("")+'</div></section>';
 async function run(){var rs=document.getElementById("rs");rs.innerHTML='<p class="mut">A procurar…</p>';
-var q=sb.from("anuncios").select("*,fotografias(caminho,ordem)").eq("estado","publicado").order("criado",{ascending:false}).limit(60);
+var q=sb.from("anuncios").select("*,fotografias(caminho,ordem)").eq("estado","publicado").order("criado",{ascending:false}).limit(8);
 if(f.value)q=q.eq("finalidade",f.value);if(t.value)q=q.eq("tipo",t.value);if(l.value.trim())q=q.ilike("municipio","%"+l.value.trim()+"%");if(document.getElementById("q").value)q=q.gte("quartos",+document.getElementById("q").value);if(pa.value)q=q.lte("preco",+pa.value);
 var r=await q;if(r.error){rs.innerHTML='<div class="box msg">Erro: '+esc(r.error.message)+'</div>';return}
 var d=await sb.from("destaques").select("anuncio_id").eq("estado","ativo").gt("fim",new Date().toISOString());var D={};(d.data||[]).forEach(function(x){D[x.anuncio_id]=1});
 var L=r.data.sort(function(a,b){return (D[b.id]?1:0)-(D[a.id]?1:0)}),F=L.filter(function(a){return D[a.id]}).slice(0,4);
 document.getElementById("dst").innerHTML=F.length?'<div class="sh"><h2>Imóveis em destaque</h2></div><div class="grid">'+F.map(function(a){return cardHtml(a,true)}).join("")+'</div>':"";
-document.getElementById("cn").textContent=L.length+(L.length===1?" imóvel":" imóveis");
+
 rs.innerHTML=L.length?L.map(function(a){return cardHtml(a,false)}).join(""):'<div class="box mut">Ainda não há imóveis publicados com estes filtros.</div>'}
-document.getElementById("go").onclick=function(){run();document.getElementById("res").scrollIntoView({behavior:"smooth"})};
-[].forEach.call(document.querySelectorAll(".cat"),function(b){b.onclick=function(){t.value=b.dataset.tipo;run();document.getElementById("res").scrollIntoView({behavior:"smooth"})}});
+document.getElementById("go").onclick=function(){FILT={f:f.value,t:t.value,l:l.value.trim(),q:document.getElementById("q").value,pb:pa.value,ord:"r",page:1};location.hash="#/imoveis"};
+[].forEach.call(document.querySelectorAll(".cat"),function(b){b.onclick=function(){FILT={t:b.dataset.tipo,ord:"r",page:1};location.hash="#/imoveis"}});
 await run();if(goRes)document.getElementById("res").scrollIntoView()}
+
+/* ---------- IMÓVEIS (RESULTADOS COM FILTROS) ---------- */
+var FILT={ord:"r",page:1},PP=12;
+async function imoveis(){var F=FILT,$=function(i){return document.getElementById(i)};
+A.innerHTML='<div class="crumb"><a href="#/">Início</a> › Resultados da pesquisa</div><h1>Imóveis em Angola</h1><button class="btn out" id="ftg" type="button" style="width:100%;margin:8px 0" aria-expanded="false">Filtros</button>'+
+'<div class="rl"><form class="box fp" id="fp"><h2>Filtros</h2>'+
+'<div class="fld"><label for="fl">Localização (município)</label><input id="fl" placeholder="Ex.: Talatona"></div>'+
+'<div class="fld"><label for="ft">Tipo de imóvel</label><select id="ft"><option value="">Todos</option>'+Object.keys(TIPOS).map(function(k){return '<option value="'+k+'">'+TIPOS[k]+'</option>'}).join("")+'</select></div>'+
+'<div class="fld"><label for="ff">Finalidade</label><select id="ff"><option value="">Venda e arrendamento</option><option value="venda">Venda</option><option value="arrendamento">Arrendamento</option></select></div>'+
+'<div class="fld"><label>Preço (Kz)</label><div class="row" style="grid-template-columns:1fr 1fr"><input id="pm1" type="number" min="0" placeholder="Mínimo" aria-label="Preço mínimo"><input id="pm2" type="number" min="0" placeholder="Máximo" aria-label="Preço máximo"></div></div>'+
+'<div class="fld"><label for="fq">Quartos</label><select id="fq"><option value="">Qualquer</option><option value="1">1 ou mais</option><option value="2">2 ou mais</option><option value="3">3 ou mais</option><option value="4">4 ou mais</option></select></div>'+
+'<div class="fld"><label for="fa">Área mínima (m²)</label><input id="fa" type="number" min="0"></div>'+
+'<div class="fld"><label for="fm">Estado de mobilado</label><select id="fm"><option value="">Mobilado / Não mobilado</option><option value="s">Mobilado</option><option value="n">Não mobilado</option></select></div>'+
+'<button class="btn" type="submit" style="width:100%">Aplicar filtros</button><button class="btn out" type="button" id="fc" style="width:100%;margin-top:8px">Limpar filtros</button></form>'+
+'<div><div class="bar"><b id="cn" aria-live="polite"></b><label class="mut">Ordenar por <select id="fo2" style="width:auto;min-height:40px"><option value="r">Mais recentes</option><option value="a">Preço: menor</option><option value="d">Preço: maior</option></select></label></div><div id="ls"></div><div id="pg" class="pg"></div></div></div>';
+$("fl").value=F.l||"";$("ft").value=F.t||"";$("ff").value=F.f||"";$("pm1").value=F.pmin||"";$("pm2").value=F.pb||"";$("fq").value=F.q||"";$("fa").value=F.amin||"";$("fm").value=F.mob||"";$("fo2").value=F.ord||"r";
+function qf(q){if(F.f)q=q.eq("finalidade",F.f);if(F.t)q=q.eq("tipo",F.t);if(F.l)q=q.ilike("municipio","%"+F.l+"%");if(F.pmin)q=q.gte("preco",+F.pmin);if(F.pb)q=q.lte("preco",+F.pb);if(F.q)q=q.gte("quartos",+F.q);if(F.amin)q=q.gte("area_m2",+F.amin);if(F.mob)q=q.eq("mobilado",F.mob==="s");return q}
+async function run(){var ls=$("ls");ls.innerHTML='<p class="mut">A procurar…</p>';
+var d=await sb.from("destaques").select("anuncio_id").eq("estado","ativo").gt("fim",new Date().toISOString()),ids=(d.data||[]).map(function(x){return x.anuncio_id}),feat=[];
+if(ids.length){var fr=await qf(sb.from("anuncios").select("*,fotografias(caminho,ordem)").eq("estado","publicado").in("id",ids));feat=fr.data||[]}
+var q=qf(sb.from("anuncios").select("*,fotografias(caminho,ordem)",{count:"exact"}).eq("estado","publicado"));if(ids.length)q=q.not("id","in","("+ids.join(",")+")");
+var o=F.ord==="a"?["preco",true]:F.ord==="d"?["preco",false]:["criado",false];
+var r=await q.order(o[0],{ascending:o[1],nullsFirst:false}).range((F.page-1)*PP,F.page*PP-1);
+if(r.error){ls.innerHTML='<div class="box msg">Erro: '+esc(r.error.message)+'</div>';return}
+var total=(r.count||0)+feat.length,pages=Math.max(1,Math.ceil((r.count||0)/PP));
+$("cn").textContent=total+(total===1?" imóvel encontrado":" imóveis encontrados");
+var show=F.page===1?feat:[];
+ls.innerHTML=(show.length?'<h2>Destaques</h2><div class="list">'+show.map(function(a){return cardHtml(a,true)}).join("")+'</div>':"")+
+(r.data.length?(show.length?'<h2 style="margin-top:18px">Resultados</h2>':"")+'<div class="list">'+r.data.map(function(a){return cardHtml(a,false)}).join("")+'</div>':(show.length?"":'<div class="box mut">Nenhum imóvel corresponde aos filtros. Usa “Limpar filtros”.</div>'));
+var b="";if(pages>1){b+='<button type="button" data-p="'+(F.page-1)+'" '+(F.page<=1?"disabled":"")+' aria-label="Página anterior">‹</button>';
+for(var p=Math.max(1,F.page-2);p<=Math.min(pages,F.page+2);p++)b+='<button type="button" data-p="'+p+'" class="'+(p===F.page?"on":"")+'">'+p+'</button>';
+b+='<button type="button" data-p="'+(F.page+1)+'" '+(F.page>=pages?"disabled":"")+' aria-label="Página seguinte">›</button>'}
+$("pg").innerHTML=b}
+$("fp").onsubmit=function(e){e.preventDefault();FILT=F={l:$("fl").value.trim(),t:$("ft").value,f:$("ff").value,pmin:$("pm1").value,pb:$("pm2").value,q:$("fq").value,amin:$("fa").value,mob:$("fm").value,ord:$("fo2").value,page:1};$("fp").classList.remove("open");$("ftg").setAttribute("aria-expanded","false");run()};
+$("fc").onclick=function(){FILT={ord:"r",page:1};imoveis()};
+$("fo2").onchange=function(){F.ord=$("fo2").value;F.page=1;run()};
+$("pg").onclick=function(e){var b=e.target.closest("button[data-p]");if(!b||b.disabled)return;F.page=+b.dataset.p;run();window.scrollTo({top:0,behavior:"smooth"})};
+$("ftg").onclick=function(){var o=$("fp").classList.toggle("open");this.setAttribute("aria-expanded",o)};
+await run()}
 
 /* ---------- DETALHE ---------- */
 async function detalhe(id){A.textContent="A carregar…";
@@ -171,6 +216,8 @@ V?'<div class="ctc"><b>Contactar anunciante</b>Este anúncio não tem telefone i
 '<div class="dg" style="margin-top:0"><div class="box"><h2>Descrição do imóvel</h2><p>'+esc(V&&V.descricao_completa?V.descricao_completa:a.descricao_publica)+'</p></div>'+
 '<div class="box"><h2>Características principais</h2><div class="feat"><div><b>'+esc(TIPOS[a.tipo]||a.tipo)+'</b>Tipo de imóvel</div><div><b>'+n(a.quartos)+'</b>Quartos</div><div><b>'+n(a.casas_banho)+'</b>Casas de banho</div><div><b>'+n(a.area_m2)+(a.area_m2?" m²":"")+'</b>Área do imóvel</div><div><b>'+(a.mobilado==null?"—":(a.mobilado?"Sim":"Não"))+'</b>Mobilado</div><div><b>'+ver+'</b>Anunciante ('+esc(I.tipo_conta||"—")+')</div></div>'+
 '<p class="mut" style="margin-top:12px">Nome do anunciante: '+(I.nome?esc(I.nome):"visível para subscritores")+'</p></div></div>';
+var sm=await sb.from("anuncios").select("*,fotografias(caminho,ordem)").eq("estado","publicado").eq("tipo",a.tipo).neq("id",id).limit(3);
+if(sm.data&&sm.data.length)A.insertAdjacentHTML("beforeend",'<section><div class="sh"><h2>Imóveis semelhantes</h2><a href="#/imoveis" style="color:var(--g);font-weight:600">Ver todos →</a></div><div class="grid">'+sm.data.map(function(x){return cardHtml(x,false)}).join("")+'</div></section>');
 [].forEach.call(document.querySelectorAll(".th img"),function(i){i.onclick=function(){document.getElementById("bg").style.backgroundImage="url("+i.dataset.s+")";document.getElementById("cn").textContent=i.dataset.i+"/"+fs.length}});
 document.getElementById("dn").onclick=async function(){if(!U){location.hash="#/entrar";return}var m=prompt("Motivo da denúncia:");if(!m)return;var x=await sb.from("denuncias").insert({anuncio_id:id,denunciante_id:U.id,motivo:m});document.getElementById("dm").className="msg "+(x.error?"":"ok");document.getElementById("dm").textContent=x.error?x.error.message:"Denúncia enviada. Uma denúncia não prova fraude; será analisada."}}
 
