@@ -47,23 +47,23 @@ table{width:100%;border-collapse:collapse;font-size:14px;min-width:560px}th,td{t
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
 var SB_URL="https://sfwqxhisfjyxuhoacofg.supabase.co",SB_KEY="sb_publishable_9JyxvxunfLy_uopgTDFGZA_l67zPGPE";
-var sb=window.supabase.createClient(SB_URL,SB_KEY),U=null,PF=null,A=document.getElementById("app");
+var sb=window.supabase.createClient(SB_URL,SB_KEY),U=null,PF=null,FAV={},A=document.getElementById("app");
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
 function kz(n){return n==null?"Preço sob consulta":Number(n).toLocaleString("pt-PT")+" Kz"}
 function foto(f){return sb.storage.from("fotos-anuncios").getPublicUrl(f).data.publicUrl}
 function ordf(a){return (a.fotografias||[]).slice().sort(function(x,y){return x.ordem-y.ordem})}
-function nav(){var r=location.hash.slice(1)||"/",l=[["/","Imóveis"],["/publicar","Publicar"]];if(U)l.push(["/meus","Meus anúncios"]);l.push(["/subscricao","Subscrição"]);if(PF&&PF.papel==="admin")l.push(["/admin","Admin"]);
+function nav(){var r=location.hash.slice(1)||"/",l=[["/","Imóveis"],["/publicar","Publicar"]];if(U){l.push(["/favoritos","Favoritos"]);l.push(["/meus","Meus anúncios"])}l.push(["/subscricao","Subscrição"]);if(PF&&PF.papel==="admin")l.push(["/admin","Admin"]);
 document.getElementById("nav").innerHTML=l.map(function(x){return '<a href="#'+x[0]+'" class="'+(r===x[0]?"on":"")+'">'+x[1]+'</a>'}).join("");
 document.getElementById("ac").innerHTML=U?'<button class="btn wh" id="out" type="button">Sair</button>':'<a class="btn wh" href="#/entrar">Entrar</a>';
 var o=document.getElementById("out");if(o)o.onclick=function(){sb.auth.signOut()}}
 async function load(){var s=await sb.auth.getSession();U=s.data.session?s.data.session.user:null;PF=null;
-if(U){var p=await sb.from("perfis").select("*").eq("id",U.id).maybeSingle();PF=p.data}route()}
+if(U){var p=await sb.from("perfis").select("*").eq("id",U.id).maybeSingle();PF=p.data;await loadFav()}route()}
 sb.auth.onAuthStateChange(function(){load()});
 window.addEventListener("hashchange",route);
 function need(){if(!U){A.innerHTML='<div class="box"><h2>Entra para continuar</h2><a class="btn" href="#/entrar">Entrar ou criar conta</a></div>';return false}return true}
 async function route(){nav();var h=location.hash.slice(1)||"/";
 if(h==="/")return home();if(h==="/entrar")return entrar();if(h.indexOf("/anuncio/")===0)return detalhe(h.slice(9));
-if(h==="/publicar"){if(need())publicar();return}if(h==="/meus"){if(need())meus();return}if(h.indexOf("/editar/")===0){if(need())publicar(h.slice(8));return}if(h==="/subscricao"){if(need())subscricao();return}
+if(h==="/publicar"){if(need())publicar();return}if(h==="/favoritos"){if(need())favoritos();return}if(h.indexOf("/destacar/")===0){if(need())destacar(h.slice(10));return}if(h==="/meus"){if(need())meus();return}if(h.indexOf("/editar/")===0){if(need())publicar(h.slice(8));return}if(h==="/subscricao"){if(need())subscricao();return}
 if(h==="/admin"){if(need())admin();return}home()}
 
 /* ---------- ENTRAR ---------- */
@@ -107,7 +107,8 @@ A.innerHTML='<a href="#/" class="mut">← Voltar</a><div class="box" style="marg
 '<h2 style="margin-top:14px">Descrição</h2><p>'+esc(V&&V.descricao_completa?V.descricao_completa:a.descricao_publica)+'</p>'+
 (V?'<div class="box" style="background:var(--soft)"><b>Contacto</b><br>'+(V.telefone_contacto?'<a class="btn" href="tel:'+esc(V.telefone_contacto)+'">Ligar: '+esc(V.telefone_contacto)+'</a>':'Sem telefone indicado.')+(V.localizacao_detalhada?'<p>'+esc(V.localizacao_detalhada)+'</p>':'')+'</div>':
 '<div class="lock"><b>Informação completa disponível para subscritores</b><br>Descrição completa, contacto e localização detalhada.<br><a class="btn" style="margin-top:8px" href="#/subscricao">Ver opções de subscrição</a></div>')+
-'<p class="mut">Anunciante: '+(I.nome?esc(I.nome):"nome visível para subscritores")+' · '+esc(I.tipo_conta||"")+' · '+ver+'</p>'+(U&&U.id===a.anunciante_id?'<div class="row" style="margin:8px 0"><a class="btn" href="#/editar/'+a.id+'">Editar anúncio</a><button class="btn no" type="button" data-del="'+a.id+'">Apagar anúncio</button></div>':'')+'<button class="btn no" id="dn" type="button">Denunciar anúncio</button><div class="msg" id="dm" role="alert"></div></div>';
+'<p class="mut">Anunciante: '+(I.nome?esc(I.nome):"nome visível para subscritores")+' · '+esc(I.tipo_conta||"")+' · '+ver+'</p>'+'<button class="btn out" id="fv" type="button" style="margin:8px 0">'+(FAV[a.id]?"♥ Guardado nos favoritos":"♡ Guardar nos favoritos")+'</button>'+(U&&U.id===a.anunciante_id?'<div class="row" style="margin:8px 0"><a class="btn" href="#/editar/'+a.id+'">Editar anúncio</a><a class="btn out" href="#/destacar/'+a.id+'">Destacar</a><button class="btn no" type="button" data-del="'+a.id+'">Apagar anúncio</button></div>':'')+'<button class="btn no" id="dn" type="button">Denunciar anúncio</button><div class="msg" id="dm" role="alert"></div></div>';
+document.getElementById("fv").onclick=async function(){if(!U){location.hash="#/entrar";return}var b=this;if(FAV[id]){var x=await sb.from("favoritos").delete().eq("utilizador_id",U.id).eq("anuncio_id",id);if(!x.error){delete FAV[id];b.textContent="♡ Guardar nos favoritos"}}else{var y=await sb.from("favoritos").insert({utilizador_id:U.id,anuncio_id:id});if(!y.error){FAV[id]=1;b.textContent="♥ Guardado nos favoritos"}}};
 [].forEach.call(document.querySelectorAll(".th img"),function(i){i.onclick=function(){document.getElementById("bg").style.backgroundImage="url("+i.dataset.s+")"}});
 document.getElementById("dn").onclick=async function(){if(!U){location.hash="#/entrar";return}var m=prompt("Motivo da denúncia:");if(!m)return;var x=await sb.from("denuncias").insert({anuncio_id:id,denunciante_id:U.id,motivo:m});document.getElementById("dm").className="msg "+(x.error?"":"ok");document.getElementById("dm").textContent=x.error?x.error.message:"Denúncia enviada. Uma denúncia não prova fraude; será analisada."}}
 
@@ -158,7 +159,27 @@ location.hash="#/anuncio/"+aid}}
 /* ---------- OS MEUS ANÚNCIOS ---------- */
 async function meus(){var r=await sb.from("anuncios").select("id,titulo,estado,preco,municipio,criado").eq("anunciante_id",U.id).order("criado",{ascending:false});
 if(r.error){A.innerHTML='<div class="box msg">'+esc(r.error.message)+'</div>';return}
-A.innerHTML='<div class="box"><h1>Os meus anúncios</h1>'+(r.data.length?r.data.map(function(a){return '<div style="border-bottom:1px solid var(--line);padding:12px 0"><b>'+esc(a.titulo)+'</b><div class="mut">'+esc(a.municipio)+' · '+kz(a.preco)+' · <span class="badge">'+esc(a.estado)+'</span></div><div class="row" style="margin-top:8px"><a class="btn out" href="#/anuncio/'+a.id+'">Ver</a><a class="btn" href="#/editar/'+a.id+'">Editar</a><button class="btn no" type="button" data-del="'+a.id+'">Apagar</button></div></div>'}).join(""):'<p class="mut">Ainda não publicaste anúncios.</p>')+'<a class="btn" style="margin-top:12px" href="#/publicar">Publicar novo anúncio</a></div>'}
+A.innerHTML='<div class="box"><h1>Os meus anúncios</h1>'+(r.data.length?r.data.map(function(a){return '<div style="border-bottom:1px solid var(--line);padding:12px 0"><b>'+esc(a.titulo)+'</b><div class="mut">'+esc(a.municipio)+' · '+kz(a.preco)+' · <span class="badge">'+esc(a.estado)+'</span></div><div class="row" style="margin-top:8px"><a class="btn out" href="#/anuncio/'+a.id+'">Ver</a><a class="btn" href="#/editar/'+a.id+'">Editar</a><a class="btn out" href="#/destacar/'+a.id+'">Destacar</a><button class="btn no" type="button" data-del="'+a.id+'">Apagar</button></div></div>'}).join(""):'<p class="mut">Ainda não publicaste anúncios.</p>')+'<a class="btn" style="margin-top:12px" href="#/publicar">Publicar novo anúncio</a></div>'}
+
+/* ---------- FAVORITOS ---------- */
+async function loadFav(){FAV={};if(!U)return;var r=await sb.from("favoritos").select("anuncio_id");(r.data||[]).forEach(function(x){FAV[x.anuncio_id]=1})}
+async function favoritos(){var r=await sb.from("favoritos").select("anuncio_id,anuncios(*,fotografias(caminho,ordem))").order("criado",{ascending:false});
+if(r.error){A.innerHTML='<div class="box msg">'+esc(r.error.message)+'</div>';return}
+var L=r.data.filter(function(x){return x.anuncios});
+A.innerHTML='<h1>Favoritos</h1>'+(L.length?'<div class="grid">'+L.map(function(x){var a=x.anuncios,fs=ordf(a),img=fs[0]?'style="background-image:url('+foto(fs[0].caminho)+')"':"";
+return '<a class="pc" href="#/anuncio/'+a.id+'"><div class="ph" '+img+'><span class="tag">'+(a.finalidade==="venda"?"Venda":"Arrendamento")+'</span></div><div class="cb"><h3>'+esc(a.titulo)+'</h3><div class="mut">'+esc(a.municipio)+', '+esc(a.provincia)+'</div><div class="p">'+kz(a.preco)+'</div></div></a>'}).join("")+'</div>':'<div class="box mut">Ainda não guardaste nenhum imóvel. Toca em “Guardar nos favoritos” na página de um anúncio.</div>')}
+
+/* ---------- DESTACAR ---------- */
+async function destacar(id){var r=await sb.from("anuncios").select("id,titulo,estado,anunciante_id").eq("id",id).maybeSingle();
+if(r.error||!r.data||r.data.anunciante_id!==U.id){A.innerHTML='<div class="box">Anúncio não encontrado ou sem permissão.</div>';return}
+var a=r.data;
+A.innerHTML='<a href="#/meus" class="mut">← Os meus anúncios</a><div class="box" style="margin-top:8px"><h1>Destacar anúncio</h1><p><b>'+esc(a.titulo)+'</b></p>'+
+'<div class="lock"><b>Duração: 7 dias</b><br>O anúncio aparece na página inicial e no topo dos resultados, sempre identificado como “Destaque”. No fim, continua publicado na posição normal. O destaque <b>não</b> dá acesso a informações de subscrição.</div>'+
+'<div class="lock"><b>Preço: por definir.</b> O preço aprovado será mostrado aqui antes de qualquer pagamento.</div>'+
+(a.estado!=="publicado"?'<div class="msg">Só anúncios publicados podem ser destacados.</div>':'<div class="fld"><label for="me">Método de pagamento</label><select id="me"><option value="transferencia">Transferência bancária</option><option value="referencia">Referência de pagamento</option></select></div><div class="msg" id="m" role="alert"></div><button class="btn" id="pd" type="button">Pedir destaque</button>')+'</div>';
+var b=document.getElementById("pd");if(b)b.onclick=async function(){b.disabled=true;var x=await sb.from("pagamentos").insert({utilizador_id:U.id,produto:"destaque",anuncio_id:id,metodo:me.value});
+if(x.error){document.getElementById("m").textContent=x.error.message;b.disabled=false;return}
+A.innerHTML='<div class="box"><h1>Pedido registado</h1><p>O teu pedido de destaque ficou <b>pendente</b>. O destaque só começa depois de o pagamento ser confirmado por um administrador.</p><a class="btn" href="#/subscricao">Ver os meus pedidos</a></div>'}}
 
 /* ---------- SUBSCRIÇÃO ---------- */
 async function subscricao(){var s=await sb.from("subscricoes").select("*").eq("utilizador_id",U.id).eq("estado","ativa").gt("fim",new Date().toISOString()).limit(1),
@@ -172,10 +193,10 @@ var b=document.getElementById("pd");if(b)b.onclick=async function(){var x=await 
 
 /* ---------- ADMIN ---------- */
 async function admin(){if(!PF||PF.papel!=="admin"){A.innerHTML='<div class="box">Sem permissão de administrador.</div>';return}
-var r=await sb.from("pagamentos").select("*").order("criado",{ascending:false}).limit(100);
+var r=await sb.from("pagamentos").select("*,anuncios(titulo)").order("criado",{ascending:false}).limit(100);
 if(r.error){A.innerHTML='<div class="box msg">'+esc(r.error.message)+'</div>';return}
 A.innerHTML='<div class="box"><h1>Painel administrativo</h1><h2>Pagamentos</h2><div class="msg" id="m" role="alert"></div><div class="tw"><table><tr><th>Data</th><th>Produto</th><th>Método</th><th>Estado</th><th></th></tr>'+
-(r.data.length?r.data.map(function(x){var op=x.estado==="pendente"||x.estado==="em_analise";return '<tr><td>'+new Date(x.criado).toLocaleDateString("pt-PT")+'</td><td>'+esc(x.produto)+'</td><td>'+esc(x.metodo)+'</td><td><span class="badge s-'+esc(x.estado)+'">'+esc(x.estado)+'</span></td><td>'+(op?'<button class="btn" data-a="ok" data-i="'+x.id+'">Aprovar</button> <button class="btn no" data-a="no" data-i="'+x.id+'">Rejeitar</button>':'')+'</td></tr>'}).join(""):'<tr><td colspan="5" class="mut">Sem pedidos.</td></tr>')+'</table></div></div>';
+(r.data.length?r.data.map(function(x){var op=x.estado==="pendente"||x.estado==="em_analise";return '<tr><td>'+new Date(x.criado).toLocaleDateString("pt-PT")+'</td><td>'+esc(x.produto)+(x.anuncios?" · "+esc(x.anuncios.titulo):"")+'</td><td>'+esc(x.metodo)+'</td><td><span class="badge s-'+esc(x.estado)+'">'+esc(x.estado)+'</span></td><td>'+(op?'<button class="btn" data-a="ok" data-i="'+x.id+'">Aprovar</button> <button class="btn no" data-a="no" data-i="'+x.id+'">Rejeitar</button>':'')+'</td></tr>'}).join(""):'<tr><td colspan="5" class="mut">Sem pedidos.</td></tr>')+'</table></div></div>';
 A.onclick=async function(e){var b=e.target.closest("button[data-a]");if(!b)return;var m=document.getElementById("m"),x;
 if(b.dataset.a==="ok")x=await sb.rpc("aprovar_pagamento",{p_id:b.dataset.i});
 else{var mo=prompt("Motivo da rejeição (obrigatório):");if(!mo)return;x=await sb.rpc("rejeitar_pagamento",{p_id:b.dataset.i,p_motivo:mo})}
