@@ -135,40 +135,20 @@ if(h==="/publicar"){if(need())publicar();return}if(h==="/favoritos"){if(need())f
 if(h==="/admin"){if(need())admin();return}home()}
 
 /* ---------- ENTRAR ---------- */
-function entrar(modo){modo=modo||"entrar";if(modo==="tel")return entrarTel();var nw=modo==="criar";
+function entrar(modo){modo=modo||"entrar";var nw=modo==="criar";
 A.innerHTML='<div class="box auth"><div class="logo" style="justify-content:center;margin-bottom:10px"><img src="'+LOGO_L+'" alt="" style="height:56px;width:auto;border-radius:10px"></div><h1 style="text-align:center">'+(nw?"Criar conta":"Entrar")+'</h1><p class="mut" style="text-align:center">'+(nw?"Cria a tua conta para publicar anúncios e guardar favoritos.":"Entra para publicar anúncios, guardar favoritos e gerir a tua conta.")+'</p>'+
-'<div class="row" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:14px"><button class="btn '+(nw?"out":"")+'" id="t1" type="button">Entrar</button><button class="btn '+(nw?"":"out")+'" id="t2" type="button">Criar conta</button><button class="btn out" id="t3" type="button">Telefone</button></div>'+
+'<div class="row" style="grid-template-columns:1fr 1fr;margin-bottom:14px"><button class="btn '+(nw?"out":"")+'" id="t1" type="button">Entrar</button><button class="btn '+(nw?"":"out")+'" id="t2" type="button">Criar conta</button></div>'+
 (nw?'<div class="fld"><label for="nm">Nome</label><input id="nm" autocomplete="name"></div>':'')+
 '<div class="fld"><label for="em">E-mail</label><input id="em" type="email" autocomplete="email"></div><div class="fld"><label for="pw">Palavra-passe (mín. 8 caracteres)</label><input id="pw" type="password" autocomplete="'+(nw?"new-password":"current-password")+'"></div>'+
 '<div class="msg" id="m" role="alert"></div><button class="btn" id="ok" type="button" style="width:100%">'+(nw?"Criar conta":"Entrar")+'</button>'+(nw?'':'<p style="text-align:center"><a href="#" id="rc" class="mut" style="text-decoration:underline">Esqueci a palavra-passe</a></p>')+
 '<p class="mut" style="text-align:center">Ao continuares, aceitas os <a href="#/termos" style="text-decoration:underline">termos de utilização</a> e a <a href="#/privacidade" style="text-decoration:underline">política de privacidade</a>.</p></div>';
-var m=document.getElementById("m");document.getElementById("t1").onclick=function(){entrar("entrar")};document.getElementById("t2").onclick=function(){entrar("criar")};document.getElementById("t3").onclick=function(){entrar("tel")};
+var m=document.getElementById("m");document.getElementById("t1").onclick=function(){entrar("entrar")};document.getElementById("t2").onclick=function(){entrar("criar")};
 document.getElementById("ok").onclick=async function(){var b=this;m.className="msg";m.textContent="";
 if(!em.value.trim()||pw.value.length<8){m.textContent="Indica o e-mail e uma palavra-passe com 8 ou mais caracteres.";return}b.disabled=true;
 if(nw){var r=await sb.auth.signUp({email:em.value.trim(),password:pw.value,options:{data:{name:nm.value.trim()},emailRedirectTo:location.origin+location.pathname}});b.disabled=false;
 if(r.error){m.textContent=r.error.message;return}m.className="msg ok";m.textContent=r.data.session?"Conta criada.":"Conta criada. Confirma o teu e-mail e depois entra."}
 else{var r2=await sb.auth.signInWithPassword({email:em.value.trim(),password:pw.value});b.disabled=false;if(r2.error)m.textContent=r2.error.message;else location.hash="#/"}};
 var rc=document.getElementById("rc");if(rc)rc.onclick=async function(e){e.preventDefault();if(!em.value.trim()){m.textContent="Escreve primeiro o teu e-mail.";return}var r=await sb.auth.resetPasswordForEmail(em.value.trim(),{redirectTo:location.origin+location.pathname});m.className="msg "+(r.error?"":"ok");m.textContent=r.error?r.error.message:"Enviámos um e-mail para recuperar a palavra-passe."}}
-
-/* ---------- ENTRAR COM TELEFONE (SMS) ---------- */
-function fone(v){var d=v.replace(/[\s\-().]/g,"");if(/^9\d{8}$/.test(d))d="+244"+d;else if(/^244\d{9}$/.test(d))d="+"+d;else if(d.indexOf("00")===0)d="+"+d.slice(2);return /^\+[1-9]\d{7,14}$/.test(d)?d:null}
-function entrarTel(){var ph="",last=0;
-A.innerHTML='<div class="box auth"><div class="logo" style="justify-content:center;margin-bottom:10px"><img src="'+LOGO_L+'" alt="" style="height:56px;width:auto;border-radius:10px"></div><h1 style="text-align:center">Entrar com telefone</h1><p class="mut" style="text-align:center">Enviamos um código por SMS para confirmar o teu número. Serve para entrar e para criar conta.</p>'+
-'<div class="row" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:14px"><button class="btn out" id="t1" type="button">Entrar</button><button class="btn out" id="t2" type="button">Criar conta</button><button class="btn" id="t3" type="button">Telefone</button></div>'+
-'<div id="s1"><div class="fld"><label for="nm">Nome (opcional)</label><input id="nm" autocomplete="name"></div><div class="fld"><label for="tl">Número de telefone</label><input id="tl" type="tel" inputmode="tel" autocomplete="tel" placeholder="9xx xxx xxx ou +244 9xx xxx xxx"></div><div class="msg" id="m" role="alert"></div><button class="btn" id="en" type="button" style="width:100%">Enviar código por SMS</button></div>'+
-'<div id="s2" hidden><p>Enviámos um código para <b id="pn"></b>.</p><div class="fld"><label for="cd">Código de 6 dígitos</label><input id="cd" inputmode="numeric" autocomplete="one-time-code" maxlength="6"></div><div class="msg" id="m2" role="alert"></div><button class="btn" id="vf" type="button" style="width:100%">Confirmar código</button><p style="text-align:center"><a href="#" id="rs2" class="mut" style="text-decoration:underline">Reenviar código</a> · <a href="#" id="tr" class="mut" style="text-decoration:underline">Mudar número</a></p></div>'+
-'<p class="mut" style="text-align:center">Ao continuares, aceitas os <a href="#/termos" style="text-decoration:underline">termos de utilização</a> e a <a href="#/privacidade" style="text-decoration:underline">política de privacidade</a>.</p></div>';
-var g=function(i){return document.getElementById(i)};
-g("t1").onclick=function(){entrar("entrar")};g("t2").onclick=function(){entrar("criar")};
-async function send(msg){var n=fone(g("tl").value);if(!n){msg.textContent="Número inválido. Usa 9xx xxx xxx ou +código do país.";return}
-if(Date.now()-last<60000){msg.textContent="Espera um minuto antes de pedir outro código.";return}
-last=Date.now();var r=await sb.auth.signInWithOtp({phone:n,options:{data:{name:g("nm").value.trim()}}});
-if(r.error){msg.textContent=r.error.message;last=0;return}ph=n;g("pn").textContent=n;g("s1").hidden=true;g("s2").hidden=false;g("m2").className="msg ok";g("m2").textContent="Código enviado."}
-g("en").onclick=function(){g("m").textContent="";send(g("m"))};
-g("rs2").onclick=function(e){e.preventDefault();g("m2").className="msg";g("m2").textContent="";send(g("m2"))};
-g("tr").onclick=function(e){e.preventDefault();g("s2").hidden=true;g("s1").hidden=false};
-g("vf").onclick=async function(){var m=g("m2"),b=this;m.className="msg";if(!/^\d{6}$/.test(g("cd").value.trim())){m.textContent="Escreve o código de 6 dígitos.";return}
-b.disabled=true;var r=await sb.auth.verifyOtp({phone:ph,token:g("cd").value.trim(),type:"sms"});b.disabled=false;if(r.error){m.textContent=r.error.message;return}location.hash="#/"}}
 
 /* ---------- NOVA PALAVRA-PASSE ---------- */
 var RECOV=false;
