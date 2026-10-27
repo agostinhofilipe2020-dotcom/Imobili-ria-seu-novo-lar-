@@ -136,11 +136,13 @@ var tb=[["/","⌂","Início"],["/favoritos","♡","Favoritos"],["/publicar","+",
 document.getElementById("tb").innerHTML=tb.map(function(x){return '<a href="#'+x[0]+'" class="'+(x[2]===""?"plus":(r===x[0]?"on":""))+'" '+(x[2]===""?'aria-label="Publicar anúncio"':"")+'>'+x[1]+(x[2]?'<span>'+x[2]+'</span>':"")+'</a>'}).join("");
 var o=document.getElementById("out");if(o)o.onclick=function(){sb.auth.signOut()}}
 async function load(){var s=await sb.auth.getSession();U=s.data.session?s.data.session.user:null;PF=null;
-if(U){var p=await sb.from("perfis").select("*").eq("id",U.id).maybeSingle();PF=p.data;await loadFav()}route();checkPend()}
+if(U){var p=await sb.from("perfis").select("*").eq("id",U.id).maybeSingle();PF=p.data;await loadFav();if(/access_token=/.test(location.hash))history.replaceState(null,"",location.pathname+"#/")}route();checkPend()}
 sb.auth.onAuthStateChange(function(ev,s){if(ev==="PASSWORD_RECOVERY"){RECOV=true;load();return}var id=s&&s.user?s.user.id:null;if(id===(U?U.id:null))return;load()});
 window.addEventListener("hashchange",route);
 function need(){if(!U){A.innerHTML='<div class="box"><h2>Entra para continuar</h2><a class="btn" href="#/entrar">Entrar ou criar conta</a></div>';return false}return true}
-async function route(){nav();var h=location.hash.slice(1)||"/";if(RECOV){recuperar();return}if(h==="/termos"||h==="/privacidade"){legal(h.slice(1));return}
+function oauthErr(){var p=new URLSearchParams(location.search),q=new URLSearchParams(location.hash.replace(/^#\/?/,""));return p.get("error_description")||q.get("error_description")||""}
+async function route(){nav();var oe=oauthErr();if(oe){A.innerHTML='<div class="box auth"><h1>Não foi possível entrar</h1><p class="msg">'+esc(oe)+'</p><p class="mut">Se o erro continuar, envia esta mensagem a quem gere o site.</p><a class="btn" href="#/entrar">Voltar a Entrar</a></div>';history.replaceState(null,"",location.pathname+"#/entrar");return}
+var h=location.hash.slice(1)||"/";if(RECOV){recuperar();return}if(h==="/termos"||h==="/privacidade"){legal(h.slice(1));return}
 if(h==="/")return home();if(h==="/imoveis")return imoveis();if(h==="/conta"){if(need())conta();return}if(h==="/entrar")return entrar();if(h.indexOf("/anuncio/")===0)return detalhe(h.slice(9));
 if(h==="/publicar"){if(need())publicar();return}if(h==="/favoritos"){if(need())favoritos();return}if(h.indexOf("/destacar/")===0){if(need())destacar(h.slice(10));return}if(h==="/meus"){if(need())meus();return}if(h.indexOf("/editar/")===0){if(need())publicar(h.slice(8));return}if(h==="/subscricao"){if(need())subscricao();return}
 if(h==="/admin"){if(need())admin();return}home()}
