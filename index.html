@@ -154,16 +154,27 @@ var m=document.getElementById("m");document.getElementById("t1").onclick=functio
 document.getElementById("ok").onclick=async function(){var b=this;m.className="msg";m.textContent="";
 if(!em.value.trim()||pw.value.length<8){m.textContent="Indica o e-mail e uma palavra-passe com 8 ou mais caracteres.";return}b.disabled=true;
 if(nw){var r=await sb.auth.signUp({email:em.value.trim(),password:pw.value,options:{data:{name:nm.value.trim()},emailRedirectTo:location.origin+location.pathname}});b.disabled=false;
-if(r.error){m.textContent=r.error.message;return}m.className="msg ok";m.textContent=r.data.session?"Conta criada.":"Conta criada. Confirma o teu e-mail e depois entra."}
-else{var r2=await sb.auth.signInWithPassword({email:em.value.trim(),password:pw.value});b.disabled=false;if(r2.error)m.textContent=r2.error.message;else location.hash="#/"}};
-var rc=document.getElementById("rc");if(rc)rc.onclick=async function(e){e.preventDefault();if(!em.value.trim()){m.textContent="Escreve primeiro o teu e-mail.";return}var r=await sb.auth.resetPasswordForEmail(em.value.trim(),{redirectTo:location.origin+location.pathname});m.className="msg "+(r.error?"":"ok");m.textContent=r.error?r.error.message:"Enviámos um e-mail para recuperar a palavra-passe."}}
+if(r.error){m.textContent=perr(r.error);return}m.className="msg ok";m.textContent=r.data.session?"Conta criada.":"Conta criada. Confirma o teu e-mail e depois entra."}
+else{var r2=await sb.auth.signInWithPassword({email:em.value.trim(),password:pw.value});b.disabled=false;if(r2.error)m.textContent=perr(r2.error);else location.hash="#/"}};
+var rc=document.getElementById("rc");if(rc)rc.onclick=async function(e){e.preventDefault();if(!em.value.trim()){m.textContent="Escreve primeiro o teu e-mail.";return}var r=await sb.auth.resetPasswordForEmail(em.value.trim(),{redirectTo:location.origin+location.pathname});m.className="msg "+(r.error?"":"ok");m.textContent=r.error?perr(r.error):"Enviámos um e-mail para recuperar a palavra-passe."}}
 
+function perr(e){var m=(e&&e.message)||"Erro desconhecido",s=m.toLowerCase(),n=m.match(/after (\d+) seconds/);
+if(s.indexOf("rate limit")>=0)return"Foram feitos demasiados pedidos de e-mail. Espera cerca de 1 hora e tenta de novo.";
+if(n)return"Por segurança, espera "+n[1]+" segundos antes de tentar de novo.";
+if(s.indexOf("invalid login")>=0)return"E-mail ou palavra-passe incorretos.";
+if(s.indexOf("already registered")>=0)return"Este e-mail já tem conta. Usa Entrar.";
+if(s.indexOf("not confirmed")>=0)return"Confirma primeiro o teu e-mail (vê a caixa de entrada e o spam).";
+if(s.indexOf("at least")>=0&&s.indexOf("password")>=0)return"A palavra-passe precisa de 8 ou mais caracteres.";
+if(s.indexOf("same password")>=0)return"A nova palavra-passe tem de ser diferente da anterior.";
+if(s.indexOf("invalid email")>=0||s.indexOf("unable to validate email")>=0)return"E-mail inválido.";
+if(s.indexOf("failed to fetch")>=0||s.indexOf("network")>=0)return"Sem ligação à internet. Tenta de novo.";
+return m}
 /* ---------- NOVA PALAVRA-PASSE ---------- */
 var RECOV=false;
 function recuperar(){A.innerHTML='<div class="box auth"><h1 style="text-align:center">Nova palavra-passe</h1><p class="mut" style="text-align:center">Escolhe uma palavra-passe nova para a tua conta.</p><div class="fld"><label for="np">Nova palavra-passe (mín. 8 caracteres)</label><input id="np" type="password" autocomplete="new-password"></div><div class="fld"><label for="np2">Repete a palavra-passe</label><input id="np2" type="password" autocomplete="new-password"></div><div class="msg" id="m" role="alert"></div><button class="btn" id="ok" type="button" style="width:100%">Guardar palavra-passe</button></div>';
 document.getElementById("ok").onclick=async function(){var m=document.getElementById("m"),b=this;m.className="msg";
 if(np.value.length<8){m.textContent="A palavra-passe precisa de 8 ou mais caracteres.";return}if(np.value!==np2.value){m.textContent="As palavras-passe não são iguais.";return}
-b.disabled=true;var r=await sb.auth.updateUser({password:np.value});if(r.error){m.textContent=r.error.message;b.disabled=false;return}
+b.disabled=true;var r=await sb.auth.updateUser({password:np.value});if(r.error){m.textContent=perr(r.error);b.disabled=false;return}
 RECOV=false;m.className="msg ok";m.textContent="Palavra-passe alterada.";setTimeout(function(){location.hash="#/";route()},900)}}
 
 /* ---------- TERMOS E PRIVACIDADE (RASCUNHOS) ---------- */
