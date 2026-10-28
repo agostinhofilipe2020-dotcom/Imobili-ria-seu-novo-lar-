@@ -385,16 +385,16 @@ if(r.error){A.innerHTML='<div class="box msg">'+esc(r.error.message)+'</div>';re
 A.innerHTML='<div class="box"><h1>Os meus anúncios</h1>'+(r.data.length?r.data.map(function(a){return '<div style="border-bottom:1px solid var(--line);padding:12px 0"><b>'+esc(a.titulo)+'</b><div class="mut">'+esc(a.municipio)+' · '+kz(a.preco)+' · <span class="badge s-'+esc(a.estado)+'">'+esc(a.estado)+'</span></div>'+(a.motivo_moderacao?'<div class="msg">Motivo da moderação: '+esc(a.motivo_moderacao)+'</div>':'')+'<div class="row" style="margin-top:8px"><a class="btn out" href="#/anuncio/'+a.id+'">Ver</a><a class="btn" href="#/editar/'+a.id+'">Editar</a><a class="btn out" href="#/destacar/'+a.id+'">Destacar</a><button class="btn no" type="button" data-del="'+a.id+'">Apagar</button></div></div>'}).join(""):'<p class="mut">Ainda não publicaste anúncios.</p>')+'<a class="btn" style="margin-top:12px" href="#/publicar">Publicar novo anúncio</a></div>'}
 
 /* ---------- NOTIFICAÇÕES ---------- */
-var NOTIF=[],VIRT=[],NCNT=0;
+var NOTIF=[],VIRT=[],NCNT=0,NERR="";
 function updBell(){var b=document.getElementById("bell");if(!b)return;b.hidden=!U;var c=b.querySelector(".bc");c.textContent=NCNT>9?"9+":NCNT;c.hidden=!NCNT}
 async function loadNotif(){if(!U){NOTIF=[];VIRT=[];NCNT=0;updBell();return}
-var r=await sb.from("notificacoes").select("*").order("criado",{ascending:false}).limit(50);NOTIF=r.data||[];VIRT=[];
+var r=await sb.from("notificacoes").select("*").order("criado",{ascending:false}).limit(50);NERR=r.error?r.error.message:"";NOTIF=r.data||[];VIRT=[];
 var s=await sb.from("subscricoes").select("fim").eq("utilizador_id",U.id).eq("estado","ativa").gt("fim",new Date().toISOString()).order("fim",{ascending:false}).limit(1);
 if(s.data&&s.data[0]){var d=Math.ceil((new Date(s.data[0].fim)-new Date())/86400000);if(d<=3)VIRT=[{id:"v1",tipo:"subscricao",titulo:"A tua subscrição termina em "+d+(d===1?" dia":" dias"),texto:"Faz um novo pedido em Subscrição para manter o acesso.",ligacao:"/subscricao",lida:false,criado:new Date().toISOString()}]}
 NCNT=NOTIF.filter(function(n){return!n.lida}).length+VIRT.length;updBell()}
 setInterval(loadNotif,60000);
 async function notificacoes(){await loadNotif();var L=VIRT.concat(NOTIF);
-A.innerHTML='<h1>Notificações</h1>'+(L.length?'<div class="box" style="padding:0">'+L.map(function(n){return '<a href="#'+esc(n.ligacao||"/")+'" class="nt '+(n.lida?"":"nw")+'" data-n="'+esc(n.id)+'"><b>'+esc(n.titulo)+'</b><div class="mut">'+esc(n.texto||"")+'</div><div class="mut" style="font-size:12px">'+new Date(n.criado).toLocaleString("pt-PT")+'</div></a>'}).join("")+'</div><button class="btn out" id="mr" type="button">Marcar todas como lidas</button>':'<div class="box mut">Não tens notificações.</div>');
+A.innerHTML='<h1>Notificações</h1>'+(NERR?'<div class="box msg">Não foi possível carregar as notificações: '+esc(NERR)+'</div>':'')+(L.length?'<div class="box" style="padding:0">'+L.map(function(n){return '<a href="#'+esc(n.ligacao||"/")+'" class="nt '+(n.lida?"":"nw")+'" data-n="'+esc(n.id)+'"><b>'+esc(n.titulo)+'</b><div class="mut">'+esc(n.texto||"")+'</div><div class="mut" style="font-size:12px">'+new Date(n.criado).toLocaleString("pt-PT")+'</div></a>'}).join("")+'</div><button class="btn out" id="mr" type="button">Marcar todas como lidas</button>':'<div class="box mut">Não tens notificações.</div>');
 var mr=document.getElementById("mr");if(mr)mr.onclick=async function(){await sb.from("notificacoes").update({lida:true}).eq("utilizador_id",U.id).eq("lida",false);notificacoes()}}
 document.addEventListener("click",function(e){var a=e.target.closest("a.nt");if(!a||a.dataset.n==="v1")return;sb.from("notificacoes").update({lida:true}).eq("id",a.dataset.n).then(function(){loadNotif()})});
 
