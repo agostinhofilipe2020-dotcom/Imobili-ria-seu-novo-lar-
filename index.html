@@ -165,6 +165,39 @@ main{padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env
 body{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}
 }
 @media(prefers-reduced-motion:reduce){header{transition:none!important}}
+
+/* ===== v2: fases C e D (cartões, categorias, rodapé) ===== */
+.pm{display:flex;flex-direction:column;gap:4px;background:var(--gd);color:#fff;border-radius:var(--r-m);padding:14px 56px 14px 14px;position:relative;text-decoration:none;min-height:118px}
+.pm1{display:flex;gap:8px;align-items:center}.pmf{font-size:12px;color:#D1FAE5}
+.pm h3{margin:2px 0;font-size:18px;line-height:1.25;color:#fff}
+.pml{display:flex;gap:6px;align-items:center;font-size:14px;color:#ECFDF5}.pml .ico{width:16px;height:16px}
+.pmg{position:absolute;right:12px;bottom:12px;width:32px;height:32px;border-radius:50%;background:#D1FAE5;color:#065F46;display:grid;place-items:center}.pmg .ico{width:18px;height:18px}
+.pmx{padding:0;min-height:0}.pm-main{display:flex;flex-direction:column;gap:4px;padding:14px;color:#fff;text-decoration:none}
+.pm-act{padding:0 14px 14px}.pm-act .btn{width:100%;min-height:44px}
+.pcar{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}.pcar::-webkit-scrollbar{display:none}
+.pcar .pm{flex:0 0 86%;scroll-snap-align:start}
+.dots{display:flex;gap:6px;justify-content:center;margin-top:8px}.dots i{width:7px;height:7px;border-radius:50%;background:#C7D2CE}.dots i.on{background:var(--g)}
+@media(min-width:721px){.pcar{display:grid;grid-template-columns:repeat(3,1fr);overflow:visible}.pcar .pm{flex:none}.dots{display:none}}
+@media(max-width:720px){
+.ph{aspect-ratio:16/10}.cb{padding:12px}
+.cb h3{font-size:16px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ft{margin:4px 0;font-size:13px}.mpb{margin:0 0 4px}
+.hr::after{content:"";position:absolute;inset:-4px}
+.grid{gap:14px}
+section{margin-top:24px}.sh{margin-bottom:10px}.sh h2{font-size:20px}
+.cats{display:flex;overflow-x:auto;scroll-snap-type:x proximity;gap:10px;margin-right:calc(-1*max(16px,env(safe-area-inset-right,0px)));padding-right:max(16px,env(safe-area-inset-right,0px));scrollbar-width:none}.cats::-webkit-scrollbar{display:none}
+.ct{flex:0 0 112px;scroll-snap-align:start;padding:8px 6px 10px;gap:4px;font-size:13px}
+.cta{padding:96px 16px 16px;gap:10px;margin-top:24px}.cta h2{font-size:18px}.cta p{font-size:13px}.cta .btn{flex:1;min-height:44px}
+footer{padding:20px 0 14px;margin-top:24px}
+.fg{grid-template-columns:1fr;gap:12px}
+.fg>div:nth-child(2){display:none}
+.fg>div:first-child{order:1}.fg>div:nth-child(4){order:2}.fg>div:nth-child(3){order:3}
+.fg a{display:inline-flex;align-items:center;min-height:40px;margin-right:16px;padding:0}
+.fg b{display:block;margin-bottom:2px}
+.copy{margin-top:8px}
+.fg>div:nth-child(3) b{display:none}
+.cta .btn{font-size:15px;padding:0 12px}
+}
 </style>
 
 </head>
@@ -187,7 +220,7 @@ function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){retur
 function kz(n){return n==null?"Preço sob consulta":Number(n).toLocaleString("pt-PT")+" Kz"}
 function foto(f){return sb.storage.from("fotos-anuncios").getPublicUrl(f).data.publicUrl}
 function ordf(a){return (a.fotografias||[]).slice().sort(function(x,y){return x.ordem-y.ordem})}
-var ICOS={home:'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/>',heart:'<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/>',build:'<rect x="5" y="3" width="14" height="18" rx="1"/><path d="M9 8h2M13 8h2M9 12h2M13 12h2M10 21v-4h4v4"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/>',plus:'<path d="M12 5v14M5 12h14"/>',search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',sliders:'<path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/>',shield:'<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>',lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',phone:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>'};
+var ICOS={home:'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/>',heart:'<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/>',build:'<rect x="5" y="3" width="14" height="18" rx="1"/><path d="M9 8h2M13 8h2M9 12h2M13 12h2M10 21v-4h4v4"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/>',plus:'<path d="M12 5v14M5 12h14"/>',search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',sliders:'<path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/>',shield:'<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>',lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',pin:'<path d="M12 21s7-6.2 7-11a7 7 0 0 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/>',arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',cash:'<rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/>',phone:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>'};
 function ico(n,w){return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"'+(w?' style="stroke-width:'+w+'"':'')+'>'+ICOS[n]+'</svg>'}
 function nav(){var r=location.hash.slice(1)||"/",l=[["/","Início"],["/imoveis","Imóveis"],["/novo","Publicar"],["/pedidos","Pedidos de casa"],["/favoritos","Favoritos"]];
 if(U){l.push(["/meus","Meus anúncios"]);l.push(["/subscricao","Subscrição"])}if(PF&&PF.papel==="admin")l.push(["/admin","Admin"+(PEND?" ("+PEND+")":"")]);document.title=(PEND?"("+PEND+") ":"")+"Seu Novo Lar";
@@ -268,7 +301,7 @@ else A.innerHTML='<div class="box"><h1>Política de privacidade</h1>'+aviso+
 var TIPOS={apartamento:"Apartamento",comercial:"Espaço comercial",salao_festas:"Salão de festas",escritorio:"Escritório",moradia:"Moradia",vivenda:"Vivenda",terreno:"Terreno"};
 var CATIMG={"apartamento": "cat-apartamento.jpg", "comercial": "cat-comercial.jpg", "salao_festas": "cat-salao_festas.jpg", "escritorio": "cat-escritorio.jpg", "moradia": "cat-moradia.jpg", "vivenda": "cat-vivenda.jpg", "terreno": "cat-terreno.jpg"};
 function cardHtml(a,isD){var fs=ordf(a),img=fs[0]?'style="background-image:url('+foto(fs[0].caminho)+')"':"";
-var ft=a.tipo==="terreno"?esc(a.area_m2||"—")+" m²":esc(a.quartos==null?"—":a.quartos)+" quartos · "+esc(a.casas_banho==null?"—":a.casas_banho)+" WC · "+esc(a.area_m2||"—")+" m²";
+var ft=a.tipo==="terreno"?esc(a.area_m2||"—")+" m²":esc(a.quartos==null?"—":a.quartos)+(a.quartos===1?" quarto":" quartos")+" · "+esc(a.casas_banho==null?"—":a.casas_banho)+" WC · "+esc(a.area_m2||"—")+" m²";
 return '<article class="pc"><a class="pl" href="#/anuncio/'+a.id+'"><div class="ph">'+(fs[0]?'<img src="'+foto(fs[0].caminho)+'" loading="lazy" decoding="async" alt="">':"")+'<span class="tag">'+(isD?"Destaque":(a.finalidade==="venda"?"Venda":"Arrendamento"))+'</span></div><div class="cb"><h3>'+esc(a.titulo)+'</h3><div class="mut">'+esc(a.municipio)+', '+esc(a.provincia)+' · '+(a.finalidade==="venda"?"Venda":"Arrendamento")+'</div><div class="ft">'+ft+'</div>'+(a.tem_mapa?'<div class="mpb">◉ Localização exata no mapa</div>':'')+'<div class="p">'+kz(a.preco)+(a.finalidade==="arrendamento"&&a.preco!=null?" / mês":"")+'</div></div></a>'+
 '<button class="hr" type="button" data-fav="'+a.id+'" aria-pressed="'+(!!FAV[a.id])+'" aria-label="Guardar nos favoritos">'+(FAV[a.id]?"♥":"♡")+'</button></article>'}
 
@@ -456,7 +489,7 @@ A.innerHTML='<div class="box"><h1>Os meus anúncios</h1>'+(r.data.length?r.data.
 /* ---------- PEDIDOS QUE COMBINAM / OTIMIZAR FOTOS ---------- */
 async function combinam(id){var a=await sb.from("anuncios").select("titulo").eq("id",id).maybeSingle(),r=await sb.rpc("pedidos_para_anuncio",{p_anuncio:id}),T=await telMap();
 A.innerHTML='<a href="#/meus" class="mut">← Os meus anúncios</a><h1>Pedidos que combinam</h1><p class="mut">Com o teu anúncio: <b>'+esc(a.data?a.data.titulo:"")+'</b>. A correspondência usa o tipo, a finalidade, os quartos, o orçamento e a zona.</p>'+
-(r.error?'<div class="box msg">'+esc(r.error.message)+'</div>':(r.data&&r.data.length?'<div class="grid">'+r.data.map(function(p){return pedCard(p,T[p.id])}).join("")+'</div>':'<div class="box mut">Ainda não há pedidos que combinem com este anúncio.</div>'))+'<p class="mut">Para ver o contacto e ligar, precisas de subscrição ativa.</p>'}
+(r.error?'<div class="box msg">'+esc(r.error.message)+'</div>':(r.data&&r.data.length?'<div class="grid">'+r.data.map(function(p){return pedMini(p,T[p.id],true)}).join("")+'</div>':'<div class="box mut">Ainda não há pedidos que combinem com este anúncio.</div>'))+'<p class="mut">Para ver o contacto e ligar, precisas de subscrição ativa.</p>'}
 async function otimizarFotos(){var st=document.getElementById("ot"),b=document.getElementById("otf");b.disabled=true;st.textContent="A procurar fotos…";
 var ads=await sb.from("anuncios").select("id").eq("anunciante_id",U.id),ids=(ads.data||[]).map(function(x){return x.id});if(!ids.length){st.textContent="Não tens anúncios.";b.disabled=false;return}
 var fr=await sb.from("fotografias").select("id,caminho").in("anuncio_id",ids),L=fr.data||[],n=0;
@@ -491,6 +524,11 @@ function pedCard(p,tel){return '<article class="ped"><span class="ptag">PEDIDO D
 (p.nota?'<p class="pn">'+esc(p.nota)+'</p>':'')+'<div class="pq">Tem uma casa assim?</div>'+
 (tel?'<a class="btn wh" style="width:100%" href="tel:'+esc(tel)+'">Ligar · '+esc(tel)+'</a>':'<a class="btn wh" style="width:100%" href="#/subscricao">Subscrever para contactar</a>')+
 '<a class="plink" href="#/pedido/'+p.id+'">Ver pedido</a></article>'}
+function pedOrcMini(p){return p.orcamento!=null?"Até "+Number(p.orcamento).toLocaleString("pt-PT")+" Kz":"Orçamento a combinar"}
+function pedMini(p,tel,acao){var z=p.zonas||[],zt=z.length?esc(z[0])+(z.length>1?" +"+(z.length-1):""):"—",tit=(p.tipologia?p.tipologia+" · ":"")+(TIPOS[p.tipo]||p.tipo);
+var core='<span class="pm1"><span class="ptag">Procuro casa</span><span class="pmf">'+(p.finalidade==="compra"?"Comprar":"Arrendar")+'</span></span><h3>'+esc(tit)+'</h3><span class="pml">'+ico("pin")+zt+'</span><span class="pml">'+ico("cash")+esc(pedOrcMini(p))+'</span>';
+if(!acao)return '<a class="pm" href="#/pedido/'+p.id+'" aria-label="Ver pedido: '+esc(tit)+'">'+core+'<span class="pmg">'+ico("arrow")+'</span></a>';
+return '<article class="pm pmx"><a class="pm-main" href="#/pedido/'+p.id+'">'+core+'</a><div class="pm-act">'+(tel?'<a class="btn wh" href="tel:'+esc(tel)+'">Ligar · '+esc(tel)+'</a>':'<a class="btn wh" href="#/subscricao">Subscrever para contactar</a>')+'</div></article>'}
 async function telMap(){var r=await sb.from("pedidos_casa_contacto").select("pedido_id,telefone"),m={};(r.data||[]).forEach(function(x){m[x.pedido_id]=x.telefone});return m}
 async function pedidos(){A.innerHTML='<div class="sh"><h1>Pedidos de casa</h1><a class="btn" href="#/novo-pedido">Publicar pedido</a></div><p class="mut">Pessoas à procura de casa. Tens um imóvel assim? Os subscritores veem o contacto e ligam diretamente.</p>'+
 '<div class="box"><div class="row"><div class="fld"><label for="qf">Finalidade</label><select id="qf"><option value="">Comprar e arrendar</option><option value="compra">Comprar</option><option value="arrendamento">Arrendar</option></select></div><div class="fld"><label for="qz">Zona</label><input id="qz" placeholder="Ex.: Prenda"></div><div class="fld"><label for="ql">Tipologia</label><select id="ql"><option value="">Qualquer</option>'+TIPOL.map(function(t){return '<option>'+t+'</option>'}).join("")+'</select></div></div><button class="btn" id="qg" type="button">Filtrar</button> <a class="mut" href="#/meus-pedidos" style="margin-left:10px;text-decoration:underline">Meus pedidos</a></div><div id="pl" class="grid"></div>';
@@ -499,12 +537,13 @@ var q=sb.from("pedidos_casa").select("*").eq("estado","ativo").gt("expira",new D
 if(qf.value)q=q.eq("finalidade",qf.value);if(ql.value)q=q.eq("tipologia",ql.value);var r=await q;
 if(r.error){pl.innerHTML='<div class="box msg">'+esc(r.error.message)+'</div>';return}
 var z=qz.value.trim().toLowerCase(),L=r.data.filter(function(p){return!z||(p.zonas||[]).some(function(x){return x.toLowerCase().indexOf(z)>=0})}),T=await telMap();
-pl.innerHTML=L.length?L.map(function(p){return pedCard(p,T[p.id])}).join(""):'<div class="box mut">Ainda não há pedidos com estes filtros.</div>'}
+pl.innerHTML=L.length?L.map(function(p){return pedMini(p,T[p.id],true)}).join(""):'<div class="box mut">Ainda não há pedidos com estes filtros.</div>'}
 document.getElementById("qg").onclick=run;await run()}
 async function homePedidos(){var el=document.getElementById("pedh");if(!el)return;
-var r=await sb.from("pedidos_casa").select("*").eq("estado","ativo").gt("expira",new Date().toISOString()).order("criado",{ascending:false}).limit(3);
-if(!r.data||!r.data.length){el.innerHTML="";return}var T=await telMap();
-el.innerHTML='<div class="sh"><h2>Pedidos de casa</h2><a href="#/pedidos" style="color:var(--g);font-weight:600">Ver todos →</a></div><div class="grid">'+r.data.map(function(p){return pedCard(p,T[p.id])}).join("")+'</div>'}
+var r=await sb.from("pedidos_casa").select("*").eq("estado","ativo").gt("expira",new Date().toISOString()).order("criado",{ascending:false}).limit(5);
+if(!r.data||!r.data.length){el.innerHTML="";return}
+el.innerHTML='<div class="sh"><h2>Pedidos de casa</h2><a href="#/pedidos" style="color:var(--g);font-weight:600">Ver todos →</a></div><div class="pcar" id="pcar" tabindex="0" aria-label="Pedidos de casa recentes">'+r.data.map(function(p){return pedMini(p)}).join("")+'</div><div class="dots" id="pdots" aria-hidden="true">'+r.data.map(function(_,k){return '<i class="'+(k?"":"on")+'"></i>'}).join("")+'</div>';
+var c=document.getElementById("pcar"),d=document.querySelectorAll("#pdots i");c.addEventListener("scroll",function(){var k=Math.round(c.scrollLeft/(c.firstChild.offsetWidth+10));[].forEach.call(d,function(x,n){x.className=n===k?"on":""})},{passive:true})}
 function novoPedido(){var rc=function(v,t){return '<label class="rc"><input type="radio" name="npf" value="'+v+'"><span><b>'+t+'</b></span></label>'};
 A.innerHTML='<div class="box"><h1>Publicar pedido de casa</h1><p class="mut">Diz o que procuras. O pedido fica visível 30 dias, e o teu contacto só aparece a subscritores.</p>'+
 '<div class="fld"><label>O que queres fazer?</label><div class="row" style="grid-template-columns:1fr 1fr">'+rc("arrendamento","Arrendar")+rc("compra","Comprar")+'</div></div>'+
