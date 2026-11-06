@@ -239,6 +239,11 @@ body.has-cta{padding-bottom:calc(64px + 64px + env(safe-area-inset-bottom,0px))}
 .mmenu .dng{color:#B42318}.ferr summary{cursor:pointer;font-weight:600;min-height:44px;display:flex;align-items:center}
 .badge.s-publicado{background:var(--soft);color:var(--gd)}.badge.s-encerrado{background:#E5E7EB;color:#374151}
 .sh h1{font-size:22px}.sh .btn{white-space:nowrap;min-height:40px;padding:0 16px}
+
+/* ===== v2: etapa E3 (formulários de publicação) ===== */
+.fe{color:#B42318;font-size:13px;margin-top:4px}
+.fld.bad input,.fld.bad select,.fld.bad textarea{border-color:#B42318}.fld.bad .rc{border-color:#B42318}
+.pbtn{display:flex;gap:4px;margin-top:4px}.pbtn button{flex:1;min-height:40px;border:1px solid var(--line);background:#fff;border-radius:var(--r-s);font-size:13px;cursor:pointer;color:var(--ink)}.pbtn button[disabled]{opacity:.4;cursor:default}
 </style>
 
 </head>
@@ -483,15 +488,15 @@ A.innerHTML='<div class="box"><h1>'+(E?"Editar anúncio":"Publicar imóvel")+'</
 '<div class="fld"><label for="zo">Localização exata / zona (só para subscritores, opcional)</label><input id="zo"></div>'+
 '<div class="row"><div class="fld"><label for="qu">Quartos</label><input id="qu" type="number" min="0" inputmode="numeric"></div><div class="fld"><label for="wc">Casas de banho</label><input id="wc" type="number" min="0" inputmode="numeric"></div><div class="fld"><label for="ar">Área (m², opcional)</label><input id="ar" type="number" min="1" inputmode="numeric"></div></div>'+
 '<div class="row"><div class="fld"><label for="mo">Mobilado</label><select id="mo"><option value="">Não indicado</option><option value="s">Sim</option><option value="n">Não</option></select></div><div class="fld"><label for="pr">Preço em Kz (opcional, só números)</label><input id="pr" type="number" min="0" inputmode="numeric" placeholder="Ex.: 1200000"></div></div>'+MAPFORM+'</section>'+
-'<section class="pn" data-s="2" hidden><h2>3. Fotografias</h2><p class="mut">Adiciona fotografias do imóvel. A primeira é a fotografia principal.</p>'+(E?'<div class="fld"><label>Fotografias atuais</label><div id="fx" class="th" style="flex-wrap:wrap"></div></div>':'')+
+'<section class="pn" data-s="2" hidden><h2>3. Fotografias</h2><p class="mut">Adiciona fotografias do imóvel. A primeira é a fotografia principal.</p>'+(E?'<div class="fld"><label>Fotografias atuais</label><div id="fx" class="pgd"></div></div>':'')+
 '<label class="drop" for="fo"><b>Arrasta ou toca para adicionar fotos</b><span class="mut">Formatos: JPG, PNG · até 10 MB cada</span></label><input id="fo" type="file" accept="image/jpeg,image/png" multiple style="position:absolute;opacity:0;width:1px;height:1px"><div class="pgd" id="nf"></div></section>'+
 '<section class="pn" data-s="3" hidden><h2>4. Revisão e publicação</h2><p class="mut">Contacto e revisão final.</p><div class="fld"><label for="tc">Telefone de contacto (só para subscritores)</label><input id="tc" type="tel"></div><div class="fld"><label for="dc">Descrição completa (só para subscritores, opcional)</label><textarea id="dc"></textarea></div>'+
 (E?'<div class="fld"><label for="es">Estado do anúncio</label><select id="es"><option value="publicado">Publicado</option><option value="encerrado">Encerrado</option></select></div>':'')+'<div class="rev" id="rv"></div></section>'+
 '<div class="msg" id="m" role="alert"></div><div class="nv"><button class="btn out" id="bk" type="button" style="visibility:hidden">Voltar</button><button class="btn" id="nx" type="button">Próximo passo →</button></div></div>';
 if(E){document.querySelector('input[name="pf"][value="'+E.finalidade+'"]').checked=true;pt.value=E.tipo;ti.value=E.titulo;dp.value=E.descricao_publica;dc0.textContent=dp.value.length;pv.value=E.provincia;mu.value=E.municipio;qu.value=E.quartos==null?"":E.quartos;wc.value=E.casas_banho==null?"":E.casas_banho;ar.value=E.area_m2==null?"":E.area_m2;mo.value=E.mobilado===true?"s":E.mobilado===false?"n":"";pr.value=E.preco==null?"":E.preco;es.value=E.estado==="encerrado"?"encerrado":"publicado";
 if(V){dc.value=V.descricao_completa||"";tc.value=V.telefone_contacto||"";zo.value=V.localizacao_detalhada||""}
-var fx=$("fx");function dfx(){fx.innerHTML=FS.map(function(f){var x=rem.indexOf(f.id)>=0;return '<div style="text-align:center"><img src="'+foto(f.caminho)+'" alt="Fotografia" style="opacity:'+(x?.3:1)+'"><br><button class="btn out" style="min-height:36px;padding:0 10px" type="button" data-f="'+f.id+'">'+(x?"Desfazer":"Remover")+'</button></div>'}).join("")}
-dfx();fx.onclick=function(e){var b=e.target.closest("button[data-f]");if(!b)return;var i=rem.indexOf(b.dataset.f);if(i>=0)rem.splice(i,1);else rem.push(b.dataset.f);dfx()}}
+var mainId=null,fx=$("fx");function dfx(){var vis=FS.filter(function(x){return rem.indexOf(x.id)<0}),first=mainId||(vis[0]&&vis[0].id);fx.innerHTML=FS.map(function(f){var x=rem.indexOf(f.id)>=0;return '<div class="pt"><img src="'+foto(f.caminho)+'" alt="Fotografia atual" style="opacity:'+(x?.3:1)+'">'+(f.id===first&&!x?'<span class="tag">Principal</span>':'')+'<div class="pbtn">'+(!x&&f.id!==first?'<button type="button" data-mp="'+f.id+'">Principal</button>':'')+'<button type="button" data-f="'+f.id+'">'+(x?"Desfazer":"Remover")+'</button></div></div>'}).join("")}
+dfx();fx.onclick=function(e){var mp=e.target.closest("button[data-mp]");if(mp){mainId=mp.dataset.mp;dfx();return}var b=e.target.closest("button[data-f]");if(!b)return;var i=rem.indexOf(b.dataset.f);if(i>=0)rem.splice(i,1);else{rem.push(b.dataset.f);if(mainId===b.dataset.f)mainId=null}dfx()}}
 dp.addEventListener("input",function(){dc0.textContent=dp.value.length});
 var LAT=null,LNG=null,MAPI=null,MK=null;
 function setPt(la,ln,fly){LAT=la;LNG=ln;if(la!=null&&MAPI&&typeof L!=="undefined"){if(MK)MK.setLatLng([la,ln]);else{MK=L.marker([la,ln],{icon:PIN,draggable:true}).addTo(MAPI);MK.on("dragend",function(){var p=MK.getLatLng();setPt(p.lat,p.lng)})}if(fly)MAPI.setView([la,ln],17)}$("mpt").textContent=la==null?"Sem localização marcada.":"Ponto marcado: "+la.toFixed(5)+", "+ln.toFixed(5)}
@@ -501,23 +506,36 @@ $("gps").onclick=function(){if(!navigator.geolocation){$("mpt").textContent="O t
 navigator.geolocation.getCurrentPosition(function(p){initMap();setPt(p.coords.latitude,p.coords.longitude,true)},function(){$("mpt").textContent="Não foi possível obter a localização. Autoriza o acesso no Safari ou marca o ponto no mapa."},{enableHighAccuracy:true,timeout:15000})};
 $("mpx").onclick=function(){if(MK&&MAPI){MAPI.removeLayer(MK);MK=null}setPt(null,null)};
 if(V&&V.latitude!=null){LAT=V.latitude;LNG=V.longitude}setPt(LAT,LNG);
+A.firstElementChild.addEventListener("input",function(e){var el=e.target,f=el.closest&&el.closest(".fld");if(f&&f.classList.contains("bad"))fe(el.id||el.name,"")});
+A.firstElementChild.addEventListener("change",function(e){var el=e.target,f=el.closest&&el.closest(".fld");if(f&&f.classList.contains("bad"))fe(el.id||el.name,"")});
+ti.insertAdjacentHTML("afterend",'<div class="mut" style="text-align:right"><span id="tc0">'+ti.value.length+'</span>/100</div>');ti.addEventListener("input",function(){$("tc0").textContent=ti.value.length});
+var DRK="snl_rascunho_anuncio",DRF=["pt","ti","dp","dc","pv","mu","zo","qu","wc","ar","mo","pr","tc"],dtm=null;
+function saveDraft(){if(E)return;clearTimeout(dtm);dtm=setTimeout(function(){try{var d={},f=document.querySelector('input[name="pf"]:checked');DRF.forEach(function(k){d[k]=$(k).value});d.pf=f?f.value:"";localStorage.setItem(DRK,JSON.stringify(d))}catch(e){}},400)}
+if(!E){try{var dr=JSON.parse(localStorage.getItem(DRK)||"null");if(dr&&(dr.ti||dr.dp||dr.pv||dr.mu)){DRF.forEach(function(k){if(dr[k])$(k).value=dr[k]});if(dr.pf){var rd=document.querySelector('input[name="pf"][value="'+dr.pf+'"]');if(rd)rd.checked=true}dc0.textContent=dp.value.length;$("tc0").textContent=ti.value.length;
+$("sp").insertAdjacentHTML("beforebegin",'<div class="lock" id="dnote">Recuperámos o rascunho do teu último acesso (as fotografias e o mapa não ficam guardados). <button class="linkbtn" id="dclr" type="button" style="color:var(--gd)">Limpar rascunho</button></div>');
+$("dclr").onclick=function(){try{localStorage.removeItem(DRK)}catch(e){}A.firstElementChild.querySelectorAll("input:not([type=radio]):not([type=file]):not([type=checkbox]),textarea,select").forEach(function(x){x.value=""});[].forEach.call(document.querySelectorAll('input[name="pf"]'),function(r){r.checked=false});dc0.textContent="0";$("tc0").textContent="0";$("dnote").remove()}}}catch(e){}
+A.firstElementChild.addEventListener("input",saveDraft);A.firstElementChild.addEventListener("change",saveDraft)}
 
-function dnf(){$("nf").innerHTML=NF.map(function(x,i){return '<div class="pt"><img src="'+x.u+'" alt="Nova fotografia '+(i+1)+'">'+(i===0&&!FS.length?'<span class="tag">Principal</span>':'')+'<button type="button" class="btn out" data-r="'+i+'" style="min-height:32px;padding:0 8px;width:100%">Remover</button></div>'}).join("")}
+function dnf(){$("nf").innerHTML=NF.map(function(x,i){return '<div class="pt"><img src="'+x.u+'" alt="Nova fotografia '+(i+1)+'">'+(i===0&&!FS.length?'<span class="tag">Principal</span>':'')+'<div class="pbtn"><button type="button" data-m="'+i+'" data-d="-1" aria-label="Mover para trás"'+(i===0?' disabled':'')+'>‹</button><button type="button" data-r="'+i+'" aria-label="Remover fotografia">Remover</button><button type="button" data-m="'+i+'" data-d="1" aria-label="Mover para a frente"'+(i===NF.length-1?' disabled':'')+'>›</button></div></div>'}).join("")}
 fo.addEventListener("change",function(){var er=[];[].forEach.call(fo.files,function(f){if(["image/jpeg","image/png"].indexOf(f.type)<0)er.push(f.name+": formato não aceite.");else if(f.size>10485760)er.push(f.name+": excede 10 MB.");else NF.push({f:f,u:URL.createObjectURL(f)})});$("m").textContent=er.join(" ");fo.value="";dnf()});
-$("nf").onclick=function(e){var b=e.target.closest("button[data-r]");if(!b)return;URL.revokeObjectURL(NF[+b.dataset.r].u);NF.splice(+b.dataset.r,1);dnf()};
-function val(n){var f=document.querySelector('input[name="pf"]:checked');
-if(n===0){if(!f)return"Escolhe venda ou arrendamento.";if(!pt.value)return"Seleciona o tipo de imóvel.";if(ti.value.trim().length<10)return"O título precisa de pelo menos 10 caracteres.";if(!dp.value.trim())return"Escreve uma descrição pública.";
-if(/\d[\s.\-]?\d[\s.\-]?\d[\s.\-]?\d[\s.\-]?\d[\s.\-]?\d[\s.\-]?\d[\s.\-]?\d[\s.\-]?\d/.test(dp.value+" "+ti.value))return"Não escrevas números de telefone no título nem na descrição pública. Usa o campo de contacto."}
-if(n===1&&(!pv.value.trim()||!mu.value.trim()))return"Indica província e município.";
-if(n===2&&FS.length-rem.length+NF.length<1)return"O anúncio precisa de pelo menos uma fotografia.";return""}
+$("nf").onclick=function(e){var mv=e.target.closest("button[data-m]");if(mv){var i0=+mv.dataset.m,d0=+mv.dataset.d,t0=NF[i0];NF[i0]=NF[i0+d0];NF[i0+d0]=t0;dnf();return}var b=e.target.closest("button[data-r]");if(!b)return;URL.revokeObjectURL(NF[+b.dataset.r].u);NF.splice(+b.dataset.r,1);dnf()};
+var PHONE=/\d[\s.\-]?\d[\s.\-]?\d[\s.\-]?\d[\s.\-]?\d[\s.\-]?\d[\s.\-]?\d[\s.\-]?\d[\s.\-]?\d/;
+function fe(id,msg){var el=document.getElementById(id)||document.querySelector('input[name="'+id+'"]');if(!el)return msg;var f=el.closest(".fld");if(!f)return msg;var old=f.querySelector(".fe");if(old)old.remove();f.classList.remove("bad");el.removeAttribute("aria-invalid");el.removeAttribute("aria-describedby");
+if(msg){f.classList.add("bad");var d=document.createElement("div");d.className="fe";d.id="e_"+id;d.setAttribute("role","alert");d.textContent=msg;f.appendChild(d);el.setAttribute("aria-invalid","true");el.setAttribute("aria-describedby","e_"+id)}return msg}
+function chk(n){var f=document.querySelector('input[name="pf"]:checked'),bad=[];function add(id,msg){fe(id,msg);if(msg)bad.push(id)}
+if(n===0){add("pf",f?"":"Escolhe venda ou arrendamento.");add("pt",pt.value?"":"Seleciona o tipo de imóvel.");add("ti",ti.value.trim().length<10?"O título precisa de pelo menos 10 caracteres.":(PHONE.test(ti.value)?"Não escrevas telefones no título.":""));add("dp",!dp.value.trim()?"Escreve uma descrição pública.":(PHONE.test(dp.value)?"Não escrevas telefones na descrição pública. Usa o campo de contacto.":""))}
+if(n===1){add("pv",pv.value.trim()?"":"Indica a província.");add("mu",mu.value.trim()?"":"Indica o município.")}
+if(n===2){var np=FS.length-rem.length+NF.length;$("m").textContent=np<1?"O anúncio precisa de pelo menos uma fotografia.":"";if(np<1)bad.push("fo")}
+if(bad.length){var t=document.getElementById(bad[0])||document.querySelector('input[name="'+bad[0]+'"]');if(t){t.scrollIntoView({block:"center",behavior:"smooth"});try{t.focus({preventScroll:true})}catch(e){}}}
+return!bad.length}
 function rev(){var f=document.querySelector('input[name="pf"]:checked'),ph=NF[0]?NF[0].u:(FS.filter(function(x){return rem.indexOf(x.id)<0})[0]?foto(FS.filter(function(x){return rem.indexOf(x.id)<0})[0].caminho):"");
 $("rv").innerHTML=(ph?'<img src="'+ph+'" alt="Fotografia principal">':'')+'<dl><dt>Anúncio</dt><dd>'+(f?f.value:"—")+'</dd><dt>Tipo</dt><dd>'+esc(TIPOS[pt.value]||"—")+'</dd><dt>Título</dt><dd>'+esc(ti.value)+'</dd><dt>Local</dt><dd>'+esc(mu.value+", "+pv.value)+'</dd><dt>Quartos</dt><dd>'+esc(qu.value||"—")+'</dd><dt>Preço</dt><dd>'+(pr.value?kz(+pr.value):"Sob consulta")+'</dd><dt>Fotografias</dt><dd>'+(FS.length-rem.length+NF.length)+'</dd><dt>Mapa</dt><dd>'+(LAT!=null?'Ponto marcado':'Não marcado')+'</dd></dl>'}
 function go(n){st=n;[].forEach.call(document.querySelectorAll(".pn"),function(p){p.hidden=+p.dataset.s!==n});[].forEach.call($("sp").children,function(l,i){l.className=i===n?"on":(i<n?"done":"")});
 $("bk").style.visibility=n===0?"hidden":"visible";if(n===1)setTimeout(initMap,60);$("nx").textContent=n===3?(E?"Guardar alterações":"Publicar anúncio"):"Próximo passo →";if(n===3)rev();window.scrollTo({top:0,behavior:"smooth"})}
 $("bk").onclick=function(){if(st>0)go(st-1)};
 $("nx").onclick=async function(){var m=$("m"),b=this;m.className="msg";m.textContent="";
-if(st<3){var e=val(st);if(e){m.textContent=e;return}go(st+1);return}
-for(var q=0;q<3;q++){var e2=val(q);if(e2){m.textContent=e2;go(q);return}}
+if(st<3){if(!chk(st))return;go(st+1);return}
+for(var q=0;q<3;q++){if(!chk(q)){go(q);chk(q);return}}
 function fail(t){m.textContent=t;b.disabled=false;b.textContent=E?"Guardar alterações":"Publicar anúncio"}
 b.disabled=true;b.textContent="A guardar…";
 var D={finalidade:document.querySelector('input[name="pf"]:checked').value,tipo:pt.value,titulo:ti.value.trim(),descricao_publica:dp.value.trim(),preco:pr.value?+pr.value:null,provincia:pv.value.trim(),municipio:mu.value.trim(),quartos:qu.value===""?null:+qu.value,casas_banho:wc.value===""?null:+wc.value,area_m2:ar.value?+ar.value:null,mobilado:mo.value?mo.value==="s":null};
@@ -527,11 +545,13 @@ var up=await sb.from("anuncios_reservado").upsert(Object.assign({anuncio_id:id},
 for(var k=0;k<rem.length;k++){var ff=FS.filter(function(x){return x.id===rem[k]})[0];if(ff){await sb.storage.from("fotos-anuncios").remove([ff.caminho]);await sb.from("fotografias").delete().eq("id",ff.id)}}}
 else{D.anunciante_id=U.id;D.estado="publicado";var r=await sb.from("anuncios").insert(D).select().single();if(r.error)return fail(r.error.message);aid=r.data.id;
 if(RV.descricao_completa||RV.telefone_contacto||RV.localizacao_detalhada||LAT!=null)await sb.from("anuncios_reservado").insert(Object.assign({anuncio_id:aid},RV))}
+if(E&&mainId&&rem.indexOf(mainId)<0){var mn=FS.reduce(function(a,f){return Math.min(a,f.ordem)},0);await sb.from("fotografias").update({ordem:mn-1}).eq("id",mainId)}
 var base=FS.reduce(function(a,f){return Math.max(a,f.ordem)},-1)+1;
 for(var j=0;j<NF.length;j++){var fl=await comprimir(NF[j].f),path=U.id+"/"+aid+"/"+(base+j)+"-"+Date.now()+".jpg";
 var ur=await sb.storage.from("fotos-anuncios").upload(path,fl,{contentType:fl.type||"image/jpeg"});
 if(ur.error){m.textContent="Erro numa fotografia: "+ur.error.message;continue}
 await sb.from("fotografias").insert({anuncio_id:aid,caminho:path,ordem:base+j})}
+try{localStorage.removeItem(DRK)}catch(e){}
 location.hash="#/anuncio/"+aid};
 go(0)}
 
