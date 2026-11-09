@@ -283,8 +283,9 @@ html.nofx .btn,html.nofx .pc,html.nofx .ph img{transition:none!important}
 html.nofx .cov .pc{transform:none!important;opacity:1!important}html.nofx .cov .ph img{transform:none!important}
 
 /* ===== v3: abertura cinematográfica (5 s) ===== */
-#intro{position:fixed;inset:0;z-index:100;background:#052E22;overflow:hidden;color:#fff;touch-action:none;overscroll-behavior:contain;transition:opacity .7s ease,visibility .7s;animation:ifall .5s linear 6.3s forwards}
-#intro.out{opacity:0;visibility:hidden;pointer-events:none}
+#intro{position:fixed;inset:0;z-index:100;background:#052E22;overflow:hidden;color:#fff;touch-action:none;overscroll-behavior:contain;transition:opacity 1s cubic-bezier(.5,0,.8,.4),transform 1s cubic-bezier(.5,0,.8,.4),visibility 1s;animation:ifall .5s linear 7s forwards}
+#intro.out{opacity:0;visibility:hidden;pointer-events:none;transform:scale(1.35)}
+#intro.out.fast{transition-duration:.3s}
 @keyframes ifall{to{opacity:0;visibility:hidden;pointer-events:none}}
 #intro .ip{position:absolute;inset:-8%;transform:translate3d(calc(var(--ix,0)*-12px),calc(var(--iy,0)*-7px),0);transition:transform .7s cubic-bezier(.16,1,.3,1)}
 #intro .ip2{transform:translate3d(calc(var(--ix,0)*-30px),calc(var(--iy,0)*-16px),0)}
@@ -318,11 +319,29 @@ html.nofx .cov .pc{transform:none!important;opacity:1!important}html.nofx .cov .
 #intro.go .ib{animation:ibm 2.6s ease-in-out .7s both}
 #intro.go .if{animation:ifl 3.6s ease-out .3s both}
 #intro.go .idt{animation:idt var(--dd,4s) ease-out var(--dl,0s) both}
-#intro.go .icn img{animation:ilg 1s cubic-bezier(.16,1,.3,1) 1.9s both}
+#intro.go .icn img{animation:ilg 1s cubic-bezier(.16,1,.3,1) 2s both}
 #intro.go .is span{animation:isl .6s ease-out both}
-#intro.go .is span:nth-child(1){animation-delay:2.9s}#intro.go .is span:nth-child(2){animation-delay:3.25s}#intro.go .is span:nth-child(3){animation-delay:3.6s}
-#intro.go .ibar i{animation:ibr 4.3s linear both}
+#intro.go .is span:nth-child(1){animation-delay:3s}#intro.go .is span:nth-child(2){animation-delay:3.3s}#intro.go .is span:nth-child(3){animation-delay:3.6s}
+#intro.go .ibar i{animation:ibr 4s linear both}
 #intro.go .isk{animation:ifd .5s ease-out .5s both}
+#intro .ipx{position:absolute;inset:0;perspective:900px;pointer-events:none}
+#intro .ipl{position:absolute;width:min(40vw,210px);opacity:0;will-change:transform,opacity}
+#intro .ipl1{left:6%;top:10%;--r:16deg}#intro .ipl2{right:6%;bottom:12%;--r:-16deg}#intro .ipl3{display:none;right:7%;top:15%;--r:-14deg}
+@media(min-width:721px){#intro .ipl1{left:7%;top:18%}#intro .ipl2{right:12%;bottom:12%}#intro .ipl3{display:block}}
+#intro .ipb{border-radius:14px;overflow:hidden;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.4);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 14px 36px rgba(2,32,24,.5);text-align:left;color:#fff;animation:ibob 3.4s ease-in-out infinite alternate}
+#intro .ipl2 .ipb{animation-delay:-1.2s}#intro .ipl3 .ipb{animation-delay:-2.2s}
+#intro .ipb img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
+#intro .ipb>div{padding:8px 10px 10px;font-size:12px;line-height:1.35}
+#intro .ipb b{display:block;font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#intro .ipb em{font-style:normal;color:#6EE7B7;font-weight:700}
+#intro .iln{position:absolute;left:-20%;width:140%;height:2px;background:linear-gradient(90deg,transparent,#6EE7B7 40%,#fff 55%,transparent);box-shadow:0 0 12px rgba(110,231,183,.8);opacity:0;transform:rotate(-16deg) translate3d(-100%,0,0)}
+#intro .iln1{top:30%}#intro .iln2{top:54%}#intro .iln3{top:72%}
+@keyframes ipin{from{opacity:0;transform:translate3d(0,26px,-140px) rotateY(var(--r))}to{opacity:1;transform:translate3d(0,0,0) rotateY(calc(var(--r)*.45))}}
+@keyframes ibob{from{transform:translate3d(0,-5px,0) rotateX(2deg)}to{transform:translate3d(0,6px,0) rotateX(-2deg)}}
+@keyframes iln{0%{opacity:0;transform:rotate(-16deg) translate3d(-100%,0,0)}20%{opacity:.95}80%{opacity:.95}100%{opacity:0;transform:rotate(-16deg) translate3d(100%,0,0)}}
+#intro.go .ipl{animation:ipin .9s cubic-bezier(.16,1,.3,1) var(--pd,.9s) both}
+#intro.go .iln{animation:iln 1.5s ease-in-out var(--ld,1s) both}
+#intro.lite .ip2,#intro.lite .idt,#intro.lite .ib,#intro.lite .iln,#intro.lite .ipx{display:none}
 html.introing .hero>h1,html.introing .hero>p,html.introing .hero>.spill,html.introing .hero h1 em,html.introing .hbg i{animation-play-state:paused!important}
 html.nofx #intro{display:none}
 @media(prefers-reduced-motion:reduce){#intro{display:none}}
@@ -330,7 +349,7 @@ html.nofx #intro{display:none}
 
 </head>
 <body>
-<div id="intro" aria-label="Seu Novo Lar"><div class="ip ip1"><div class="iz iz1"></div></div><div class="ip ip2"><div class="iz iz2"></div></div><div class="ig"></div><div class="ib"></div><div class="if"></div><div id="ids" aria-hidden="true"></div><div class="icn"><img src="logo-escuro.png" alt="Seu Novo Lar"><p class="is"><span>Descobre.</span><span>Conecta.</span><span>Encontra o teu lugar.</span></p></div><div class="ibar" aria-hidden="true"><i></i></div><button class="isk" id="isk" type="button" aria-label="Saltar animação de abertura">Saltar</button></div>
+<div id="intro" aria-label="Seu Novo Lar"><div class="ip ip1"><div class="iz iz1"></div></div><div class="ip ip2"><div class="iz iz2"></div></div><div class="ig"></div><div class="ib"></div><div class="if"></div><div class="iln iln1" style="--ld:1s"></div><div class="iln iln2" style="--ld:1.35s"></div><div class="iln iln3" style="--ld:1.7s"></div><div class="ipx" id="ipx"></div><div id="ids" aria-hidden="true"></div><div class="icn"><img src="logo-escuro.png" alt="Seu Novo Lar"><p class="is"><span>Descobre.</span><span>Conecta.</span><span>Encontra o teu lugar.</span></p></div><div class="ibar" aria-hidden="true"><i></i></div><button class="isk" id="isk" type="button" aria-label="Saltar apresentação">Saltar apresentação</button></div>
 <script>
 (function(){var el=document.getElementById("intro");if(!el)return;var d=document.documentElement;
 function kill(){if(el.parentNode)el.parentNode.removeChild(el);d.classList.remove("introing")}
@@ -339,17 +358,26 @@ try{rm=matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){}
 try{off=/sem-animacoes/.test(s)||localStorage.getItem("snl_fx")==="off"}catch(e){}
 if(rm||off||/^#\/(anuncio|pedido)\//.test(h)||/access_token=|type=recovery|error_description|error=/.test(h)||/[?&](code|error|error_description)=/.test(s)||/^\/(termos|privacidade|eliminar-dados)$/.test(p)){kill();return}
 d.classList.add("introing");
-var done=false,t1=0,t2=0,t3=0;
-function end(){if(done)return;done=true;clearTimeout(t1);clearTimeout(t2);clearTimeout(t3);el.classList.add("out");d.classList.remove("introing");setTimeout(kill,800);removeEventListener("keydown",kd);el.removeEventListener("pointermove",pm)}
-function kd(e){if(e.key==="Escape")end()}
+var cn=navigator.connection||{},lite=false;
+try{lite=!!(cn.saveData||/^(slow-2g|2g|3g)$/.test(cn.effectiveType||"")||(navigator.deviceMemory&&navigator.deviceMemory<=2)||(navigator.hardwareConcurrency&&navigator.hardwareConcurrency<=2))}catch(e){}
+if(lite)el.classList.add("lite");
+var done=false,tg=0,t1=0,t2=0,t3=0;
+function end(f){if(done)return;done=true;clearTimeout(t1);clearTimeout(t2);clearTimeout(t3);if(f===true)el.classList.add("fast");el.classList.add("out");d.classList.remove("introing");setTimeout(kill,f===true?450:1150);removeEventListener("keydown",kd);el.removeEventListener("pointermove",pm)}
+function kd(e){if(e.key==="Escape")end(true)}
 function pm(e){var x=e.clientX/innerWidth-.5,y=e.clientY/innerHeight-.5;el.style.setProperty("--ix",x.toFixed(3));el.style.setProperty("--iy",y.toFixed(3))}
-document.getElementById("isk").onclick=end;addEventListener("keydown",kd);
+document.getElementById("isk").onclick=function(){end(true)};addEventListener("keydown",kd);
 try{if(matchMedia("(hover:hover) and (pointer:fine)").matches)el.addEventListener("pointermove",pm)}catch(e){}
-var box=document.getElementById("ids"),n=14;
+var box=document.getElementById("ids"),n=lite?0:14;
 for(var i=0;i<n;i++){var sp=document.createElement("span"),z=2+Math.random()*3;sp.className="idt";sp.style.cssText="left:"+(Math.random()*100).toFixed(1)+"%;width:"+z.toFixed(1)+"px;height:"+z.toFixed(1)+"px;--dx:"+((Math.random()-.5)*60).toFixed(0)+"px;--dd:"+(3+Math.random()*1.6).toFixed(1)+"s;--dl:"+(.6+Math.random()*2.4).toFixed(1)+"s";box.appendChild(sp)}
-var started=false;function go(){if(started||done)return;started=true;el.classList.add("go");t2=setTimeout(end,4300)}
+function addP(a,i,u){var im=new Image();im.onload=function(){if(done||Date.now()-tg>2400)return;var p=document.createElement("div"),b=document.createElement("div"),t=document.createElement("div"),h=document.createElement("b"),m=document.createElement("em");
+p.className="ipl ipl"+(i+1);p.style.setProperty("--pd",(.9+i*.25)+"s");b.className="ipb";h.textContent=a.titulo||"";
+m.textContent=a.preco!=null?Number(a.preco).toLocaleString("pt-PT")+" Kz"+(a.finalidade==="arrendamento"?" / mês":""):"Preço sob consulta";
+t.appendChild(h);t.appendChild(m);im.alt="";b.appendChild(im);b.appendChild(t);p.appendChild(b);document.getElementById("ipx").appendChild(p)};im.src=u}
+function panels(){if(lite)return;var k=0;(function w(){if(done)return;var s=window.sb;if(!s||!s.from){if(++k<30)setTimeout(w,100);return}
+try{s.from("anuncios").select("titulo,preco,finalidade,fotografias(caminho,ordem)").eq("estado","publicado").order("criado",{ascending:false}).limit(3).then(function(r){var L=(r&&r.data)||[],j=0;L.forEach(function(a){var f=(a.fotografias||[]).slice().sort(function(x,y){return x.ordem-y.ordem})[0];if(f){addP(a,j++,s.storage.from("fotos-anuncios").getPublicUrl(f.caminho).data.publicUrl)}})},function(){})}catch(e){}})()}
+var started=false;function go(){if(started||done)return;started=true;tg=Date.now();el.classList.add("go");t2=setTimeout(end,4000);panels()}
 var im=new Image();im.onload=im.onerror=go;im.src="hero.jpg";t1=setTimeout(go,1000);
-t3=setTimeout(end,8000)})();
+t3=setTimeout(end,9000)})();
 </script>
 <header><div class="hd"><a class="logo" href="#/"><img class="lgw" src="logo-escuro.png" alt="Seu Novo Lar"></a><nav id="nav" aria-label="Principal"></nav><a id="bell" class="bell" href="#/notificacoes" aria-label="Notificações" hidden><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="bc" hidden></span></a><span id="ac"></span></div></header>
 <main id="app" aria-live="polite">A carregar…</main>
