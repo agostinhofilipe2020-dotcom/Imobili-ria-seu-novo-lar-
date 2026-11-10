@@ -446,7 +446,7 @@ var o=document.getElementById("out");if(o)o.onclick=function(){sb.auth.signOut()
 async function load(){var s=await sb.auth.getSession();U=s.data.session?s.data.session.user:null;PF=null;
 if(U){var pp=Promise.all([sb.from("perfis").select("*").eq("id",U.id).maybeSingle(),loadFav()]),h0=location.hash.slice(1);if(/access_token=/.test(location.hash))history.replaceState(null,"",location.pathname+"#/");
 if(h0==="/admin"||h0==="/conta"){var pr=await pp;PF=pr[0].data;route();checkPend();loadNotif();return}
-route();loadNotif();pp.then(function(pr){PF=pr[0].data;nav();syncFav();checkPend()});return}
+route();loadNotif();pp.then(function(pr){PF=pr[0].data;nav();syncFav();checkPend();if(PF&&PF.papel==="admin"&&location.hash.indexOf("#/anuncio/")===0)route()});return}
 route();checkPend();loadNotif()}
 sb.auth.onAuthStateChange(function(ev,s){if(ev==="PASSWORD_RECOVERY"){RECOV=true;load();return}var id=s&&s.user?s.user.id:null;if(id===(U?U.id:null))return;load()});
 window.addEventListener("hashchange",route);
@@ -612,7 +612,7 @@ A.innerHTML='<div class="crumb"><a href="#/">Início</a> › <a href="#/imoveis"
 '<div class="box"><h1>'+esc(a.titulo)+'</h1><div class="mut">'+esc(a.municipio)+', '+esc(a.provincia)+', Angola</div><div class="p" style="font-size:28px;margin:10px 0">'+preco+'</div>'+
 (stats.length?'<div class="stats" style="grid-template-columns:repeat('+stats.length+',1fr)">'+stats.join("")+'</div>':'')+
 (V&&V.telefone_contacto?'<div class="ctc"><b>Contactar anunciante</b>Fala diretamente com o proprietário ou agente.<br><a class="btn" style="width:100%;margin-top:10px" href="tel:'+esc(V.telefone_contacto)+'">Ligar agora · '+esc(V.telefone_contacto)+'</a></div>':
-V?'<div class="ctc"><b>Contactar anunciante</b>Este anúncio não tem telefone indicado.</div>':ACESSO_LIVRE?'<div class="ctc"><b>Contactar anunciante</b>Contacto indisponível neste momento.</div>':
+V?'<div class="ctc"><b>Contactar anunciante</b>Este anúncio não tem telefone indicado.</div>':ACESSO_LIVRE?'<div class="ctc"><b>Contactar anunciante</b>Contacto indisponível neste momento.'+(PF&&PF.papel==="admin"?'<div class="mut" style="font-size:12px;margin-top:6px">Diagnóstico (só administradores): '+esc(res.error?res.error.message:"o Supabase não devolveu nenhuma linha. Confirma se o SQL foi aplicado e se este anúncio tem telefone guardado.")+'</div>':'')+'</div>':
 '<div class="lock"><b>Informação completa disponível para subscritores</b><br>Contacto do anunciante, localização exata e descrição completa.<br><a class="btn" style="margin-top:10px;width:100%" href="#/subscricao">Ver opções de subscrição</a></div>')+
 (V&&V.localizacao_detalhada?'<p class="mut">Localização exata: '+esc(V.localizacao_detalhada)+'</p>':'')+
 (own?'<div class="row" style="margin:12px 0"><a class="btn" href="#/editar/'+a.id+'">Editar</a><a class="btn out" href="#/destacar/'+a.id+'">Destacar</a><button class="btn no" type="button" data-del="'+a.id+'">Apagar</button></div>':'')+
