@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://sfwqxhisfjyxuhoacofg.supabase.co" crossorigin><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" href="logo-claro.png">
 <title>Seu Novo Lar</title>
 <style>
@@ -280,6 +280,8 @@ body.has-cta{padding-bottom:calc(64px + 64px + env(safe-area-inset-bottom,0px))}
 html.nofx .hero>h1,html.nofx .hero>p,html.nofx .hero>.spill,html.nofx .hero h1 em,html.nofx .gwrap{animation:none!important}
 html.nofx .hbg,html.nofx .hbg b{transform:none!important}html.nofx .hbg i{animation:none!important}
 html.nofx .btn,html.nofx .pc,html.nofx .ph img{transition:none!important}
+.cov .pc{box-shadow:0 12px 26px rgba(6,78,59,.16)}
+html.lite .hbg i{animation:none!important}html.lite .cov .pc{transform:none!important;opacity:1!important}html.lite .cov .ph img{transform:none!important}html.lite #cdots{display:none}
 html.nofx .cov .pc{transform:none!important;opacity:1!important}html.nofx .cov .ph img{transform:none!important}
 
 /* ===== v4: abertura cinematográfica 8 s (cena de referência) ===== */
@@ -383,9 +385,16 @@ t3=setTimeout(end,12000)})();
 <script>
 var TILES="https://tile.openstreetmap.org/{z}/{x}/{y}.png",PIN=null,LL=null;
 function loadLeaflet(){if(LL)return LL;LL=new Promise(function(ok,no){var c=document.createElement("link");c.rel="stylesheet";c.href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css";document.head.appendChild(c);var s=document.createElement("script");s.src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js";s.onload=function(){PIN=L.divIcon({className:"pin",html:"<span></span>",iconSize:[30,34],iconAnchor:[15,32]});ok()};s.onerror=function(){LL=null;no()};document.head.appendChild(s)});return LL}
-var SETP=fetch(SB_URL+"/auth/v1/settings",{headers:{apikey:SB_KEY}}).then(function(r){return r.json()}).then(function(s){return (s&&s.external)||null}).catch(function(){return null});
+var SETP=null;function settp(){return SETP||(SETP=fetch(SB_URL+"/auth/v1/settings",{headers:{apikey:SB_KEY}}).then(function(r){return r.json()}).then(function(s){return (s&&s.external)||null}).catch(function(){return null}))}
 var GBTN='<button class="gbtn" id="gg" type="button"><svg width="22" height="22" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg><span>Continuar com Google</span></button>';
 var LOGO_L="logo-claro.png";
+var CARD="id,titulo,finalidade,tipo,municipio,provincia,preco,quartos,casas_banho,area_m2,tem_mapa,fotografias(caminho,ordem)";
+var DST={t:0,rows:[]};
+async function destRows(){if(Date.now()-DST.t<120000)return{data:DST.rows};var d=await sb.from("destaques").select("anuncio_id").eq("estado","ativo").gt("fim",new Date().toISOString()).limit(200);if(d.error)return{data:DST.rows};DST={t:Date.now(),rows:d.data||[]};return{data:DST.rows}}
+function fotoT(c){return foto(String(c).replace(/\.jpg$/i,"-m.jpg"))}
+function tAttr(c){return 'src="'+fotoT(c)+'" data-o="'+foto(c)+'" onerror="this.onerror=null;this.src=this.dataset.o"'}
+function p1(q){return q.order("ordem",{referencedTable:"fotografias"}).limit(1,{referencedTable:"fotografias"})}
+function syncFav(){[].forEach.call(document.querySelectorAll("[data-fav]"),function(b){var on=!!FAV[b.dataset.fav];b.textContent=on?"♥":"♡";b.setAttribute("aria-pressed",on)})}
 var SB_URL="https://sfwqxhisfjyxuhoacofg.supabase.co",SB_KEY="sb_publishable_9JyxvxunfLy_uopgTDFGZA_l67zPGPE";
 var sb=window.supabase.createClient(SB_URL,SB_KEY),PEND=0,U=null,PF=null,FAV={},A=document.getElementById("app");
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
@@ -395,8 +404,9 @@ function ordf(a){return (a.fotografias||[]).slice().sort(function(x,y){return x.
 var ICOS={home:'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/>',heart:'<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/>',build:'<rect x="5" y="3" width="14" height="18" rx="1"/><path d="M9 8h2M13 8h2M9 12h2M13 12h2M10 21v-4h4v4"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/>',plus:'<path d="M12 5v14M5 12h14"/>',search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',sliders:'<path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/>',shield:'<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>',lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',bell:'<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>',chev:'<path d="M9 6l6 6-6 6"/>',flag:'<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>',pin:'<path d="M12 21s7-6.2 7-11a7 7 0 0 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/>',arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',cash:'<rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/>',phone:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>'};
 function ico(n,w){return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"'+(w?' style="stroke-width:'+w+'"':'')+'>'+ICOS[n]+'</svg>'}
 /* ---------- ANIMAÇÕES (FX): base, banner e carrossel 3D ---------- */
-var FX={rm:matchMedia("(prefers-reduced-motion: reduce)"),fine:matchMedia("(hover:hover) and (pointer:fine)"),on:function(){return!FX.rm.matches&&!document.documentElement.classList.contains("nofx")}};
+var FX={rm:matchMedia("(prefers-reduced-motion: reduce)"),fine:matchMedia("(hover:hover) and (pointer:fine)"),on:function(){return!FX.rm.matches&&!FX.lite&&!document.documentElement.classList.contains("nofx")}};
 try{if(/sem-animacoes/.test(location.search)||localStorage.getItem("snl_fx")==="off")document.documentElement.classList.add("nofx")}catch(e){}
+FX.lite=false;try{var cn0=navigator.connection||{};FX.lite=!!(cn0.saveData||/^(slow-2g|2g|3g)$/.test(cn0.effectiveType||"")||(navigator.deviceMemory&&navigator.deviceMemory<=2)||(navigator.hardwareConcurrency&&navigator.hardwareConcurrency<=2));if(FX.lite)document.documentElement.classList.add("lite")}catch(e){}
 FX.loadThree=function(){return FX._t||(FX._t=import("https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js"))};/* ponto de integração futuro: ainda não é chamado */
 (function(){var tk=0;function u(){tk=0;var h=document.querySelector(".hero");if(!h||!FX.on())return;h.style.setProperty("--py",Math.min(26,Math.max(0,scrollY)*.12).toFixed(1)+"px")}
 addEventListener("scroll",function(){if(!tk){tk=1;requestAnimationFrame(u)}},{passive:true})})();
@@ -411,7 +421,7 @@ if(ptr&&ptr.i===i){t.rx=ptr.rx;t.ty=ptr.ry;t.sc*=ptr.p?.985:1.015;t.z=ptr.p?1.05
 cs.forEach(function(c,i){c.classList.toggle("is-c",i===best)});[].forEach.call(dots,function(x,i){x.className=i===best?"on":""})}
 function tick(){raf=0;targets();var go=false;cs.forEach(function(c,i){var s=S[i],t=T[i];for(var k in t){var df=t[k]-s[k];if(Math.abs(df)>.002){s[k]+=df*.2;go=true}else s[k]=t[k]}
 var l=s.l;c.style.transform="translate3d(0,"+s.ly.toFixed(2)+"px,"+s.tz.toFixed(1)+"px) rotateX("+s.rx.toFixed(2)+"deg) rotateY("+(s.ry+s.ty).toFixed(2)+"deg) scale("+s.sc.toFixed(4)+")";c.style.opacity=s.op.toFixed(3);
-c.style.boxShadow="0 "+(8+16*l).toFixed(1)+"px "+(18+24*l).toFixed(1)+"px rgba(6,78,59,"+(.08+.15*l).toFixed(3)+")";
+
 var im=c.querySelector(".ph img");if(im)im.style.transform="translate3d("+(-s.d*12).toFixed(1)+"px,0,0) scale("+(1.06+.04*l+(s.z-1)).toFixed(3)+")"});
 if(go&&vis&&root.isConnected)raf=requestAnimationFrame(tick)}
 function req(){if(!raf&&vis)raf=requestAnimationFrame(tick)}
@@ -432,7 +442,10 @@ var tb=[["/","home","Início",r==="/"||r===""],["/favoritos","heart","Favoritos"
 document.getElementById("tb").innerHTML=tb.map(function(x){return x[0]==="/novo"?'<a href="#/novo" class="pub2'+(x[3]?" on":"")+'" aria-label="Publicar anúncio ou pedido"><span class="pc2">'+ico("plus",2.4)+'</span><span>Publicar</span></a>':'<a href="#'+x[0]+'" class="'+(x[3]?"on":"")+'"'+(x[3]?' aria-current="page"':"")+'>'+ico(x[1])+'<span>'+x[2]+'</span></a>'}).join("");
 var o=document.getElementById("out");if(o)o.onclick=function(){sb.auth.signOut()}}
 async function load(){var s=await sb.auth.getSession();U=s.data.session?s.data.session.user:null;PF=null;
-if(U){var pr=await Promise.all([sb.from("perfis").select("*").eq("id",U.id).maybeSingle(),loadFav()]);PF=pr[0].data;if(/access_token=/.test(location.hash))history.replaceState(null,"",location.pathname+"#/")}route();checkPend();loadNotif()}
+if(U){var pp=Promise.all([sb.from("perfis").select("*").eq("id",U.id).maybeSingle(),loadFav()]),h0=location.hash.slice(1);if(/access_token=/.test(location.hash))history.replaceState(null,"",location.pathname+"#/");
+if(h0==="/admin"||h0==="/conta"){var pr=await pp;PF=pr[0].data;route();checkPend();loadNotif();return}
+route();loadNotif();pp.then(function(pr){PF=pr[0].data;nav();syncFav();checkPend()});return}
+route();checkPend();loadNotif()}
 sb.auth.onAuthStateChange(function(ev,s){if(ev==="PASSWORD_RECOVERY"){RECOV=true;load();return}var id=s&&s.user?s.user.id:null;if(id===(U?U.id:null))return;load()});
 window.addEventListener("hashchange",route);
 (function(){var last=0,hd=document.querySelector("header");addEventListener("scroll",function(){if(innerWidth>720){hd.classList.remove("hid");return}var y=scrollY;if(y>last+8&&y>120)hd.classList.add("hid");else if(y<last-8||y<60)hd.classList.remove("hid");last=y},{passive:true})})();
@@ -452,7 +465,7 @@ GBTN+'<div class="mut" style="text-align:center;margin:12px 0">ou usa o teu e-ma
 '<div class="fld"><label for="em">E-mail</label><input id="em" type="email" autocomplete="email"></div><div class="fld"><label for="pw">Palavra-passe (mín. 8 caracteres)</label><input id="pw" type="password" autocomplete="'+(nw?"new-password":"current-password")+'"></div>'+
 '<div class="msg" id="m" role="alert"></div><button class="btn" id="ok" type="button" style="width:100%">'+(nw?"Criar conta":"Entrar")+'</button>'+(nw?'':'<p style="text-align:center"><a href="#" id="rc" class="mut" style="text-decoration:underline">Esqueci a palavra-passe</a></p>')+
 '<p class="mut" style="text-align:center">Ao continuares, aceitas os <a href="#/termos" style="text-decoration:underline">termos de utilização</a> e a <a href="#/privacidade" style="text-decoration:underline">política de privacidade</a>.</p></div>';
-var m=document.getElementById("m");document.getElementById("gg").onclick=async function(){m.className="msg";m.textContent="";var ex=await SETP;if(ex&&ex.google!==true){m.textContent="O login com Google ainda não está ativo. Usa o e-mail por agora.";return}var r=await sb.auth.signInWithOAuth({provider:"google",options:{redirectTo:location.origin+location.pathname,queryParams:{prompt:"select_account"}}});if(r.error)m.textContent=perr(r.error)};document.getElementById("t1").onclick=function(){entrar("entrar")};document.getElementById("t2").onclick=function(){entrar("criar")};
+var m=document.getElementById("m");document.getElementById("gg").onclick=async function(){m.className="msg";m.textContent="";var ex=await settp();if(ex&&ex.google!==true){m.textContent="O login com Google ainda não está ativo. Usa o e-mail por agora.";return}var r=await sb.auth.signInWithOAuth({provider:"google",options:{redirectTo:location.origin+location.pathname,queryParams:{prompt:"select_account"}}});if(r.error)m.textContent=perr(r.error)};document.getElementById("t1").onclick=function(){entrar("entrar")};document.getElementById("t2").onclick=function(){entrar("criar")};
 document.getElementById("ok").onclick=async function(){var b=this;m.className="msg";m.textContent="";
 if(!em.value.trim()||pw.value.length<8){m.textContent="Indica o e-mail e uma palavra-passe com 8 ou mais caracteres.";return}b.disabled=true;
 if(nw){var r=await sb.auth.signUp({email:em.value.trim(),password:pw.value,options:{data:{name:nm.value.trim()},emailRedirectTo:location.origin+location.pathname}});b.disabled=false;
@@ -502,9 +515,9 @@ else A.innerHTML='<div class="box"><h1>Política de privacidade</h1>'+aviso+
 /* ---------- CARTÃO ---------- */
 var TIPOS={apartamento:"Apartamento",comercial:"Espaço comercial",salao_festas:"Salão de festas",escritorio:"Escritório",moradia:"Moradia",vivenda:"Vivenda",terreno:"Terreno"};
 var CATIMG={"apartamento": "cat-apartamento.jpg", "comercial": "cat-comercial.jpg", "salao_festas": "cat-salao_festas.jpg", "escritorio": "cat-escritorio.jpg", "moradia": "cat-moradia.jpg", "vivenda": "cat-vivenda.jpg", "terreno": "cat-terreno.jpg"};
-function cardHtml(a,isD){var fs=ordf(a),img=fs[0]?'style="background-image:url('+foto(fs[0].caminho)+')"':"";
+function cardHtml(a,isD){var fs=ordf(a),img="";
 var ftA=[];if(a.tipo!=="terreno"){if(a.quartos!=null)ftA.push(a.quartos+(a.quartos===1?" quarto":" quartos"));if(a.casas_banho!=null)ftA.push(a.casas_banho+" WC")}if(a.area_m2)ftA.push(a.area_m2+" m²");var ft=esc(ftA.join(" · "));
-return '<article class="pc"><a class="pl" href="#/anuncio/'+a.id+'"><div class="ph">'+(fs[0]?'<img src="'+foto(fs[0].caminho)+'" loading="lazy" decoding="async" alt="">':"")+'<span class="tag">'+(isD?"Destaque":(a.finalidade==="venda"?"Venda":"Arrendamento"))+'</span></div><div class="cb"><h3>'+esc(a.titulo)+'</h3><div class="mut">'+esc(a.municipio)+', '+esc(a.provincia)+' · '+(a.finalidade==="venda"?"Venda":"Arrendamento")+'</div>'+(ft?'<div class="ft">'+ft+'</div>':'')+(a.tem_mapa?'<div class="mpb">◉ Localização exata no mapa</div>':'')+'<div class="p">'+kz(a.preco)+(a.finalidade==="arrendamento"&&a.preco!=null?" / mês":"")+'</div></div></a>'+
+return '<article class="pc"><a class="pl" href="#/anuncio/'+a.id+'"><div class="ph">'+(fs[0]?'<img '+tAttr(fs[0].caminho)+' loading="lazy" decoding="async" alt="">':"")+'<span class="tag">'+(isD?"Destaque":(a.finalidade==="venda"?"Venda":"Arrendamento"))+'</span></div><div class="cb"><h3>'+esc(a.titulo)+'</h3><div class="mut">'+esc(a.municipio)+', '+esc(a.provincia)+' · '+(a.finalidade==="venda"?"Venda":"Arrendamento")+'</div>'+(ft?'<div class="ft">'+ft+'</div>':'')+(a.tem_mapa?'<div class="mpb">◉ Localização exata no mapa</div>':'')+'<div class="p">'+kz(a.preco)+(a.finalidade==="arrendamento"&&a.preco!=null?" / mês":"")+'</div></div></a>'+
 '<button class="hr" type="button" data-fav="'+a.id+'" aria-pressed="'+(!!FAV[a.id])+'" aria-label="Guardar nos favoritos">'+(FAV[a.id]?"♥":"♡")+'</button></article>'}
 
 /* ---------- INÍCIO / IMÓVEIS ---------- */
@@ -520,15 +533,18 @@ async function home(goRes){A.innerHTML='<div class="full hero"><div class="hbg" 
 '<div class="cta"><div><h2>Queres anunciar o teu imóvel?</h2><p>Publica o teu anúncio de forma simples e rápida.</p></div><div style="display:flex;gap:8px;flex-wrap:wrap"><a class="btn wh" href="#/publicar">Publicar anúncio</a><a class="btn ghost" href="#/novo-pedido">Procuro casa</a></div></div>'+
 '<section><div class="sh"><h2>Categorias populares</h2></div><div class="cats">'+Object.keys(TIPOS).map(function(k){return '<button class="ct" type="button" data-tipo="'+k+'" aria-label="'+TIPOS[k]+'"><img src="'+CATIMG[k]+'" alt="" loading="lazy"><span>'+TIPOS[k]+'</span></button>'}).join("")+'</div></section>';
 async function run(){var rs=document.getElementById("rs");rs.innerHTML='<p class="mut">A procurar…</p>';
-var q=sb.from("anuncios").select("*,fotografias(caminho,ordem)").eq("estado","publicado").order("criado",{ascending:false}).limit(8);
+var q=p1(sb.from("anuncios").select(CARD).eq("estado","publicado").order("criado",{ascending:false}).limit(8));
 if(f.value)q=q.eq("finalidade",f.value);if(t.value)q=q.eq("tipo",t.value);if(l.value.trim())q=q.ilike("municipio","%"+l.value.trim()+"%");if(document.getElementById("q").value)q=q.gte("quartos",+document.getElementById("q").value);if(pa.value)q=q.lte("preco",+pa.value);
-var rd=await Promise.all([q,sb.from("destaques").select("anuncio_id").eq("estado","ativo").gt("fim",new Date().toISOString())]),r=rd[0],d=rd[1];if(r.error){rs.innerHTML='<div class="box msg">Erro: '+esc(r.error.message)+'</div>';return}
+var rd=await Promise.all([q,destRows()]),r=rd[0],d=rd[1];if(r.error){rs.innerHTML='<div class="box msg">Erro: '+esc(r.error.message)+'</div>';return}
 var D={};(d.data||[]).forEach(function(x){D[x.anuncio_id]=1});
-var L=r.data.sort(function(a,b){return (D[b.id]?1:0)-(D[a.id]?1:0)}),F=L.filter(function(a){return D[a.id]}).slice(0,4);
-document.getElementById("dst").innerHTML=F.length?'<div class="sh"><h2>Imóveis em destaque</h2></div><div class="cov" id="cov" tabindex="0" aria-label="Imóveis em destaque, deslize para ver mais">'+F.map(function(a){return cardHtml(a,true)}).join("")+'</div><div class="dots" id="cdots" aria-hidden="true">'+F.map(function(_,k){return '<i class="'+(k?"":"on")+'"></i>'}).join("")+'</div>':"";FX.cov(document.getElementById("cov"));
+var L=r.data.sort(function(a,b){return (D[b.id]?1:0)-(D[a.id]?1:0)}),F=0;
+featHome(Object.keys(D));
 
 rs.innerHTML=L.length?L.map(function(a){return cardHtml(a,false)}).join(""):'<div class="box mut">Ainda não há imóveis publicados com estes filtros.</div>'}
 FX.hero();var fs=document.getElementById("fsh"),sbg=document.getElementById("sbg");
+async function featHome(ids){var el=document.getElementById("dst");if(!el)return;if(!ids.length){el.innerHTML="";return}
+var r=await p1(sb.from("anuncios").select(CARD).eq("estado","publicado").in("id",ids).limit(4));el=document.getElementById("dst");if(!el)return;var F=r.data||[];
+el.innerHTML=F.length?'<div class="sh"><h2>Imóveis em destaque</h2></div><div class="cov" id="cov" tabindex="0" aria-label="Imóveis em destaque, deslize para ver mais">'+F.map(function(a){return cardHtml(a,true)}).join("")+'</div><div class="dots" id="cdots" aria-hidden="true">'+F.map(function(_,k){return '<i class="'+(k?"":"on")+'"></i>'}).join("")+'</div>':"";FX.cov(document.getElementById("cov"))}
 function openF(o){fs.hidden=sbg.hidden=!o;document.body.style.overflow=o?"hidden":"";if(o)setTimeout(function(){f.focus()},60)}
 document.getElementById("fbtn").onclick=function(){openF(true)};sbg.onclick=function(){openF(false)};fs.onkeydown=function(e){if(e.key==="Escape")openF(false)};
 document.getElementById("sp").onsubmit=function(e){e.preventDefault();document.getElementById("go").click()};
@@ -554,13 +570,13 @@ A.innerHTML='<div class="crumb"><a href="#/">Início</a> › Resultados da pesqu
 $("fl").value=F.l||"";$("ft").value=F.t||"";$("ff").value=F.f||"";$("pm1").value=F.pmin||"";$("pm2").value=F.pb||"";$("fq").value=F.q||"";$("fa").value=F.amin||"";$("fm").value=F.mob||"";$("fo2").value=F.ord||"r";
 function qf(q){if(F.f)q=q.eq("finalidade",F.f);if(F.t)q=q.eq("tipo",F.t);if(F.l)q=q.ilike("municipio","%"+F.l+"%");if(F.pmin)q=q.gte("preco",+F.pmin);if(F.pb)q=q.lte("preco",+F.pb);if(F.q)q=q.gte("quartos",+F.q);if(F.amin)q=q.gte("area_m2",+F.amin);if(F.mob)q=q.eq("mobilado",F.mob==="s");return q}
 async function run(){var ls=$("ls");ls.innerHTML='<p class="mut">A procurar…</p>';
-var d=await sb.from("destaques").select("anuncio_id").eq("estado","ativo").gt("fim",new Date().toISOString()),ids=(d.data||[]).map(function(x){return x.anuncio_id}),feat=[];
-var frP=ids.length?qf(sb.from("anuncios").select("*,fotografias(caminho,ordem)").eq("estado","publicado").in("id",ids)):Promise.resolve({data:[]});
-var q=qf(sb.from("anuncios").select("*,fotografias(caminho,ordem)",{count:"exact"}).eq("estado","publicado"));if(ids.length)q=q.not("id","in","("+ids.join(",")+")");
+var d=await destRows(),ids=(d.data||[]).map(function(x){return x.anuncio_id}),feat=[];
+var frP=ids.length?qf(p1(sb.from("anuncios").select(CARD).eq("estado","publicado").in("id",ids))):Promise.resolve({data:[]});
+var q=qf(p1(sb.from("anuncios").select(CARD,{count:(F.page===1||F.cnt==null)?"exact":undefined}).eq("estado","publicado")));if(ids.length)q=q.not("id","in","("+ids.join(",")+")");
 var o=F.ord==="a"?["preco",true]:F.ord==="d"?["preco",false]:["criado",false];
 var rr2=await Promise.all([q.order(o[0],{ascending:o[1],nullsFirst:false}).range((F.page-1)*PP,F.page*PP-1),frP]),r=rr2[0];feat=rr2[1].data||[];
 if(r.error){ls.innerHTML='<div class="box msg">Erro: '+esc(r.error.message)+'</div>';return}
-var total=(r.count||0)+feat.length,pages=Math.max(1,Math.ceil((r.count||0)/PP));
+var cc=r.count!=null?r.count:(F.cnt||0);F.cnt=cc;var total=cc+feat.length,pages=Math.max(1,Math.ceil(cc/PP));
 $("cn").textContent=total+(total===1?" imóvel encontrado":" imóveis encontrados");
 var show=F.page===1?feat:[];
 ls.innerHTML=(show.length?'<h2>Destaques</h2><div class="list">'+show.map(function(a){return cardHtml(a,true)}).join("")+'</div>':"")+
@@ -578,10 +594,10 @@ await run()}
 
 /* ---------- DETALHE ---------- */
 async function detalhe(id){A.textContent="A carregar…";
-var r=await sb.from("anuncios").select("*,fotografias(caminho,ordem)").eq("id",id).maybeSingle();
+var rr0=await Promise.all([sb.from("anuncios").select("*,fotografias(caminho,ordem)").eq("id",id).maybeSingle(),sb.rpc("info_anunciante",{p_anuncio:id}),U?sb.from("anuncios_reservado").select("*").eq("anuncio_id",id).maybeSingle():Promise.resolve({data:null})]),r=rr0[0],ia=rr0[1],res=rr0[2];
 if(r.error||!r.data){A.innerHTML='<div class="box">Anúncio não encontrado.'+(r.error?'<div class="msg">'+esc(r.error.message)+'</div>':'')+'</div>';return}
-var ia=await sb.rpc("info_anunciante",{p_anuncio:id}),I=(ia.data&&ia.data[0])||{};
-var a=r.data,fs=ordf(a),res=U?await sb.from("anuncios_reservado").select("*").eq("anuncio_id",id).maybeSingle():{data:null},V=res.data,own=U&&U.id===a.anunciante_id;
+var I=(ia.data&&ia.data[0])||{};
+var a=r.data,fs=ordf(a),V=res.data,own=U&&U.id===a.anunciante_id;
 var mapBlock=(V&&V.latitude!=null)?'<div class="box"><h2>Localização exata no mapa</h2><div id="dm2" class="map"></div><a class="btn out" target="_blank" rel="noopener" href="https://www.google.com/maps?q='+V.latitude+','+V.longitude+'">Abrir no Google Maps</a></div>':(a.tem_mapa?'<div class="box"><div class="mapfake" aria-hidden="true"><span class="pinfake"></span></div><h2>Localização exata no mapa</h2><p>O anunciante marcou o ponto exato deste imóvel no mapa. Os subscritores veem o ponto e podem abrir no GPS.</p><a class="btn" href="#/subscricao">Subscrever para ver o mapa</a></div>':'');
 var ver=I.verificacao==="verificado"?"Verificado":"Não verificado",n=function(v){return esc(v==null?"—":v)};
 var fct=function(v,l){return v==null||v===""?"":'<div class="st"><b>'+esc(v)+'</b>'+l+'</div>'};
@@ -590,7 +606,7 @@ var FT=[[TIPOS[a.tipo]||a.tipo,"Tipo de imóvel"]];if(a.quartos!=null)FT.push([a
 var preco=kz(a.preco)+(a.finalidade==="arrendamento"&&a.preco!=null?" / mês":"");
 var cta=own?'<a class="btn" href="#/editar/'+a.id+'">Editar anúncio</a>':(V&&V.telefone_contacto?'<a class="btn" href="tel:'+esc(V.telefone_contacto)+'">Ligar</a>':(V?'':'<a class="btn" href="#/subscricao">Ver contacto</a>'));
 A.innerHTML='<div class="crumb"><a href="#/">Início</a> › <a href="#/imoveis">Imóveis</a> › '+esc(a.titulo)+'</div><div class="dg">'+
-'<div class="box"><div class="gwrap"><div class="gal" id="gal" tabindex="0" aria-label="Fotografias do imóvel">'+(fs.length?fs.map(function(f,i){return '<img src="'+foto(f.caminho)+'" alt="Fotografia '+(i+1)+' de '+fs.length+'"'+(i?' loading="lazy"':'')+' decoding="async">'}).join(""):'<div class="nophoto">Sem fotografias</div>')+'</div><span class="tag">'+(a.finalidade==="venda"?"À venda":"Arrendamento")+'</span><button class="hr" type="button" data-fav="'+a.id+'" aria-pressed="'+(!!FAV[a.id])+'" aria-label="Guardar nos favoritos">'+(FAV[a.id]?"♥":"♡")+'</button>'+(fs.length>1?'<span class="cnt" id="cn">1/'+fs.length+'</span>':'')+'</div>'+(fs.length>1?'<div class="th">'+fs.map(function(f,i){return '<img src="'+foto(f.caminho)+'" alt="Miniatura '+(i+1)+'">'}).join("")+'</div>':'')+'</div>'+
+'<div class="box"><div class="gwrap"><div class="gal" id="gal" tabindex="0" aria-label="Fotografias do imóvel">'+(fs.length?fs.map(function(f,i){return '<img src="'+foto(f.caminho)+'" alt="Fotografia '+(i+1)+' de '+fs.length+'"'+(i?' loading="lazy"':' fetchpriority="high"')+' decoding="async">'}).join(""):'<div class="nophoto">Sem fotografias</div>')+'</div><span class="tag">'+(a.finalidade==="venda"?"À venda":"Arrendamento")+'</span><button class="hr" type="button" data-fav="'+a.id+'" aria-pressed="'+(!!FAV[a.id])+'" aria-label="Guardar nos favoritos">'+(FAV[a.id]?"♥":"♡")+'</button>'+(fs.length>1?'<span class="cnt" id="cn">1/'+fs.length+'</span>':'')+'</div>'+(fs.length>1?'<div class="th">'+fs.map(function(f,i){return '<img '+tAttr(f.caminho)+' alt="Miniatura '+(i+1)+'">'}).join("")+'</div>':'')+'</div>'+
 '<div class="box"><h1>'+esc(a.titulo)+'</h1><div class="mut">'+esc(a.municipio)+', '+esc(a.provincia)+', Angola</div><div class="p" style="font-size:28px;margin:10px 0">'+preco+'</div>'+
 (stats.length?'<div class="stats" style="grid-template-columns:repeat('+stats.length+',1fr)">'+stats.join("")+'</div>':'')+
 (V&&V.telefone_contacto?'<div class="ctc"><b>Contactar anunciante</b>Fala diretamente com o proprietário ou agente.<br><a class="btn" style="width:100%;margin-top:10px" href="tel:'+esc(V.telefone_contacto)+'">Ligar agora · '+esc(V.telefone_contacto)+'</a></div>':
@@ -606,7 +622,7 @@ if(cta){A.insertAdjacentHTML("beforeend",'<div class="ctabar"><div class="pr"><s
 var gal=document.getElementById("gal");if(gal&&fs.length>1){gal.addEventListener("scroll",function(){var k=Math.round(gal.scrollLeft/gal.clientWidth);document.getElementById("cn").textContent=(k+1)+"/"+fs.length},{passive:true});[].forEach.call(document.querySelectorAll(".th img"),function(im,k){im.onclick=function(){gal.scrollTo({left:k*gal.clientWidth,behavior:"smooth"})}})}
 if(V&&V.latitude!=null){try{await loadLeaflet()}catch(e){}}
 if(V&&V.latitude!=null&&typeof L!=="undefined"){var mm=L.map("dm2",{scrollWheelZoom:false}).setView([V.latitude,V.longitude],16);L.tileLayer(TILES,{maxZoom:19,attribution:"© OpenStreetMap"}).addTo(mm);L.marker([V.latitude,V.longitude],{icon:PIN}).addTo(mm)}
-var sm=await sb.from("anuncios").select("*,fotografias(caminho,ordem)").eq("estado","publicado").eq("tipo",a.tipo).neq("id",id).limit(3);
+var sm=await p1(sb.from("anuncios").select(CARD).eq("estado","publicado").eq("tipo",a.tipo).neq("id",id).limit(3));
 if(sm.data&&sm.data.length)A.insertAdjacentHTML("beforeend",'<section><div class="sh"><h2>Imóveis semelhantes</h2><a href="#/imoveis" style="color:var(--g);font-weight:600">Ver todos →</a></div><div class="grid">'+sm.data.map(function(x){return cardHtml(x,false)}).join("")+'</div></section>');
 document.getElementById("dn").onclick=async function(){if(!U){location.hash="#/entrar";return}var m=prompt("Motivo da denúncia:");if(!m)return;var x=await sb.from("denuncias").insert({anuncio_id:id,denunciante_id:U.id,motivo:m});document.getElementById("dm").className="msg "+(x.error?"":"ok");document.getElementById("dm").textContent=x.error?x.error.message:"Denúncia enviada. Uma denúncia não prova fraude; será analisada."}}
 
@@ -625,7 +641,7 @@ if(FAV[id]){var x=await sb.from("favoritos").delete().eq("utilizador_id",U.id).e
 else{var y=await sb.from("favoritos").insert({utilizador_id:U.id,anuncio_id:id});if(!y.error){FAV[id]=1;b.textContent="♥";b.setAttribute("aria-pressed","true")}}});
 
 /* ---------- COMPRIMIR FOTOS ---------- */
-function comprimir(f){return new Promise(function(ok){var im=new Image(),u=URL.createObjectURL(f);im.onload=function(){var m=1600,s=Math.min(1,m/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);var x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);c.toBlob(function(b){ok(b||f)},"image/jpeg",0.82)};im.onerror=function(){URL.revokeObjectURL(u);ok(f)};im.src=u})}
+function comprimir(f,mx,ql){return new Promise(function(ok){var im=new Image(),u=URL.createObjectURL(f);im.onload=function(){var m=mx||1600,s=Math.min(1,m/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);var x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);c.toBlob(function(b){ok(b||f)},"image/jpeg",ql||0.82)};im.onerror=function(){URL.revokeObjectURL(u);ok(f)};im.src=u})}
 /* ---------- PUBLICAR / EDITAR ---------- */
 async function publicar(id){var E=null,V=null,FS=[],rem=[],NF=[],st=0;
 if(id){var r0=await sb.from("anuncios").select("*,fotografias(id,caminho,ordem)").eq("id",id).maybeSingle();
@@ -651,7 +667,7 @@ A.innerHTML='<div class="box"><h1>'+(E?"Editar anúncio":"Publicar imóvel")+'</
 '<div class="msg" id="m" role="alert"></div><div class="nv"><button class="btn out" id="bk" type="button" style="visibility:hidden">Voltar</button><button class="btn" id="nx" type="button">Próximo passo →</button></div></div>';
 if(E){document.querySelector('input[name="pf"][value="'+E.finalidade+'"]').checked=true;pt.value=E.tipo;ti.value=E.titulo;dp.value=E.descricao_publica;dc0.textContent=dp.value.length;pv.value=E.provincia;mu.value=E.municipio;qu.value=E.quartos==null?"":E.quartos;wc.value=E.casas_banho==null?"":E.casas_banho;ar.value=E.area_m2==null?"":E.area_m2;mo.value=E.mobilado===true?"s":E.mobilado===false?"n":"";pr.value=E.preco==null?"":E.preco;es.value=E.estado==="encerrado"?"encerrado":"publicado";
 if(V){dc.value=V.descricao_completa||"";tc.value=V.telefone_contacto||"";zo.value=V.localizacao_detalhada||""}
-var mainId=null,fx=$("fx");function dfx(){var vis=FS.filter(function(x){return rem.indexOf(x.id)<0}),first=mainId||(vis[0]&&vis[0].id);fx.innerHTML=FS.map(function(f){var x=rem.indexOf(f.id)>=0;return '<div class="pt"><img src="'+foto(f.caminho)+'" alt="Fotografia atual" style="opacity:'+(x?.3:1)+'">'+(f.id===first&&!x?'<span class="tag">Principal</span>':'')+'<div class="pbtn">'+(!x&&f.id!==first?'<button type="button" data-mp="'+f.id+'">Principal</button>':'')+'<button type="button" data-f="'+f.id+'">'+(x?"Desfazer":"Remover")+'</button></div></div>'}).join("")}
+var mainId=null,fx=$("fx");function dfx(){var vis=FS.filter(function(x){return rem.indexOf(x.id)<0}),first=mainId||(vis[0]&&vis[0].id);fx.innerHTML=FS.map(function(f){var x=rem.indexOf(f.id)>=0;return '<div class="pt"><img '+tAttr(f.caminho)+' alt="Fotografia atual" style="opacity:'+(x?.3:1)+'">'+(f.id===first&&!x?'<span class="tag">Principal</span>':'')+'<div class="pbtn">'+(!x&&f.id!==first?'<button type="button" data-mp="'+f.id+'">Principal</button>':'')+'<button type="button" data-f="'+f.id+'">'+(x?"Desfazer":"Remover")+'</button></div></div>'}).join("")}
 dfx();fx.onclick=function(e){var mp=e.target.closest("button[data-mp]");if(mp){mainId=mp.dataset.mp;dfx();return}var b=e.target.closest("button[data-f]");if(!b)return;var i=rem.indexOf(b.dataset.f);if(i>=0)rem.splice(i,1);else{rem.push(b.dataset.f);if(mainId===b.dataset.f)mainId=null}dfx()}}
 dp.addEventListener("input",function(){dc0.textContent=dp.value.length});
 var LAT=null,LNG=null,MAPI=null,MK=null;
@@ -703,11 +719,15 @@ else{D.anunciante_id=U.id;D.estado="publicado";var r=await sb.from("anuncios").i
 if(RV.descricao_completa||RV.telefone_contacto||RV.localizacao_detalhada||LAT!=null)await sb.from("anuncios_reservado").insert(Object.assign({anuncio_id:aid},RV))}
 if(E&&mainId&&rem.indexOf(mainId)<0){var mn=FS.reduce(function(a,f){return Math.min(a,f.ordem)},0);await sb.from("fotografias").update({ordem:mn-1}).eq("id",mainId)}
 var base=FS.reduce(function(a,f){return Math.max(a,f.ordem)},-1)+1;
-for(var j=0;j<NF.length;j++){var fl=await comprimir(NF[j].f),path=U.id+"/"+aid+"/"+(base+j)+"-"+Date.now()+".jpg";
-var ur=await sb.storage.from("fotos-anuncios").upload(path,fl,{contentType:fl.type||"image/jpeg"});
-if(ur.error){m.textContent="Erro numa fotografia: "+ur.error.message;continue}
-await sb.from("fotografias").insert({anuncio_id:aid,caminho:path,ordem:base+j})}
+var jobs=NF.map(function(_,j){return j}),fails=0,CC={contentType:"image/jpeg",cacheControl:"31536000"};
+async function subir(j){try{var fl=await comprimir(NF[j].f),path=U.id+"/"+aid+"/"+(base+j)+"-"+Date.now()+".jpg";
+var ur=await sb.storage.from("fotos-anuncios").upload(path,fl,CC);if(ur.error){fails++;m.textContent="Erro numa fotografia: "+ur.error.message;return}
+var tb=await comprimir(fl,800,.74);await sb.storage.from("fotos-anuncios").upload(path.replace(/\.jpg$/i,"-m.jpg"),tb,CC);
+var ins=await sb.from("fotografias").insert({anuncio_id:aid,caminho:path,ordem:base+j});if(ins.error){fails++;m.textContent="Erro numa fotografia: "+ins.error.message}}catch(e){fails++;m.textContent="Erro numa fotografia."}}
+async function wk(){while(jobs.length){await subir(jobs.shift())}}
+await Promise.all([wk(),wk(),wk()]);
 try{localStorage.removeItem(DRK)}catch(e){}
+if(fails){m.textContent=fails+" fotografia(s) não foram enviadas. O anúncio foi guardado: abre Editar para as adicionar de novo.";setTimeout(function(){location.hash="#/anuncio/"+aid},4500);return}
 location.hash="#/anuncio/"+aid};
 go(0)}
 
@@ -716,11 +736,11 @@ async function meus(){var cbr=await sb.rpc("combinacoes_meus"),CB={};(cbr.data||
 var r=await sb.from("anuncios").select("id,titulo,estado,preco,municipio,criado,motivo_moderacao,fotografias(caminho,ordem)").eq("anunciante_id",U.id).order("criado",{ascending:false});
 if(r.error){A.innerHTML='<div class="box msg">'+esc(r.error.message)+'</div>';return}
 var EST={publicado:"Publicado",encerrado:"Encerrado",suspenso:"Suspenso",removido:"Removido",correcao_solicitada:"Correção pedida",rascunho:"Rascunho",denunciado:"Denunciado"};
-function row(a){var fs=ordf(a);return '<article class="mrow"><a class="mth" href="#/anuncio/'+a.id+'" aria-label="Ver anúncio">'+(fs[0]?'<img src="'+foto(fs[0].caminho)+'" alt="" loading="lazy" decoding="async">':'')+'</a><div class="mbody"><a class="mt" href="#/anuncio/'+a.id+'">'+esc(a.titulo)+'</a><div class="mut">'+esc(a.municipio)+' · '+kz(a.preco)+'</div><span class="badge s-'+esc(a.estado)+'">'+esc(EST[a.estado]||a.estado)+'</span>'+(a.motivo_moderacao?'<div class="msg">Motivo da moderação: '+esc(a.motivo_moderacao)+'</div>':'')+'</div>'+
+function row(a){var fs=ordf(a);return '<article class="mrow"><a class="mth" href="#/anuncio/'+a.id+'" aria-label="Ver anúncio">'+(fs[0]?'<img '+tAttr(fs[0].caminho)+' alt="" loading="lazy" decoding="async">':'')+'</a><div class="mbody"><a class="mt" href="#/anuncio/'+a.id+'">'+esc(a.titulo)+'</a><div class="mut">'+esc(a.municipio)+' · '+kz(a.preco)+'</div><span class="badge s-'+esc(a.estado)+'">'+esc(EST[a.estado]||a.estado)+'</span>'+(a.motivo_moderacao?'<div class="msg">Motivo da moderação: '+esc(a.motivo_moderacao)+'</div>':'')+'</div>'+
 '<div class="mact"><a class="btn" href="#/editar/'+a.id+'">Editar</a>'+(CB[a.id]?'<a class="btn out" href="#/combinam/'+a.id+'">'+CB[a.id]+(CB[a.id]===1?" pedido combina":" pedidos combinam")+'</a>':'')+
 '<details class="mais"><summary class="btn out" aria-label="Mais ações">Mais</summary><div class="mmenu"><a href="#/destacar/'+a.id+'">Destacar</a><a href="#/anuncio/'+a.id+'">Ver anúncio</a><button class="dng" type="button" data-del="'+a.id+'">Apagar</button></div></details></div></article>'}
 A.innerHTML='<div class="sh"><h1>Os meus anúncios</h1><a class="btn" href="#/publicar">Novo anúncio</a></div>'+(r.data.length?r.data.map(row).join(""):'<div class="box mut">Ainda não publicaste anúncios.</div>')+
-'<details class="box ferr"><summary>Ferramentas</summary><p class="mut">Reduz o peso das fotografias antigas para o site abrir mais depressa.</p><button class="btn out" id="otf" type="button">Otimizar as minhas fotos</button><div class="mut" id="ot" role="status"></div></details>';
+'<details class="box ferr"><summary>Ferramentas</summary><p class="mut">Reduz o peso das fotografias antigas e cria miniaturas para o site abrir mais depressa.</p><button class="btn out" id="otf" type="button">Otimizar as minhas fotos</button><div class="mut" id="ot" role="status"></div></details>';
 var ob=document.getElementById("otf");if(ob)ob.onclick=otimizarFotos}
 
 /* ---------- PEDIDOS QUE COMBINAM / OTIMIZAR FOTOS ---------- */
@@ -730,20 +750,24 @@ A.innerHTML='<a href="#/meus" class="mut">← Os meus anúncios</a><h1>Pedidos q
 async function otimizarFotos(){var st=document.getElementById("ot"),b=document.getElementById("otf");b.disabled=true;st.textContent="A procurar fotos…";
 var ads=await sb.from("anuncios").select("id").eq("anunciante_id",U.id),ids=(ads.data||[]).map(function(x){return x.id});if(!ids.length){st.textContent="Não tens anúncios.";b.disabled=false;return}
 var fr=await sb.from("fotografias").select("id,caminho").in("anuncio_id",ids),L=fr.data||[],n=0;
+var CC={contentType:"image/jpeg",cacheControl:"31536000"},tm=function(p){return p.replace(/\.jpg$/i,"-m.jpg")},nt=0;
 for(var i=0;i<L.length;i++){var f=L[i];st.textContent="A verificar "+(i+1)+" de "+L.length+"…";
-try{var resp=await fetch(foto(f.caminho)),bl=await resp.blob();if(bl.size<400000)continue;var nb=await comprimir(bl),np=f.caminho.replace(/[^\/]*$/,"")+Date.now()+"-"+i+".jpg";
-var up=await sb.storage.from("fotos-anuncios").upload(np,nb,{contentType:"image/jpeg"});if(up.error)continue;var u=await sb.from("fotografias").update({caminho:np}).eq("id",f.id);if(u.error)continue;await sb.storage.from("fotos-anuncios").remove([f.caminho]);n++}catch(e){}}
-st.textContent="Concluído: "+n+" fotografia(s) otimizada(s).";b.disabled=false}
+try{var resp=await fetch(foto(f.caminho)),bl=await resp.blob(),cur=f.caminho,has=false;
+try{var hr=await fetch(foto(tm(cur)),{method:"HEAD"});has=hr.ok}catch(e){}
+if(bl.size>=400000){var nb=await comprimir(bl),np=f.caminho.replace(/[^\/]*$/,"")+Date.now()+"-"+i+".jpg";
+var up=await sb.storage.from("fotos-anuncios").upload(np,nb,CC);if(!up.error){var u=await sb.from("fotografias").update({caminho:np}).eq("id",f.id);if(!u.error){await sb.storage.from("fotos-anuncios").remove([f.caminho].concat(has?[tm(f.caminho)]:[]));cur=np;bl=nb;has=false;n++}}}
+if(!has){var tb=await comprimir(bl,800,.74),ut=await sb.storage.from("fotos-anuncios").upload(tm(cur),tb,CC);if(!ut.error)nt++}}catch(e){}}
+st.textContent="Concluído: "+n+" otimizada(s) e "+nt+" miniatura(s) criada(s).";b.disabled=false}
 
 /* ---------- NOTIFICAÇÕES ---------- */
-var NOTIF=[],VIRT=[],NCNT=0,NERR="";
+var NOTIF=[],VIRT=[],NCNT=0,NERR="",LN=0;
 function updBell(){var b=document.getElementById("bell");if(!b)return;b.hidden=!U;var c=b.querySelector(".bc");c.textContent=NCNT>9?"9+":NCNT;c.hidden=!NCNT}
-async function loadNotif(){if(!U){NOTIF=[];VIRT=[];NCNT=0;updBell();return}
+async function loadNotif(){if(!U){NOTIF=[];VIRT=[];NCNT=0;updBell();return}LN=Date.now();
 var r=await sb.from("notificacoes").select("*").order("criado",{ascending:false}).limit(50);NERR=r.error?r.error.message:"";NOTIF=r.data||[];VIRT=[];
 var s=await sb.from("subscricoes").select("fim").eq("utilizador_id",U.id).eq("estado","ativa").gt("fim",new Date().toISOString()).order("fim",{ascending:false}).limit(1);
 if(s.data&&s.data[0]){var d=Math.ceil((new Date(s.data[0].fim)-new Date())/86400000);if(d<=3)VIRT=[{id:"v1",tipo:"subscricao",titulo:"A tua subscrição termina em "+d+(d===1?" dia":" dias"),texto:"Faz um novo pedido em Subscrição para manter o acesso.",ligacao:"/subscricao",lida:false,criado:new Date().toISOString()}]}
 NCNT=NOTIF.filter(function(n){return!n.lida}).length+VIRT.length;updBell()}
-setInterval(loadNotif,60000);
+setInterval(function(){if(!document.hidden)loadNotif()},300000);document.addEventListener("visibilitychange",function(){if(!document.hidden&&U&&Date.now()-LN>60000)loadNotif()});
 async function notificacoes(){await loadNotif();var L=VIRT.concat(NOTIF);
 A.innerHTML='<h1>Notificações</h1>'+(NERR?'<div class="box msg">Não foi possível carregar as notificações: '+esc(NERR)+'</div>':'')+(L.length?'<div class="box" style="padding:0">'+L.map(function(n){return '<a href="#'+esc(n.ligacao||"/")+'" class="nt '+(n.lida?"":"nw")+'" data-n="'+esc(n.id)+'"><b>'+esc(n.titulo)+'</b><div class="mut">'+esc(n.texto||"")+'</div><div class="mut" style="font-size:12px">'+new Date(n.criado).toLocaleString("pt-PT")+'</div></a>'}).join("")+'</div><button class="btn out" id="mr" type="button">Marcar todas como lidas</button>':'<div class="box mut">Não tens notificações.</div>');
 var mr=document.getElementById("mr");if(mr)mr.onclick=async function(){await sb.from("notificacoes").update({lida:true}).eq("utilizador_id",U.id).eq("lida",false);notificacoes()}}
@@ -842,7 +866,7 @@ if(x&&x.error){alert(perr(x.error));return}meusPedidos()});
 /* ---------- AVISO DE COMPROVATIVOS (ADMIN) ---------- */
 async function checkPend(){if(!PF||PF.papel!=="admin"){if(PEND){PEND=0;nav()}return}
 var r=await sb.from("pagamentos").select("id",{count:"exact",head:true}).eq("estado","em_analise");var n=r.count||0;if(n!==PEND){PEND=n;nav()}}
-setInterval(checkPend,60000);
+setInterval(function(){if(!document.hidden)checkPend()},120000);
 /* ---------- FAVORITOS ---------- */
 async function loadFav(){FAV={};if(!U)return;var r=await sb.from("favoritos").select("anuncio_id");(r.data||[]).forEach(function(x){FAV[x.anuncio_id]=1})}
 async function favoritos(){var r=await sb.from("favoritos").select("anuncio_id,anuncios(*,fotografias(caminho,ordem))").order("criado",{ascending:false});
@@ -935,7 +959,7 @@ else if(a==="as"||a==="ar"){mo=pm();if(!mo)return;x=await sb.rpc("alterar_anunci
 else if(a==="ap")x=await sb.rpc("alterar_anuncio_estado",{p_id:i,p_estado:"publicado",p_motivo:""});
 else if(a==="vv"||a==="vn")x=await sb.rpc("definir_verificacao",{p_id:i,p_valor:a==="vv"?"verificado":"nao_verificado"});
 else return;
-if(x.error){m.textContent=x.error.message;return}admin()});
+if(x.error){m.textContent=x.error.message;return}DST.t=0;admin()});
 async function apagar(id){if(!confirm("Apagar este anúncio? Esta ação não pode ser desfeita."))return;
 var f=await sb.from("fotografias").select("caminho").eq("anuncio_id",id);
 if(f.data&&f.data.length)await sb.storage.from("fotos-anuncios").remove(f.data.map(function(x){return x.caminho}));
