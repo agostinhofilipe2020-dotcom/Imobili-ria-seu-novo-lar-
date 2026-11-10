@@ -370,7 +370,7 @@ try{if(matchMedia("(hover:hover) and (pointer:fine)").matches)el.addEventListene
 var box=document.getElementById("ids"),n=lite?0:26;
 for(var i=0;i<n;i++){var sp=document.createElement("span"),z=2+Math.random()*3;sp.className="idt";sp.style.cssText="left:"+(Math.random()*100).toFixed(1)+"%;top:"+(18+Math.random()*72).toFixed(1)+"%;width:"+z.toFixed(1)+"px;height:"+z.toFixed(1)+"px;color:"+(Math.random()<.65?"#6EE7B7":"#F5C451")+";--dx:"+((Math.random()-.5)*50).toFixed(0)+"px;--dd:"+(4+Math.random()*2).toFixed(1)+"s;--dl:"+(Math.random()*3.2).toFixed(1)+"s";box.appendChild(sp)}
 var started=false;function go(){if(started||done)return;started=true;el.classList.add("go");t2=setTimeout(end,7000)}
-var im=new Image();im.onload=im.onerror=go;im.src="abertura.jpg";t1=setTimeout(go,1500);
+var im=new Image();im.onload=go;im.onerror=function(){end(true)};im.src="abertura.jpg";t1=setTimeout(go,1500);
 t3=setTimeout(end,12000)})();
 </script>
 <header><div class="hd"><a class="logo" href="#/"><img class="lgw" src="logo-escuro.png" alt="Seu Novo Lar"></a><nav id="nav" aria-label="Principal"></nav><a id="bell" class="bell" href="#/notificacoes" aria-label="Notificações" hidden><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="bc" hidden></span></a><span id="ac"></span></div></header>
