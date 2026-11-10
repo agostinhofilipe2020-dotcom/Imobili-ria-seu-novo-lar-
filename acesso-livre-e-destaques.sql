@@ -6,7 +6,7 @@
 -- um gatilho. As regras de segurança atuais ficam INTACTAS.
 -- Desfaz-se com os comandos da secção ROLLBACK, no fim.
 --
--- ORDEM: 1) PARTE 0 (só leitura)  2) PARTE 1  3) depois publicar o index.html.
+-- ORDEM: 1) PARTE 0 (só leitura)  2) PARTE 1  3) PARTE 2 (verificar)  4) publicar o index.html.
 -- Supabase > SQL Editor > New query > colar > Run.
 -- NÃO guardes este ficheiro no repositório do site.
 -- =====================================================================
@@ -165,10 +165,31 @@ begin
   end if;
   return new;
 end $$;
-drop trigger if exists aaa_bloquear_subscricao_gratis on public.pagamentos;
-create trigger aaa_bloquear_subscricao_gratis
+-- (sem "drop": assim o Supabase não mostra o aviso de "operação destrutiva")
+create or replace trigger aaa_bloquear_subscricao_gratis
   before insert on public.pagamentos
   for each row execute function public.bloquear_subscricao_gratis();
+
+-- Pede ao Supabase para atualizar a lista de funções disponíveis
+notify pgrst, 'reload schema';
+
+-- ------------------- PARTE 2: verificar (só leitura) -----------------
+-- Mostra o que ficou criado. Deve aparecer 'sim' em todas as linhas
+-- e 'livre' no modo_acesso.
+select 'modo_acesso (config)' as peca,
+       coalesce((select valor from public.config where chave = 'modo_acesso'), 'NÃO EXISTE') as estado
+union all
+select 'tabela contacto_acessos',
+       case when exists (select 1 from information_schema.tables
+                         where table_schema = 'public' and table_name = 'contacto_acessos')
+            then 'sim' else 'NÃO EXISTE' end
+union all
+select 'funcao ' || x.nome,
+       case when exists (select 1 from pg_proc
+                         where pronamespace = 'public'::regnamespace and proname = x.nome)
+            then 'sim' else 'NÃO EXISTE' end
+from (values ('modo_acesso'), ('_chave_acesso'), ('_limite_contactos'), ('_pode_ver_contactos'),
+             ('obter_contacto'), ('contactos_pedidos'), ('bloquear_subscricao_gratis')) as x(nome);
 
 -- ------------------------------ ROLLBACK -----------------------------
 -- Voltar ao modelo anterior (acesso por subscrição) sem apagar nada:
