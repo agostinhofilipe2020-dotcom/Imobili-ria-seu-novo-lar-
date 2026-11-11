@@ -430,136 +430,6 @@ input,select,textarea{border-radius:2px;background:#fff}
 .bc{border-radius:2px}
 /* movimento mínimo e funcional */
 .pc:active,.btn:active{transform:none}
-
-/* ===== v6: página inicial (fase 3) ===== */
-.hero{padding-top:64px;padding-bottom:56px}
-.hw{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,4fr);gap:40px;align-items:end;margin-bottom:40px}
-.eyebrow{margin:0 0 18px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--sage);display:flex;align-items:center;gap:12px;max-width:none}
-.eyebrow::before{content:"";width:36px;height:1px;background:var(--cu)}
-.hero h1{max-width:none;font-size:clamp(40px,7.2vw,80px);line-height:1.02;margin:0}
-.hero .lead{margin:0;font-size:17px;line-height:1.55;max-width:420px;color:rgba(245,243,237,.88)}
-.hlink{display:inline-block;margin-top:18px;color:var(--ivory);border-bottom:1px solid var(--cu);padding-bottom:2px;font-weight:600;font-size:14px}
-.sp2{background:#fff;border:1px solid var(--line);display:grid;grid-template-columns:1.5fr 1fr 1fr auto;align-items:stretch;color:var(--ink)}
-.sf2{display:flex;flex-direction:column;justify-content:center;padding:10px 18px;border-right:1px solid var(--line);min-width:0}
-.sf2 label{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);font-weight:600;margin-bottom:2px}
-.sf2 input,.sf2 select{border:0;padding:0;min-height:30px;font-weight:600;font-size:15px;background:transparent;border-radius:0}
-.sp2 .btn{border-radius:0;min-height:64px;padding:0 34px}
-.mf2{grid-column:1/-1;border-top:1px solid var(--line);padding:0 18px}
-.mf2 summary{cursor:pointer;padding:12px 0;font-size:13px;font-weight:600;color:var(--g);list-style:none;min-height:44px;display:flex;align-items:center}
-.mf2 summary::-webkit-details-marker{display:none}
-.mf2 summary::after{content:"+";margin-left:8px;font-size:16px}
-.mf2[open] summary::after{content:"\2212"}
-.mf2g{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding-bottom:14px}
-.mf2g .fld{margin:0}.mf2g .fld label{color:var(--ink)}
-section:empty{display:none}
-.mic{margin:0 0 14px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--cu-t)}
-.sh{border-bottom:1px solid var(--ink);padding-bottom:12px}
-.sh .mic{margin:0}
-.hlink2{color:var(--g);font-weight:600;font-size:14px;border-bottom:1px solid var(--cu)}
-.ex{margin-top:64px}
-.exg{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:56px}
-.lp{border-top:1px solid var(--line);padding:16px 0}
-.lp:first-child{border-top:0;padding-top:4px}
-.lph{display:flex;justify-content:space-between;align-items:baseline}
-.lph b{font-family:var(--serif);font-weight:500;font-size:24px}
-.lph span{color:var(--mut);font-size:13px}
-.lm{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-.lc{border:1px solid var(--line);background:#fff;border-radius:2px;padding:8px 14px;font-size:14px;cursor:pointer;min-height:40px;color:var(--ink)}
-.lc:hover{border-color:var(--g)}
-.lc i,.tp i{font-style:normal;color:var(--mut);margin-left:8px;font-size:12px}
-.tl{display:flex;flex-direction:column}
-.tp{display:flex;justify-content:space-between;align-items:baseline;border:0;border-top:1px solid var(--line);background:none;padding:15px 0;font:500 17px Inter,system-ui,sans-serif;cursor:pointer;text-align:left;color:var(--ink);min-height:48px}
-.tp:first-child{border-top:0}
-.tp:hover{color:var(--g)}
-.sel{margin-top:72px}
-.eg{display:grid;grid-template-columns:repeat(12,1fr);gap:32px 24px;margin-top:22px}
-.ec{grid-column:span 4;position:relative;display:flex;flex-direction:column;min-width:0}
-.ec .el{display:flex;flex-direction:column;flex:1;color:inherit}
-.ec .ei{position:relative;aspect-ratio:4/3;background:var(--soft);overflow:hidden}
-.ec .ei img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
-@media(hover:hover) and (pointer:fine){.ec:hover .ei img{transform:scale(1.02)}}
-.ec .ek{padding-top:14px}
-.ec .mic{margin:0 0 6px}
-.ec h3{margin:0 0 3px;font-size:17px;line-height:1.3;font-family:Inter,system-ui,sans-serif;font-weight:600}
-.ec .ft{margin:6px 0 0}
-.ec .ep{font-weight:600;color:var(--g);margin-top:8px;font-size:17px}
-.ec .hr{top:10px;right:10px}
-.eg>.ec:nth-child(1){grid-column:span 7;grid-row:span 2}
-.eg>.ec:nth-child(1) .ei{flex:1;min-height:360px;aspect-ratio:auto}
-.eg>.ec:nth-child(1) .ek{flex:none}
-.eg>.ec:nth-child(1) h3{font-family:var(--serif);font-weight:500;font-size:clamp(26px,3vw,36px);line-height:1.1}
-.eg>.ec:nth-child(2),.eg>.ec:nth-child(3){grid-column:span 5}
-.eg>.ec:nth-child(2) .ei,.eg>.ec:nth-child(3) .ei{aspect-ratio:16/9}
-.eg>.ec:nth-child(7),.eg>.ec:nth-child(8){grid-column:span 6}
-.eg>.ec:nth-child(7) .ei,.eg>.ec:nth-child(8) .ei{aspect-ratio:16/10}
-.eg>.ec:nth-child(4):nth-last-child(2),.eg>.ec:nth-child(5):last-child{grid-column:span 6}
-.eg>.ec:nth-child(4):last-child,.eg>.ec:nth-child(7):last-child{grid-column:1/-1}
-.eg>.ec:nth-child(1):last-child{grid-column:1/-1;grid-row:auto}
-.eg>.ec:nth-child(1):last-child .ei{min-height:0;aspect-ratio:16/8}
-.eg>.ec:nth-child(1):nth-last-child(2){grid-row:auto}
-.eg>.ec:nth-child(1):nth-last-child(2) .ei{min-height:0;aspect-ratio:4/3}
-.ee{grid-column:1/-1;border:1px solid var(--line);background:#fff;padding:40px 24px;text-align:center}
-.ee h3{font-family:var(--serif);font-weight:500;font-size:26px;margin:0 0 6px}
-.ee .btn{margin-top:14px}
-.sk{background:linear-gradient(90deg,#E6E2D6 25%,#EFEBE0 50%,#E6E2D6 75%);background-size:200% 100%;animation:skm 1.6s ease-in-out infinite}
-.skl{height:44px;margin:0 0 10px}
-@keyframes skm{from{background-position:200% 0}to{background-position:-200% 0}}
-@media(prefers-reduced-motion:reduce){.sk{animation:none}.ec .ei img{transition:none}}
-.band{background:var(--soft);padding-top:44px;padding-bottom:48px;margin-top:72px}
-.band .sh{border-bottom-color:var(--g)}
-.dn{margin:12px 0 22px;max-width:640px}
-.dg2{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
-#pedh{margin-top:64px}
-.agt{background:var(--g);color:var(--ivory);margin-top:72px;padding-top:72px;padding-bottom:72px}
-.agw{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,4fr);gap:48px;align-items:end}
-.agt h2{font-size:clamp(34px,5.4vw,60px);line-height:1.03;color:var(--ivory);margin:0}
-.agt h2 em{font-style:italic;color:var(--cu)}
-.agt p:not(.eyebrow){color:rgba(245,243,237,.88);max-width:440px;margin:0 0 22px;line-height:1.6}
-.agt .hcta{margin-top:0}
-.cf{margin-top:72px}
-.cfg{display:grid;grid-template-columns:repeat(4,1fr);margin-top:22px}
-.cfi{padding:4px 24px 8px 0}
-.cfi+.cfi{padding-left:24px;border-left:1px solid var(--line)}
-.cfi i{display:block;font:500 30px/1 var(--serif);color:var(--cu-t);font-style:normal}
-.cfi b{display:block;margin:14px 0 8px;font-size:16px}
-.cfi p{margin:0;color:var(--mut);font-size:14px;line-height:1.6}
-footer{margin-top:72px;padding:48px 0 28px}
-.fg{grid-template-columns:1.5fr 1fr 1fr 1.2fr;gap:32px}
-.ftag{margin:14px 0 0;opacity:.85;max-width:240px;line-height:1.5}
-.fg a{padding:4px 0}
-@media(max-width:900px){.exg{grid-template-columns:1fr;gap:32px}.cfg{grid-template-columns:1fr 1fr;row-gap:28px}.cfi:nth-child(3){padding-left:0;border-left:0}.hw,.agw{grid-template-columns:1fr;gap:20px}}
-@media(max-width:720px){
-.hero{padding-top:36px;padding-bottom:36px}
-.hero h1{font-size:clamp(38px,11vw,52px)}
-.hw{margin-bottom:28px}
-.sp2{grid-template-columns:1fr 1fr}
-.sf2:nth-child(1){grid-column:1/-1;border-right:0;border-bottom:1px solid var(--line)}
-.sf2:nth-child(3){border-right:0}
-.sp2 .btn{grid-column:1/-1;min-height:52px}
-.ex,.sel{margin-top:48px}
-.eg>.ec:nth-child(n+7){display:none}
-.eg{grid-template-columns:1fr;gap:28px}
-.eg>.ec{grid-column:auto!important;grid-row:auto!important}
-.eg>.ec .ei{aspect-ratio:4/3!important;min-height:0!important;flex:none!important}
-.eg>.ec:nth-child(1) .ei{aspect-ratio:4/3!important}
-.band{margin-top:48px;padding-top:32px;padding-bottom:36px}
-.dg2{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;scrollbar-width:none;margin-right:calc(-1*max(16px,env(safe-area-inset-right,0px)));padding-right:16px}
-.dg2::-webkit-scrollbar{display:none}
-.dg2>.pc{flex:0 0 82%;scroll-snap-align:start}
-#pedh{margin-top:48px}
-.agt{margin-top:48px;padding-top:48px;padding-bottom:48px}
-.cf{margin-top:48px}
-.cfg{grid-template-columns:1fr;row-gap:0}
-.cfi,.cfi+.cfi{padding:18px 0;border-left:0;border-top:1px solid var(--line)}
-.cfi:first-child{border-top:0}
-footer{margin-top:48px;padding:32px 0 18px}
-.fg{grid-template-columns:1fr 1fr;gap:24px 16px}
-.fg>div:nth-child(2){display:block}
-.fg>div:first-child{grid-column:1/-1;order:0}
-.fg>div:nth-child(3) b{display:block}
-.fg>div:nth-child(4){grid-column:1/-1}
-.fg a{display:block;min-height:40px;padding:8px 0;margin:0}
-}
 </style>
 
 </head>
@@ -592,7 +462,7 @@ t3=setTimeout(end,8000)})();
 </script>
 <header><div class="hd"><a class="logo" href="#/"><img class="lgw" src="logo-escuro.png" alt="Seu Novo Lar"></a><nav id="nav" aria-label="Principal"></nav><a id="bell" class="bell" href="#/notificacoes" aria-label="Notificações" hidden><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="bc" hidden></span></a><span id="ac"></span></div></header>
 <main id="app" aria-live="polite">A carregar…</main>
-<footer><div class="fg"><div class="fb"><div class="logo"><img class="lgw" src="logo-escuro.png" alt="Seu Novo Lar"></div><p class="ftag">Juntos encontramos o teu próximo lar.</p></div><div><b>Navegação</b><a href="#/">Início</a><a href="#/imoveis">Imóveis</a><a href="#/publicar">Publicar anúncio</a><a href="#/pedidos">Pedidos de casa</a><a href="#/favoritos">Favoritos</a></div><div><b>Ajuda</b><a href="#/termos">Termos de uso</a><a href="#/privacidade">Política de privacidade</a><a href="#/eliminar-dados">Eliminação de dados</a></div><div><b>Contacto</b><a href="mailto:seunovolar2@gmail.com">seunovolar2@gmail.com</a><a href="tel:+244924043741">924 043 741</a><a href="tel:+244954627822">954 627 822</a></div></div><div class="copy">© 2026 Seu Novo Lar. Todos os direitos reservados.</div></footer>
+<footer><div class="fg"><div class="logo"><img class="lgw" src="logo-escuro.png" alt="Seu Novo Lar"></div><div><b>Navegação</b><a href="#/">Início</a><a href="#/imoveis">Imóveis</a><a href="#/publicar">Publicar anúncio</a><a href="#/pedidos">Pedidos de casa</a><a href="#/favoritos">Favoritos</a></div><div><b>Ajuda</b><a href="#/termos">Termos de uso</a><a href="#/privacidade">Política de privacidade</a><a href="#/eliminar-dados">Eliminação de dados</a></div><div><b>Juntos encontramos o teu próximo lar.</b><a href="mailto:seunovolar2@gmail.com">seunovolar2@gmail.com</a><a href="tel:+244924043741">924 043 741</a><a href="tel:+244954627822">954 627 822</a></div></div><div class="copy">© 2026 Seu Novo Lar. Todos os direitos reservados.</div></footer>
 <div class="tabbar" id="tb"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
@@ -735,47 +605,36 @@ return '<article class="pc"><a class="pl" href="#/anuncio/'+a.id+'"><div class="
 '<button class="hr" type="button" data-fav="'+a.id+'" aria-pressed="'+(!!FAV[a.id])+'" aria-label="Guardar nos favoritos">'+(FAV[a.id]?"♥":"♡")+'</button></article>'}
 
 /* ---------- INÍCIO / IMÓVEIS ---------- */
-var LOCC={t:0,rows:[]};
-async function locRows(){if(Date.now()-LOCC.t<300000)return LOCC.rows;var r=await sb.from("anuncios").select("provincia,municipio,tipo").eq("estado","publicado").limit(1000);if(r.error)return LOCC.rows;LOCC={t:Date.now(),rows:r.data||[]};return LOCC.rows}
-function edCard(a,k){var fs=ordf(a),c=fs[0]&&fs[0].caminho,big=k===0,ftA=[];
-if(a.tipo!=="terreno"){if(a.quartos!=null)ftA.push(a.quartos+(a.quartos===1?" quarto":" quartos"));if(a.casas_banho!=null)ftA.push(a.casas_banho+" WC")}if(a.area_m2)ftA.push(a.area_m2+" m²");var ft=esc(ftA.join(" · "));
-var lab=(a.finalidade==="venda"?"Venda":"Arrendamento")+" · "+(TIPOS[a.tipo]||a.tipo);
-return '<article class="ec"><a class="el" href="#/anuncio/'+a.id+'"><div class="ei">'+(c?'<img '+(big?'src="'+foto(c)+'"':tAttr(c))+' loading="lazy" decoding="async" alt="">':'')+'</div><div class="ek"><div class="mic">'+esc(lab)+'</div><h3>'+esc(a.titulo)+'</h3><div class="mut">'+esc(a.municipio)+', '+esc(a.provincia)+'</div>'+(ft?'<div class="ft">'+ft+'</div>':'')+'<div class="ep">'+kz(a.preco)+(a.finalidade==="arrendamento"&&a.preco!=null?" / mês":"")+'</div></div></a>'+
-'<button class="hr" type="button" data-fav="'+a.id+'" aria-pressed="'+(!!FAV[a.id])+'" aria-label="Guardar nos favoritos">'+(FAV[a.id]?"♥":"♡")+'</button></article>'}
-function locHome(rows){var el=document.getElementById("loc"),tl=document.getElementById("tl"),dl=document.getElementById("dl");if(!el||!tl)return;
-var P={},T={},M={};rows.forEach(function(x){var p=x.provincia||"Outras",m=x.municipio||"";P[p]=P[p]||{n:0,m:{}};P[p].n++;if(m){P[p].m[m]=(P[p].m[m]||0)+1;M[m]=1}T[x.tipo]=(T[x.tipo]||0)+1});
-var ps=Object.keys(P).sort(function(a,b){return P[b].n-P[a].n});
-el.innerHTML=ps.length?ps.map(function(p){var ms=Object.keys(P[p].m).sort(function(a,b){return P[p].m[b]-P[p].m[a]});return '<div class="lp"><div class="lph"><b>'+esc(p)+'</b><span>'+P[p].n+(P[p].n===1?" imóvel":" imóveis")+'</span></div>'+(ms.length?'<div class="lm">'+ms.map(function(m){return '<button type="button" class="lc" data-mun="'+esc(m)+'">'+esc(m)+'<i>'+P[p].m[m]+'</i></button>'}).join("")+'</div>':'')+'</div>'}).join(""):'<p class="mut">As localizações aparecem aqui assim que houver imóveis publicados.</p>';
-tl.innerHTML=Object.keys(TIPOS).map(function(k){return '<button type="button" class="tp" data-tipo="'+k+'"><span>'+TIPOS[k]+'</span>'+(T[k]?'<i>'+T[k]+'</i>':'')+'</button>'}).join("");
-if(dl)dl.innerHTML=Object.keys(M).sort().map(function(m){return '<option value="'+esc(m)+'"></option>'}).join("")}
-async function home(goRes){A.innerHTML='<div class="full hero"><div class="hw"><div><p class="eyebrow">Imóveis em Angola</p><h1>O lugar certo <em>muda tudo.</em></h1></div><div><p class="lead">Descubra imóveis para comprar, arrendar ou investir em Angola.</p><a class="hlink" href="#/imoveis">Ver todos os imóveis →</a></div></div>'+
-'<form class="sp2" id="sp" role="search" aria-label="Pesquisar imóveis">'+
-'<div class="sf2"><label for="l">Localização</label><input id="l" type="search" list="dl" enterkeyhint="search" placeholder="Município" autocomplete="off"><datalist id="dl"></datalist></div>'+
-'<div class="sf2"><label for="f">Finalidade</label><select id="f"><option value="">Todas</option><option value="venda">Venda</option><option value="arrendamento">Arrendamento</option></select></div>'+
-'<div class="sf2"><label for="t">Categoria</label><select id="t"><option value="">Todas</option>'+Object.keys(TIPOS).map(function(k){return '<option value="'+k+'">'+TIPOS[k]+'</option>'}).join("")+'</select></div>'+
-'<button class="btn" id="go" type="submit">Pesquisar</button>'+
-'<details class="mf2"><summary>Mais filtros</summary><div class="mf2g"><div class="fld"><label for="q">Quartos (mín.)</label><input id="q" type="number" min="0" inputmode="numeric"></div><div class="fld"><label for="pa">Preço máx. (Kz)</label><input id="pa" type="number" min="0" inputmode="numeric"></div></div></details></form></div>'+
-'<section class="ex" id="exp"><div class="sh"><h2>Explorar</h2></div><div class="exg"><div><h3 class="mic">Por localização</h3><div id="loc"><div class="sk skl"></div><div class="sk skl"></div><div class="sk skl"></div></div></div><div><h3 class="mic">Por tipo de imóvel</h3><div class="tl" id="tl"></div></div></div></section>'+
-'<section id="res" class="sel"><div class="sh"><h2>Seleção de imóveis</h2><a href="#/imoveis" class="hlink2">Ver todos →</a></div><div id="rs" class="eg"><div class="ec"><div class="ei sk"></div></div><div class="ec"><div class="ei sk"></div></div><div class="ec"><div class="ei sk"></div></div></div></section>'+
-'<section id="dst"></section><section id="pedh"></section>'+
-'<div class="full agt"><div class="agw"><div><p class="eyebrow">Para proprietários e imobiliárias</p><h2>Publique o seu imóvel. <em>É gratuito.</em></h2></div><div><p>Chegue a quem procura casa em Angola. Criar conta e publicar anúncios não tem custo. Só o destaque, opcional, é pago.</p><div class="hcta"><a class="btn wh" href="#/publicar">Publicar anúncio</a><a class="btn ghost" href="#/novo-pedido">Procuro casa</a></div></div></div></div>'+
-'<section class="cf"><div class="sh"><h2>Confiança e identidade</h2></div><div class="cfg">'+
-'<div class="cfi"><i>01</i><b>Contactos protegidos</b><p>Telefone, localização exata e nome do anunciante só são mostrados a quem tem conta e sessão iniciada.</p></div>'+
-'<div class="cfi"><i>02</i><b>Moderação</b><p>Qualquer anúncio pode ser denunciado. Um administrador analisa, pode pedir correções ou suspender o anúncio.</p></div>'+
-'<div class="cfi"><i>03</i><b>Anunciantes verificados</b><p>Os perfis verificados mostram a indicação Verificado. Os restantes são identificados como não verificados.</p></div>'+
-'<div class="cfi"><i>04</i><b>Gratuito por defeito</b><p>Criar conta e publicar é gratuito. O destaque é opcional, pago e sempre identificado como anúncio promovido.</p></div></div></section>';
-async function run(){var rs=document.getElementById("rs");
+async function home(goRes){A.innerHTML='<div class="full hero"><div class="hbg" aria-hidden="true"><b><i></i></b></div><h1>Encontra o seu lar <em>ideal</em> em Angola.</h1><p>Compre, arrende ou anuncie imóveis de forma simples.</p>'+
+'<form class="spill" id="sp" role="search">'+ico("search")+'<input id="l" type="search" enterkeyhint="search" placeholder="Pesquisar por município…" aria-label="Pesquisar por município" autocomplete="off"><button type="button" id="fbtn" aria-label="Abrir filtros" aria-haspopup="dialog">'+ico("sliders")+'</button></form></div>'+
+'<div class="sheetbg" id="sbg" hidden></div><div class="sheet" id="fsh" role="dialog" aria-modal="true" aria-label="Filtros" hidden><h2>Filtros</h2>'+
+'<div class="fld"><label for="f">Comprar ou arrendar</label><select id="f"><option value="">Venda e arrendamento</option><option value="venda">Venda</option><option value="arrendamento">Arrendamento</option></select></div>'+
+'<div class="fld"><label for="t">Tipo de imóvel</label><select id="t"><option value="">Todos</option>'+Object.keys(TIPOS).map(function(k){return '<option value="'+k+'">'+TIPOS[k]+'</option>'}).join("")+'</select></div>'+
+'<div class="row" style="grid-template-columns:1fr 1fr"><div class="fld"><label for="q">Quartos (mín.)</label><input id="q" type="number" min="0" inputmode="numeric"></div><div class="fld"><label for="pa">Preço máx. (Kz)</label><input id="pa" type="number" min="0" inputmode="numeric"></div></div>'+
+'<div class="row" style="grid-template-columns:1fr 2fr"><button class="btn out" id="fclr" type="button">Limpar</button><button class="btn" id="go" type="button">Pesquisar</button></div></div>'+
+'<div class="ben"><div class="bi"><span class="ic">'+ico("home")+'</span><span><b>Venda e arrendamento</b><small>Imóveis em Angola</small></span></div><div class="bi"><span class="ic">'+ico("shield")+'</span><span><b>Verificação de anunciantes</b><small>(quando aplicável)</small></span></div><div class="bi"><span class="ic">'+ico("lock")+'</span><span><b>Contactos protegidos</b><small>Visíveis a quem tem conta</small></span></div><div class="bi"><span class="ic">'+ico("phone")+'</span><span><b>Contacto direto</b><small>Por chamada telefónica</small></span></div></div>'+
+'<section id="dst"></section><section id="pedh"></section><section id="res"><div class="sh"><h2>Imóveis recentes</h2><a href="#/imoveis" style="color:var(--g);font-weight:600">Ver todos →</a></div><div id="rs" class="grid"></div></section>'+
+'<div class="cta"><div><h2>Queres anunciar o teu imóvel?</h2><p>Publica o teu anúncio de forma simples e rápida.</p></div><div style="display:flex;gap:8px;flex-wrap:wrap"><a class="btn wh" href="#/publicar">Publicar anúncio</a><a class="btn ghost" href="#/novo-pedido">Procuro casa</a></div></div>'+
+'<section><div class="sh"><h2>Categorias populares</h2></div><div class="cats">'+Object.keys(TIPOS).map(function(k){return '<button class="ct" type="button" data-tipo="'+k+'" aria-label="'+TIPOS[k]+'"><img src="'+CATIMG[k]+'" alt="" loading="lazy"><span>'+TIPOS[k]+'</span></button>'}).join("")+'</div></section>';
+async function run(){var rs=document.getElementById("rs");rs.innerHTML='<p class="mut">A procurar…</p>';
 var q=p1(sb.from("anuncios").select(CARD).eq("estado","publicado").order("criado",{ascending:false}).limit(8));
 if(f.value)q=q.eq("finalidade",f.value);if(t.value)q=q.eq("tipo",t.value);if(l.value.trim())q=q.ilike("municipio","%"+l.value.trim()+"%");if(document.getElementById("q").value)q=q.gte("quartos",+document.getElementById("q").value);if(pa.value)q=q.lte("preco",+pa.value);
-var rd=await Promise.all([q,destRows(),locRows()]),r=rd[0],d=rd[1];rs=document.getElementById("rs");if(!rs)return;if(r.error){rs.innerHTML='<div class="box msg">Erro: '+esc(r.error.message)+'</div>';return}
+var rd=await Promise.all([q,destRows()]),r=rd[0],d=rd[1];if(r.error){rs.innerHTML='<div class="box msg">Erro: '+esc(r.error.message)+'</div>';return}
 var D={};(d.data||[]).forEach(function(x){D[x.anuncio_id]=1});
-featHome(Object.keys(D));locHome(rd[2]);
-rs.innerHTML=r.data.length?r.data.map(function(a,k){return edCard(a,k)}).join(""):'<div class="ee"><h3>Ainda não há imóveis publicados.</h3><p class="mut">Seja o primeiro a anunciar em Angola.</p><a class="btn" href="#/publicar">Publicar anúncio</a></div>';syncFav()}
+var L=r.data.sort(function(a,b){return (D[b.id]?1:0)-(D[a.id]?1:0)}),F=0;
+featHome(Object.keys(D));
+
+rs.innerHTML=L.length?L.map(function(a){return cardHtml(a,false)}).join(""):'<div class="box mut">Ainda não há imóveis publicados com estes filtros.</div>'}
+FX.hero();var fs=document.getElementById("fsh"),sbg=document.getElementById("sbg");
 async function featHome(ids){var el=document.getElementById("dst");if(!el)return;if(!ids.length){el.innerHTML="";return}
 var r=await p1(sb.from("anuncios").select(CARD).eq("estado","publicado").in("id",ids).limit(4));el=document.getElementById("dst");if(!el)return;var F=r.data||[];
-el.innerHTML=F.length?'<div class="full band"><div class="sh"><h2>Em destaque</h2><span class="mic">Anúncios promovidos</span></div><p class="mut dn">Os destaques são anúncios promovidos pelos anunciantes. Não indicam verificação do imóvel nem do anunciante.</p><div class="dg2">'+F.map(function(a){return cardHtml(a,true)}).join("")+'</div></div>':"";syncFav()}
-document.getElementById("sp").onsubmit=function(e){e.preventDefault();FILT={f:f.value,t:t.value,l:l.value.trim(),q:document.getElementById("q").value,pb:pa.value,ord:"r",page:1};location.hash="#/imoveis"};
-document.getElementById("exp").onclick=function(e){var m=e.target.closest("[data-mun]"),k=e.target.closest("[data-tipo]");if(m){FILT={l:m.dataset.mun,ord:"r",page:1};location.hash="#/imoveis"}else if(k){FILT={t:k.dataset.tipo,ord:"r",page:1};location.hash="#/imoveis"}};
+el.innerHTML=F.length?'<div class="sh"><h2>Imóveis em destaque</h2></div><div class="cov" id="cov" tabindex="0" aria-label="Imóveis em destaque, deslize para ver mais">'+F.map(function(a){return cardHtml(a,true)}).join("")+'</div><div class="dots" id="cdots" aria-hidden="true">'+F.map(function(_,k){return '<i class="'+(k?"":"on")+'"></i>'}).join("")+'</div>':"";FX.cov(document.getElementById("cov"))}
+function openF(o){fs.hidden=sbg.hidden=!o;document.body.style.overflow=o?"hidden":"";if(o)setTimeout(function(){f.focus()},60)}
+document.getElementById("fbtn").onclick=function(){openF(true)};sbg.onclick=function(){openF(false)};fs.onkeydown=function(e){if(e.key==="Escape")openF(false)};
+document.getElementById("sp").onsubmit=function(e){e.preventDefault();document.getElementById("go").click()};
+document.getElementById("fclr").onclick=function(){f.value="";t.value="";document.getElementById("q").value="";pa.value=""};
+document.getElementById("go").onclick=function(){openF(false);FILT={f:f.value,t:t.value,l:l.value.trim(),q:document.getElementById("q").value,pb:pa.value,ord:"r",page:1};location.hash="#/imoveis"};
+[].forEach.call(document.querySelectorAll(".ct"),function(b){b.onclick=function(){FILT={t:b.dataset.tipo,ord:"r",page:1};location.hash="#/imoveis"}});
 homePedidos();await run();if(goRes)document.getElementById("res").scrollIntoView()}
 
 /* ---------- IMÓVEIS (RESULTADOS COM FILTROS) ---------- */
