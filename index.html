@@ -475,7 +475,7 @@ function fotoT(c){return foto(String(c).replace(/\.jpg$/i,"-m.jpg"))}
 function tAttr(c){return 'src="'+fotoT(c)+'" data-o="'+foto(c)+'" onerror="this.onerror=null;this.src=this.dataset.o"'}
 function p1(q){return q.order("ordem",{referencedTable:"fotografias"}).limit(1,{referencedTable:"fotografias"})}
 function syncFav(){[].forEach.call(document.querySelectorAll("[data-fav]"),function(b){var on=!!FAV[b.dataset.fav];b.textContent=on?"♥":"♡";b.setAttribute("aria-pressed",on)})}
-var SB_URL="https://sfwqxhisfjyxuhoacofg.supabase.co",SB_KEY="sb_publishable_9JyxvxunfLy_uopgTDFGZA_l67zPGPE";
+var SHARE_PREVIEW=false,SB_URL="https://sfwqxhisfjyxuhoacofg.supabase.co",SB_KEY="sb_publishable_9JyxvxunfLy_uopgTDFGZA_l67zPGPE";
 var sb=window.supabase.createClient(SB_URL,SB_KEY),PEND=0,U=null,PF=null,FAV={},A=document.getElementById("app");
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
 function kz(n){return n==null?"Preço sob consulta":Number(n).toLocaleString("pt-PT")+" Kz"}
@@ -704,7 +704,7 @@ if(V&&V.latitude!=null){try{await loadLeaflet()}catch(e){}}
 if(V&&V.latitude!=null&&typeof L!=="undefined"){var mm=L.map("dm2",{scrollWheelZoom:false}).setView([V.latitude,V.longitude],16);L.tileLayer(TILES,{maxZoom:19,attribution:"© OpenStreetMap"}).addTo(mm);L.marker([V.latitude,V.longitude],{icon:PIN}).addTo(mm)}
 var sm=await p1(sb.from("anuncios").select(CARD).eq("estado","publicado").eq("tipo",a.tipo).neq("id",id).limit(3));
 if(sm.data&&sm.data.length)A.insertAdjacentHTML("beforeend",'<section><div class="sh"><h2>Imóveis semelhantes</h2><a href="#/imoveis" style="color:var(--g);font-weight:600">Ver todos →</a></div><div class="grid">'+sm.data.map(function(x){return cardHtml(x,false)}).join("")+'</div></section>');
-document.getElementById("shl").onclick=async function(){var u=location.origin+"/a/"+id,t=(a.titulo||"Imóvel")+" · "+kz(a.preco);try{if(navigator.share){await navigator.share({title:t,text:t,url:u});return}}catch(e){if(e&&e.name==="AbortError")return}try{await navigator.clipboard.writeText(u);this.textContent="Link copiado"}catch(e){prompt("Copia o link:",u)}};
+document.getElementById("shl").onclick=function(){partilharAnuncio(a,fs,this)};
 document.getElementById("dn").onclick=async function(){if(!U){location.hash="#/entrar";return}var m=prompt("Motivo da denúncia:");if(!m)return;var x=await sb.from("denuncias").insert({anuncio_id:id,denunciante_id:U.id,motivo:m});document.getElementById("dm").className="msg "+(x.error?"":"ok");document.getElementById("dm").textContent=x.error?x.error.message:"Denúncia enviada. Uma denúncia não prova fraude; será analisada."}}
 
 /* ---------- CONTA ---------- */
@@ -924,6 +924,31 @@ while(tot()>940&&sz>22){sz-=2;x.font="700 "+sz+"px "+F}
 var cx=(1080-tot())/2;z.forEach(function(t){w=x.measureText(t).width+pad*2;rr(cx,785,w,70,35,"#ECFDF5");x.fillStyle="#065F46";x.textAlign="center";x.fillText(t,cx+w/2,821);cx+=w+gap});
 x.fillStyle="#fff";x.font="800 52px "+F;x.fillText("Tem uma casa assim?",540,935);x.fillStyle="#D1FAE5";x.font="600 32px "+F;x.fillText("seu-novo-lar.vercel.app",540,1000);
 c.toBlob(res,"image/png")})}
+/* ---------- Cartão do anúncio para partilhar (foto + preço), gerado no telemóvel ---------- */
+function ldImg(src,cors){return new Promise(function(r){var i=new Image();if(cors)i.crossOrigin="anonymous";var t=setTimeout(function(){r(null)},7000);i.onload=function(){clearTimeout(t);r(i)};i.onerror=function(){clearTimeout(t);r(null)};i.src=src})}
+async function cartaoAnuncio(a,fs){var W=1080,H=1350,PH=780,F="Inter,Arial,sans-serif",ph=fs&&fs[0]?await ldImg(foto(fs[0].caminho),true):null,lg=await ldImg("logo-escuro.png",false);
+function draw(img){var c=document.createElement("canvas");c.width=W;c.height=H;var x=c.getContext("2d");x.textBaseline="alphabetic";
+function tx(t,px,wt,col,X,Y,max,al){x.font=wt+" "+px+"px "+F;var s=px;while(x.measureText(t).width>max&&s>px*.6){s-=4;x.font=wt+" "+s+"px "+F}while(x.measureText(t).width>max&&t.length>4){t=t.slice(0,-2)}if(x.measureText(t).width>max)return;x.fillStyle=col;x.textAlign=al||"left";x.fillText(t,X,Y)}
+x.fillStyle="#065F46";x.fillRect(0,0,W,H);
+if(img){var r=Math.max(W/img.width,PH/img.height),w=img.width*r,h=img.height*r;x.save();x.beginPath();x.rect(0,0,W,PH);x.clip();x.drawImage(img,(W-w)/2,(PH-h)/2,w,h);x.restore()}else{x.fillStyle="#087F5B";x.fillRect(0,0,W,PH)}
+var g=x.createLinearGradient(0,PH-220,0,PH);g.addColorStop(0,"rgba(6,95,70,0)");g.addColorStop(1,"rgba(6,95,70,1)");x.fillStyle=g;x.fillRect(0,PH-220,W,220);
+var tg=a.finalidade==="venda"?"À VENDA":"ARRENDAMENTO";x.font="700 34px "+F;var tw=x.measureText(tg).width+60;x.fillStyle="#D1FAE5";x.beginPath();x.moveTo(48+34,44);x.arcTo(48+tw,44,48+tw,44+68,34);x.arcTo(48+tw,44+68,48,44+68,34);x.arcTo(48,44+68,48,44,34);x.arcTo(48,44,48+tw,44,34);x.closePath();x.fill();x.fillStyle="#065F46";x.textAlign="left";x.fillText(tg,78,91);
+tx(kz(a.preco),112,"800","#FFFFFF",64,905,952);
+tx(a.titulo||"Imóvel",54,"700","#FFFFFF",64,985,952);
+var onde=[a.municipio,a.provincia].filter(Boolean).join(", "),l2=(TIPOS[a.tipo]||"Imóvel")+(onde?" · "+onde:"");tx(l2,38,"600","#D1FAE5",64,1050,952);
+var ex=[];if(a.quartos)ex.push(a.quartos+(+a.quartos===1?" quarto":" quartos"));if(a.casas_banho)ex.push(a.casas_banho+(+a.casas_banho===1?" casa de banho":" casas de banho"));if(a.area_m)ex.push(a.area_m+" m²");if(ex.length)tx(ex.join("  ·  "),36,"500","#FFFFFF",64,1112,952);
+x.fillStyle="#087F5B";x.fillRect(64,1180,952,3);
+if(lg){var lh=72,lw=lg.width*lh/lg.height;if(lw>520){lw=520;lh=lg.height*lw/lg.width}x.drawImage(lg,64,1215+(72-lh)/2,lw,lh)}else tx("SEU NOVO LAR",44,"800","#FFFFFF",64,1265,520);
+tx("Ver anúncio",36,"700","#6EE7B7",1016,1265,360,"right");return c}
+function blob(c){return new Promise(function(r){try{c.toBlob(r,"image/jpeg",.88)}catch(e){r(null)}})}
+var b=await blob(draw(ph));if(!b&&ph)b=await blob(draw(null));return b}
+async function partilharAnuncio(a,fs,btn){var u=location.origin+(SHARE_PREVIEW?"/a/":"/#/anuncio/")+a.id,t=(a.titulo||"Imóvel")+" · "+kz(a.preco),txt=t+"\n"+u,ih=btn.innerHTML,keep=false;
+function lk(){return navigator.share?navigator.share({title:t,text:t,url:u}):Promise.reject(new Error("sem partilha"))}
+try{if(!SHARE_PREVIEW){if(!a._cb){btn.disabled=true;btn.textContent="A preparar…";a._cb=await cartaoAnuncio(a,fs);btn.disabled=false}
+if(a._cb){var f=new File([a._cb],"imovel.jpg",{type:"image/jpeg"});if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f],text:txt});return}catch(e){if(e&&e.name==="AbortError")return;if(e&&e.name==="NotAllowedError"){btn.textContent="Toca outra vez para enviar";keep=true;return}}}}}
+try{await lk();return}catch(e){if(e&&e.name==="AbortError")return}
+try{await navigator.clipboard.writeText(u);btn.textContent="Link copiado";keep=true}catch(e){prompt("Copia o link:",u)}}
+finally{btn.disabled=false;if(!keep)btn.innerHTML=ih}}
 async function partilharPedido(p){var b=await cartaoPedido(p),f=new File([b],"pedido-casa.png",{type:"image/png"}),url=location.origin+"/#/pedido/"+p.id,txt=pedTitulo(p)+" "+pedBig(p)+" · Tem uma casa assim? "+url;
 if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f],text:txt});return}catch(e){return}}
 var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="pedido-casa.png";a.click();try{await navigator.clipboard.writeText(txt)}catch(e){}}
