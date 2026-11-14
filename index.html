@@ -304,22 +304,12 @@ html.nofx .cov .pc{transform:none!important;opacity:1!important}html.nofx .cov .
 .tmb .n{display:inline-block}
 .tmb .sol,.tmb .c{display:none}
 @media(max-width:720px){.tmb .m{display:none}.tmb .n::first-letter{text-transform:uppercase}.tmb{padding:0 12px 0 9px;gap:6px;font-size:13px;min-height:36px}}
-.tsw{display:inline-flex;gap:2px;padding:3px;border:1.5px solid rgba(255,255,255,.45);border-radius:999px;background:rgba(255,255,255,.08);color:inherit}
-.tsw button{display:inline-flex;align-items:center;gap:7px;min-height:38px;padding:0 16px;border:0;border-radius:999px;background:transparent;color:inherit;font-family:inherit;font-weight:600;font-size:14px;line-height:1;cursor:pointer}
-.tsw svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.tsw button:focus-visible,.tmb:focus-visible{outline:3px solid #fff;outline-offset:2px}
-html:not([data-tema="dark"]) .tsw [data-tema-set="claro"]{background:#fff;color:var(--gd)}
-.box .tsw{border-color:var(--line);background:var(--bg);color:var(--ink)}
-html:not([data-tema="dark"]) .box .tsw [data-tema-set="claro"]{background:var(--g);color:#fff}
-.fap{max-width:1180px;margin:18px auto 0;padding:0 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:14px;font-weight:600}
 /* Paleta escura: preto quente + dourado. Alternativa: <html data-pal="sage"> (verde suave). */
 html[data-tema="dark"]{--bg:#1C1A15;--card:#2B2720;--ink:#FAF6EC;--mut:#D2CAB6;--line:#443E2F;--a:#E8BA40;--ah:#F4CB5C;--at:#F6D47E;--ad:#1F1704;--soft:#403518;--tint:#342E1E;--gd:#28241B;--gal:#3A3427;--cardA:rgba(43,39,32,.92);--edge:rgba(232,186,64,.5);--hr:30,26,19;--hr2:56,45,22;--g:var(--a);--mint:var(--at);color-scheme:dark}
 html[data-tema="dark"][data-pal="sage"]{--bg:#18211E;--card:#232F2B;--ink:#F0F5F2;--mut:#BCCAC3;--line:#36463F;--a:#7DC4A8;--ah:#92D2B9;--at:#9DDCC3;--ad:#08130F;--soft:#27403A;--tint:#1F2E29;--gd:#1D2924;--gal:#2A3A34;--cardA:rgba(35,47,43,.92);--edge:rgba(125,196,168,.45);--hr:20,30,26;--hr2:30,52,44}
 html[data-tema="dark"] .tmb .lua,html[data-tema="dark"] .tmb .e{display:none}html[data-tema="dark"] .tmb .sol{display:block}html[data-tema="dark"] .tmb .c{display:inline-block}
 html[data-tema="dark"] .tmb{border-color:var(--a);background:rgba(201,162,75,.14);color:var(--at)}html[data-tema="dark"][data-pal="sage"] .tmb{background:rgba(111,168,146,.14)}
-html[data-tema="dark"] .tsw{border-color:var(--edge)}html[data-tema="dark"] .box .tsw{border-color:var(--line);background:var(--bg)}
-html[data-tema="dark"] .tsw [data-tema-set="escuro"]{background:var(--a);color:var(--ad)}
-html[data-tema="dark"] .tmb:focus-visible,html[data-tema="dark"] .tsw button:focus-visible{outline-color:var(--at)}
+html[data-tema="dark"] .tmb:focus-visible{outline-color:var(--at)}
 /* superfícies */
 html[data-tema="dark"] .btn.out,html[data-tema="dark"] .btn.no,html[data-tema="dark"] input,html[data-tema="dark"] select,html[data-tema="dark"] textarea,html[data-tema="dark"] .sbar,html[data-tema="dark"] .ben,html[data-tema="dark"] .pc,html[data-tema="dark"] .cat,html[data-tema="dark"] .pg button,html[data-tema="dark"] .steps i,html[data-tema="dark"] .tabbar,html[data-tema="dark"] .spill,html[data-tema="dark"] .sheet,html[data-tema="dark"] .ctabar,html[data-tema="dark"] .clist,html[data-tema="dark"] .mrow,html[data-tema="dark"] .mmenu,html[data-tema="dark"] .pbtn button{background:var(--card)}
 html[data-tema="dark"] .gbtn{background:var(--card);color:var(--ink);border-color:var(--line)}html[data-tema="dark"] .gbtn:hover{background:var(--tint)}
@@ -510,7 +500,7 @@ t1=setTimeout(go,1500);t3=setTimeout(end,T+3500)})();
 </script>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-sol" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol><symbol id="i-lua" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol></svg><header><div class="hd"><a class="logo" href="#/"><img class="lgw" src="logo-escuro.png" alt="Seu Novo Lar"></a><nav id="nav" aria-label="Principal"></nav><button id="tema" class="tmb" type="button" aria-label="Mudar para modo escuro" title="Mudar o aspeto do site"><svg class="lua" aria-hidden="true"><use href="#i-lua"/></svg><svg class="sol" aria-hidden="true"><use href="#i-sol"/></svg><span class="m">Modo </span><span class="n e">escuro</span><span class="n c">claro</span></button><a id="bell" class="bell" href="#/notificacoes" aria-label="Notificações" hidden><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="bc" hidden></span></a><span id="ac"></span></div></header>
 <main id="app" aria-live="polite">A carregar…</main>
-<footer><div class="fg"><div class="logo"><img class="lgw" src="logo-escuro.png" alt="Seu Novo Lar"></div><div><b>Navegação</b><a href="#/">Início</a><a href="#/imoveis">Imóveis</a><a href="#/publicar">Publicar anúncio</a><a href="#/pedidos">Pedidos de casa</a><a href="#/favoritos">Favoritos</a></div><div><b>Ajuda</b><a href="#/termos">Termos de uso</a><a href="#/privacidade">Política de privacidade</a><a href="#/eliminar-dados">Eliminação de dados</a></div><div><b>Juntos encontramos o teu próximo lar.</b><a href="mailto:seunovolar2@gmail.com">seunovolar2@gmail.com</a><a href="tel:+244924043741">924 043 741</a><a href="tel:+244954627822">954 627 822</a></div></div><div class="fap"><span>Aparência</span><div class="tsw" role="group" aria-label="Aparência do site"><button type="button" data-tema-set="claro"><svg aria-hidden="true"><use href="#i-sol"/></svg>Claro</button><button type="button" data-tema-set="escuro"><svg aria-hidden="true"><use href="#i-lua"/></svg>Escuro</button></div></div><div class="copy">© 2026 Seu Novo Lar. Todos os direitos reservados.</div></footer>
+<footer><div class="fg"><div class="logo"><img class="lgw" src="logo-escuro.png" alt="Seu Novo Lar"></div><div><b>Navegação</b><a href="#/">Início</a><a href="#/imoveis">Imóveis</a><a href="#/publicar">Publicar anúncio</a><a href="#/pedidos">Pedidos de casa</a><a href="#/favoritos">Favoritos</a></div><div><b>Ajuda</b><a href="#/termos">Termos de uso</a><a href="#/privacidade">Política de privacidade</a><a href="#/eliminar-dados">Eliminação de dados</a></div><div><b>Juntos encontramos o teu próximo lar.</b><a href="mailto:seunovolar2@gmail.com">seunovolar2@gmail.com</a><a href="tel:+244924043741">924 043 741</a><a href="tel:+244954627822">954 627 822</a></div></div><div class="copy">© 2026 Seu Novo Lar. Todos os direitos reservados.</div></footer>
 <div class="tabbar" id="tb"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
@@ -541,7 +531,7 @@ function fotoT(c){return foto(String(c).replace(/\.jpg$/i,"-m.jpg"))}
 function tAttr(c){return 'src="'+fotoT(c)+'" data-o="'+foto(c)+'" onerror="this.onerror=null;this.src=this.dataset.o"'}
 function p1(q){return q.order("ordem",{referencedTable:"fotografias"}).limit(1,{referencedTable:"fotografias"})}
 function syncFav(){[].forEach.call(document.querySelectorAll("[data-fav]"),function(b){var on=!!FAV[b.dataset.fav];b.textContent=on?"♥":"♡";b.setAttribute("aria-pressed",on)})}
-var TSWH='<div class="tsw" role="group" aria-label="Aparência do site"><button type="button" data-tema-set="claro"><svg aria-hidden="true"><use href="#i-sol"/></svg>Claro</button><button type="button" data-tema-set="escuro"><svg aria-hidden="true"><use href="#i-lua"/></svg>Escuro</button></div>',SHARE_PREVIEW=false,SB_URL="https://sfwqxhisfjyxuhoacofg.supabase.co",SB_KEY="sb_publishable_9JyxvxunfLy_uopgTDFGZA_l67zPGPE";
+var SHARE_PREVIEW=false,SB_URL="https://sfwqxhisfjyxuhoacofg.supabase.co",SB_KEY="sb_publishable_9JyxvxunfLy_uopgTDFGZA_l67zPGPE";
 var sb=window.supabase.createClient(SB_URL,SB_KEY),PEND=0,U=null,PF=null,FAV={},A=document.getElementById("app");
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
 function kz(n){return n==null?"Preço sob consulta":Number(n).toLocaleString("pt-PT")+" Kz"}
@@ -781,7 +771,7 @@ var ver={verificado:"Verificado",em_analise:"Verificação em análise",recusada
 function row(h,i,l,n){return '<a class="crow" href="#'+h+'">'+ico(i)+'<span>'+l+'</span>'+(n?'<span class="cnt2">'+n+'</span>':'')+ico("chev").replace('class="ico"','class="ico chev"')+'</a>'}
 A.innerHTML='<div class="box prof"><div class="av">'+esc((nome||U.email||"?").trim().charAt(0).toUpperCase())+'</div><div><b>'+esc(nome||"Utilizador")+'</b><div class="mut">'+esc(U.email||U.phone||"")+(tipo?" · "+tipo:"")+'</div><span class="badge'+(PF&&PF.verificacao==="verificado"?"":" s-cancelada")+'">'+ver+'</span></div></div>'+
 (ACESSO_LIVRE?"":'<div class="box subs"><div><small class="mut">Subscrição</small><b>'+(sub?"Ativa até "+new Date(sub.fim).toLocaleDateString("pt-PT"):"Sem subscrição ativa")+'</b></div><a class="btn'+(sub?" out":"")+'" href="#/subscricao">'+(sub?"Gerir":"Subscrever")+'</a></div>')+
-'<div class="clist" role="navigation" aria-label="Conta">'+row("/meus","build","Meus anúncios",na)+row("/meus-pedidos","home","Meus pedidos",np)+row("/favoritos","heart","Favoritos",nf)+(ACESSO_LIVRE?row("/subscricao","cash","Pagamentos"):"")+row("/notificacoes","bell","Notificações",NCNT)+(adm?row("/admin","shield","Painel de administração",PEND):"")+'</div><div class="box apar"><b>Aparência</b><div class="mut" style="margin:2px 0 10px">Escolhe o modo claro ou escuro.</div>'+TSWH+'</div><button class="btn no" id="so" type="button" style="width:100%">Sair</button>';
+'<div class="clist" role="navigation" aria-label="Conta">'+row("/meus","build","Meus anúncios",na)+row("/meus-pedidos","home","Meus pedidos",np)+row("/favoritos","heart","Favoritos",nf)+(ACESSO_LIVRE?row("/subscricao","cash","Pagamentos"):"")+row("/notificacoes","bell","Notificações",NCNT)+(adm?row("/admin","shield","Painel de administração",PEND):"")+'</div><button class="btn no" id="so" type="button" style="width:100%">Sair</button>';
 document.getElementById("so").onclick=function(){sb.auth.signOut()}}
 document.addEventListener("click",async function(e){var b=e.target.closest("[data-fav]");if(!b)return;e.preventDefault();if(!U){location.hash="#/entrar";return}var id=b.dataset.fav;
 if(FAV[id]){var x=await sb.from("favoritos").delete().eq("utilizador_id",U.id).eq("anuncio_id",id);if(!x.error){delete FAV[id];b.textContent="♡";b.setAttribute("aria-pressed","false")}}
@@ -1166,14 +1156,10 @@ document.addEventListener("click",function(e){var b=e.target.closest("[data-del]
 load();
 </script>
 <script>
-(function(){var d=document.documentElement;
-function sync(){var dk=d.getAttribute("data-tema")==="dark",b=document.getElementById("tema");
-if(b){b.setAttribute("aria-label",dk?"Mudar para modo claro":"Mudar para modo escuro")}
-[].forEach.call(document.querySelectorAll("[data-tema-set]"),function(x){x.setAttribute("aria-pressed",String((x.getAttribute("data-tema-set")==="escuro")===dk))})}
-function set(dark){d.setAttribute("data-tema",dark?"dark":"light");try{localStorage.setItem("snl_tema",dark?"escuro":"claro")}catch(e){}sync()}
-document.addEventListener("click",function(e){var t=e.target.closest&&e.target.closest("[data-tema-set],#tema");if(!t)return;
-if(t.id==="tema")set(d.getAttribute("data-tema")!=="dark");else set(t.getAttribute("data-tema-set")==="escuro")});
-addEventListener("hashchange",function(){setTimeout(sync,120)});sync()})();
+(function(){var d=document.documentElement,b=document.getElementById("tema");if(!b)return;
+function sync(){b.setAttribute("aria-label",d.getAttribute("data-tema")==="dark"?"Mudar para modo claro":"Mudar para modo escuro")}
+b.addEventListener("click",function(){var dk=d.getAttribute("data-tema")!=="dark";d.setAttribute("data-tema",dk?"dark":"light");try{localStorage.setItem("snl_tema",dk?"escuro":"claro")}catch(e){}sync()});
+sync()})();
 </script>
 </body>
 </html>
