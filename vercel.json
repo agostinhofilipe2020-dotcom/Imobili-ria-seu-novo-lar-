@@ -1,5 +1,23 @@
 {
   "rewrites": [
     { "source": "/a/:id", "destination": "/api/a?id=:id" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    },
+    {
+      "source": "/intro/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800" }]
+    },
+    {
+      "source": "/(icon-192.png|icon-512.png|icon-maskable-512.png|apple-touch-icon.png|og-image.jpg)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800" }]
+    }
   ]
 }
