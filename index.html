@@ -313,8 +313,8 @@ html:not([data-tema="dark"]) .tsw [data-tema-set="claro"]{background:#fff;color:
 html:not([data-tema="dark"]) .box .tsw [data-tema-set="claro"]{background:var(--g);color:#fff}
 .fap{max-width:1180px;margin:18px auto 0;padding:0 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:14px;font-weight:600}
 /* Paleta escura: preto quente + dourado. Alternativa: <html data-pal="sage"> (verde suave). */
-html[data-tema="dark"]{--bg:#0D0C0A;--card:#17150F;--ink:#F1EDE4;--mut:#A9A294;--line:#2C281E;--a:#C9A24B;--ah:#D9B565;--at:#E3C37A;--ad:#1A1405;--soft:#2A2312;--tint:#1C180D;--gd:#13110C;--gal:#211D13;--cardA:rgba(23,21,15,.92);--edge:rgba(201,162,75,.30);--hr:13,11,8;--hr2:36,28,14;--g:var(--a);--mint:var(--at);color-scheme:dark}
-html[data-tema="dark"][data-pal="sage"]{--bg:#0C1110;--card:#151C1A;--ink:#E8EEEB;--mut:#9AA8A2;--line:#26302D;--a:#6FA892;--ah:#82B8A2;--at:#8FCDB5;--ad:#08130F;--soft:#1B2A25;--tint:#13201B;--gd:#101816;--gal:#1A2622;--cardA:rgba(21,28,26,.92);--edge:rgba(111,168,146,.30);--hr:9,16,14;--hr2:19,36,30}
+html[data-tema="dark"]{--bg:#1C1A15;--card:#2B2720;--ink:#FAF6EC;--mut:#D2CAB6;--line:#443E2F;--a:#E8BA40;--ah:#F4CB5C;--at:#F6D47E;--ad:#1F1704;--soft:#403518;--tint:#342E1E;--gd:#28241B;--gal:#3A3427;--cardA:rgba(43,39,32,.92);--edge:rgba(232,186,64,.5);--hr:30,26,19;--hr2:56,45,22;--g:var(--a);--mint:var(--at);color-scheme:dark}
+html[data-tema="dark"][data-pal="sage"]{--bg:#18211E;--card:#232F2B;--ink:#F0F5F2;--mut:#BCCAC3;--line:#36463F;--a:#7DC4A8;--ah:#92D2B9;--at:#9DDCC3;--ad:#08130F;--soft:#27403A;--tint:#1F2E29;--gd:#1D2924;--gal:#2A3A34;--cardA:rgba(35,47,43,.92);--edge:rgba(125,196,168,.45);--hr:20,30,26;--hr2:30,52,44}
 html[data-tema="dark"] .tmb .lua,html[data-tema="dark"] .tmb .e{display:none}html[data-tema="dark"] .tmb .sol{display:block}html[data-tema="dark"] .tmb .c{display:inline-block}
 html[data-tema="dark"] .tmb{border-color:var(--a);background:rgba(201,162,75,.14);color:var(--at)}html[data-tema="dark"][data-pal="sage"] .tmb{background:rgba(111,168,146,.14)}
 html[data-tema="dark"] .tsw{border-color:var(--edge)}html[data-tema="dark"] .box .tsw{border-color:var(--line);background:var(--bg)}
@@ -333,7 +333,7 @@ html[data-tema="dark"] .ph,html[data-tema="dark"] .big{background:linear-gradien
 html[data-tema="dark"] header{box-shadow:0 1px 0 var(--edge)}
 html[data-tema="dark"] footer{border-top:1px solid var(--edge)}
 html[data-tema="dark"] .hero{background:rgb(var(--hr));box-shadow:none}
-html[data-tema="dark"] .hero::after{background:linear-gradient(90deg,rgba(var(--hr),.95) 0%,rgba(var(--hr),.82) 42%,rgba(var(--hr),.3) 100%)}
+html[data-tema="dark"] .hero::after{background:linear-gradient(90deg,rgba(var(--hr),.80) 0%,rgba(var(--hr),.58) 42%,rgba(var(--hr),.08) 100%)}
 html[data-tema="dark"] .cta{background:linear-gradient(90deg,rgba(var(--hr),0) 0,rgba(var(--hr),0) 12%,rgb(var(--hr)) 28%,rgb(var(--hr2)) 100%),var(--bimg) left center/auto 100% no-repeat,rgb(var(--hr))}
 @media(max-width:720px){html[data-tema="dark"] .cta{background:linear-gradient(180deg,rgba(var(--hr),0) 0,rgba(var(--hr),0) 60px,rgb(var(--hr)) 135px),var(--bimg) top center/cover no-repeat,rgb(var(--hr))}}
 /* botões e elementos preenchidos: acento + texto escuro */
@@ -350,6 +350,9 @@ html[data-tema="dark"] .ped{background:rgb(var(--hr2));border-top-color:var(--a)
 html[data-tema="dark"] .porc{background:var(--soft)}
 html[data-tema="dark"] .pz span{background:var(--soft);color:var(--at)}
 html[data-tema="dark"] .pm{border:1px solid var(--line)}
+html[data-tema="dark"] .pc,html[data-tema="dark"] .cat,html[data-tema="dark"] .ben,html[data-tema="dark"] .clist,html[data-tema="dark"] .mrow,html[data-tema="dark"] .box,html[data-tema="dark"] .sbar,html[data-tema="dark"] .spill{border:1px solid var(--line);box-shadow:0 6px 18px rgba(0,0,0,.28)}
+html[data-tema="dark"] input,html[data-tema="dark"] select,html[data-tema="dark"] textarea{background:var(--tint);border-color:#5A5240}
+html[data-tema="dark"] .spill input,html[data-tema="dark"] .sbar input,html[data-tema="dark"] .sbar select{background:transparent}
 /* estados */
 html[data-tema="dark"] .badge.s-pendente,html[data-tema="dark"] .badge.s-em_analise{background:#3A2E0B;color:#FCD34D!important}
 html[data-tema="dark"] .badge.s-rejeitado,html[data-tema="dark"] .badge.s-suspenso,html[data-tema="dark"] .badge.s-removido,html[data-tema="dark"] .badge.s-correcao_solicitada,html[data-tema="dark"] .badge.s-aberta{background:#3B1616;color:#FCA5A5!important}
