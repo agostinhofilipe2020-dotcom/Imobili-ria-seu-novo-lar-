@@ -304,6 +304,8 @@ html.nofx .cov .pc{transform:none!important;opacity:1!important}html.nofx .cov .
 .tmb .n{display:inline-block}
 .tmb .sol,.tmb .c{display:none}
 @media(max-width:720px){.tmb .m{display:none}.tmb .n::first-letter{text-transform:uppercase}.tmb{padding:0 12px 0 9px;gap:6px;font-size:13px;min-height:36px}}
+@media(min-width:721px) and (max-width:1320px){.hd{gap:12px}nav a{padding:20px 7px 17px;font-size:13.5px}.tmb .m{display:none}.tmb .n::first-letter{text-transform:uppercase}.tmb{padding:0 12px 0 9px}}
+@media(min-width:721px) and (max-width:1100px){nav a{padding:20px 6px 17px;font-size:13px}.hd{padding:0 12px}.hd .logo{flex:none}#nav{flex:1 1 0;min-width:0;overflow-x:auto;scrollbar-width:none}#nav::-webkit-scrollbar{display:none}}
 /* Paleta escura: preto quente + dourado. Alternativa: <html data-pal="sage"> (verde suave). */
 html[data-tema="dark"]{--bg:#1C1A15;--card:#2B2720;--ink:#FAF6EC;--mut:#D2CAB6;--line:#443E2F;--a:#E8BA40;--ah:#F4CB5C;--at:#F6D47E;--ad:#1F1704;--soft:#403518;--tint:#342E1E;--gd:#28241B;--gal:#3A3427;--cardA:rgba(43,39,32,.92);--edge:rgba(232,186,64,.5);--hr:30,26,19;--hr2:56,45,22;--g:var(--a);--mint:var(--at);color-scheme:dark}
 html[data-tema="dark"][data-pal="sage"]{--bg:#18211E;--card:#232F2B;--ink:#F0F5F2;--mut:#BCCAC3;--line:#36463F;--a:#7DC4A8;--ah:#92D2B9;--at:#9DDCC3;--ad:#08130F;--soft:#27403A;--tint:#1F2E29;--gd:#1D2924;--gal:#2A3A34;--cardA:rgba(35,47,43,.92);--edge:rgba(125,196,168,.45);--hr:20,30,26;--hr2:30,52,44}
@@ -352,6 +354,79 @@ html[data-tema="dark"] .msg,html[data-tema="dark"] .fe,html[data-tema="dark"] .l
 html[data-tema="dark"] .fld.bad input,html[data-tema="dark"] .fld.bad select,html[data-tema="dark"] .fld.bad textarea,html[data-tema="dark"] .fld.bad .rc{border-color:#F87171}
 html[data-tema="dark"] .leaflet-tile{filter:invert(1) hue-rotate(180deg) brightness(.92) contrast(.9)}
 html[data-tema="dark"] ::placeholder{color:#8B8577}
+/* ===== Dashboard de visitas (Admin) ===== */
+:root{--c1:#087F5B;--c2:#065F46;--c3:#34D399;--c4:#9CA3AF;--c5:#111827;--c6:#A7F3D0;--up:#067647;--dn:#B42318}
+html[data-tema="dark"]{--c1:#E8BA40;--c2:#B8872B;--c3:#F6D47E;--c4:#8B8577;--c5:#FAF6EC;--c6:#6B5A2A;--up:#4ADE80;--dn:#F87171}
+.dv{display:grid;gap:16px}
+.dv-h{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px}
+.dv-h h2{margin:0;font-size:22px}
+.dv-seg{display:inline-flex;gap:2px;padding:3px;border:1px solid var(--line);border-radius:999px;background:var(--bg)}
+.dv-seg button{min-height:38px;padding:0 16px;border:0;border-radius:999px;background:transparent;color:var(--ink);font-family:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.dv-seg button.on{background:var(--g);color:#fff}
+.dv-k{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.dv-kc{display:flex;flex-direction:column;gap:6px;min-width:0;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+.dv-ki{display:grid;place-items:center;width:36px;height:36px;border-radius:10px;background:var(--soft);color:var(--gd)}
+.dv-kl{font-size:13px;font-weight:600;color:var(--mut)}
+.dv-kn{font-size:32px;font-weight:800;line-height:1.1;letter-spacing:-.02em;overflow-wrap:anywhere}
+.dv-kn.na{color:var(--mut)}
+.dv-kd{font-size:12px;font-weight:700;line-height:1.35}
+.dv-up{color:var(--up)}.dv-dn{color:var(--dn)}.dv-na{color:var(--mut);font-weight:500}
+.dv-card{min-width:0;padding:16px;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+.dv-card h3{margin:0 0 2px;font-size:17px}
+.dv-sub{margin:0 0 12px;font-size:13px;color:var(--mut)}
+.dv-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.dv-tabs{display:inline-flex;gap:2px;padding:3px;border:1px solid var(--line);border-radius:999px;background:var(--bg);margin-bottom:8px}
+.dv-tabs button{min-height:34px;padding:0 14px;border:0;border-radius:999px;background:transparent;color:var(--ink);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.dv-tabs button.on{background:var(--g);color:#fff}
+.dv-ch{position:relative}
+.dv-svg{display:block;width:100%;height:auto;touch-action:pan-y}
+.dv-gl{stroke:var(--line);stroke-width:1}
+.dv-gt{fill:var(--mut);font-size:11px;font-family:inherit}
+.dv-ln{fill:none;stroke:var(--g);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.dv-ar{fill:var(--g);opacity:.12}
+.dv-pt{fill:var(--card);stroke:var(--g);stroke-width:2}
+.dv-cur{stroke:var(--mut);stroke-width:1;stroke-dasharray:3 3;opacity:0}
+.dv-cd{fill:var(--g);stroke:var(--card);stroke-width:2;opacity:0}
+.dv-tip{position:absolute;top:0;transform:translateX(-50%);padding:6px 10px;border-radius:8px;background:var(--ink);color:var(--card);font-size:12px;font-weight:600;white-space:nowrap;pointer-events:none;opacity:0}
+.dv-rk{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.dv-rk li{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:4px 10px;align-items:center}
+.dv-rn{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--soft);color:var(--gd);font-size:13px;font-weight:800}
+.dv-rt{min-width:0}
+.dv-rt a{display:block;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-decoration:none;color:var(--ink)}
+.dv-rt a:hover{text-decoration:underline}
+.dv-rt small{display:block;color:var(--mut);font-size:12px}
+.dv-rv{text-align:right;font-size:13px;color:var(--mut);white-space:nowrap}
+.dv-rv b{display:block;font-size:18px;color:var(--ink)}
+.dv-bar{grid-column:2/4;height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+.dv-bar i{display:block;height:100%;border-radius:3px;background:var(--g)}
+.dv-do{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.dv-dn2{flex:none;width:150px;height:150px;transform:rotate(0deg)}
+.dv-dn2 circle{transform-origin:21px 21px}
+.dv-s0{stroke:var(--line)}.dv-s1{stroke:var(--c1)}.dv-s2{stroke:var(--c2)}.dv-s3{stroke:var(--c3)}.dv-s4{stroke:var(--c4)}.dv-s5{stroke:var(--c5)}.dv-s6{stroke:var(--c6)}
+.dv-dt1{font-size:7px;font-weight:800;fill:var(--ink);font-family:inherit}.dv-dt2{font-size:3.2px;fill:var(--mut);font-family:inherit}
+.dv-lg{list-style:none;margin:0;padding:0;display:grid;gap:8px;flex:1;min-width:170px}
+.dv-lg li{display:flex;align-items:center;gap:8px;font-size:14px}
+.dv-lg i{flex:none;width:12px;height:12px;border-radius:3px}
+.dv-b1{background:var(--c1)}.dv-b2{background:var(--c2)}.dv-b3{background:var(--c3)}.dv-b4{background:var(--c4)}.dv-b5{background:var(--c5)}.dv-b6{background:var(--c6)}
+.dv-lg span{flex:1;min-width:0}.dv-lg b{font-variant-numeric:tabular-nums}.dv-lg em{font-style:normal;color:var(--mut);font-size:12px;min-width:36px;text-align:right}
+.dv-empty{padding:22px 12px;text-align:center;color:var(--mut);font-size:14px;border:1px dashed var(--line);border-radius:12px}
+.dv-empty b{display:block;margin-bottom:4px;color:var(--ink)}
+.dv-note{padding:12px 14px;border-radius:12px;background:var(--soft);color:var(--ink);font-size:13px;line-height:1.5}
+.dv-ft{margin:0;font-size:12px;color:var(--mut);line-height:1.55}
+.dv-sk{height:110px;border-radius:14px;background:linear-gradient(90deg,var(--line),var(--bg),var(--line));background-size:200% 100%;animation:dvsk 1.3s linear infinite}
+.dv-sk.big{height:260px}
+@keyframes dvsk{to{background-position:-200% 0}}
+.dv-st{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.dv-st div{padding:10px;border-radius:12px;background:var(--bg);font-size:12px;color:var(--mut);text-align:center}
+.dv-st b{display:block;font-size:22px;color:var(--ink)}
+@media(max-width:900px){.dv-k{grid-template-columns:repeat(2,minmax(0,1fr))}.dv-2{grid-template-columns:1fr}}
+@media(max-width:560px){.dv-rk li{grid-template-columns:28px minmax(0,1fr)}.dv-rv{grid-column:2;text-align:left}.dv-rv b{display:inline;margin-right:4px;font-size:17px}.dv-bar{grid-column:2}.dv-rt a{white-space:normal}}
+@media(max-width:420px){.dv-kn{font-size:26px}.dv-kc{padding:12px}.dv-dn2{width:130px;height:130px}.dv-h h2{font-size:20px}}
+@media(prefers-reduced-motion:reduce){.dv-sk{animation:none}}
+html[data-tema="dark"] .dv-ki,html[data-tema="dark"] .dv-rn{color:var(--at)}
+html[data-tema="dark"] .dv-seg button.on,html[data-tema="dark"] .dv-tabs button.on{color:var(--ad)}
+html[data-tema="dark"] .dv-card,html[data-tema="dark"] .dv-kc{box-shadow:none}
+html[data-tema="dark"] .dv-note{color:var(--ink)}
 /* ===== THE JOURNEY 3D: África > Angola > Luanda > Kilamba > Seu Novo Lar (≈9,6 s) ===== */
 #intro{position:fixed;inset:0;z-index:100;background:#010806;overflow:hidden;color:#fff;touch-action:none;overscroll-behavior:contain;--sw:100vw;--sw2:150vw;--T:9600ms;transition:opacity 1s cubic-bezier(.4,0,.2,1),transform 1s cubic-bezier(.4,0,.2,1),visibility 0s linear 1s}
 @media(min-aspect-ratio:1/1){#intro{--sw2:var(--sw)}}
@@ -524,6 +599,74 @@ var org="direto";if(ns){var q=new URLSearchParams(location.search),o=(q.get("ori
 if(/google|bing|duckduckgo|yahoo/.test(t))org="google";else if(/whatsapp|wa\.me/.test(t))org="whatsapp";else if(/facebook|fb\.com|fb\.me/.test(t))org="facebook";else if(/instagram/.test(t))org="instagram";else if(o)org="outro";else if(r&&r.indexOf(location.host)<0)org="outro"}
 var w=innerWidth,dev=w<=720?"telemovel":(w<=1100?"tablet":"computador");
 setTimeout(function(){sb.rpc("registar_visita",{p_pagina:seg,p_anuncio:id,p_origem:org,p_dispositivo:dev,p_nova:ns}).then(function(){},function(){})},800)}catch(e){}}
+/* ---------- Dashboard de visitas (Admin): gráficos em SVG, sem bibliotecas ---------- */
+var dvN=function(v){return Number(v||0).toLocaleString("pt-PT")},
+dvD=function(s){var p=String(s||"").split("-");return p.length===3?p[2]+"/"+p[1]:""},
+DVI={vis:'<path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/>',usr:'<path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M21 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/>',home:'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/>',tel:'<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/>'},
+DVO={direto:"Acesso direto",google:"Google e outros motores",facebook:"Facebook",instagram:"Instagram",whatsapp:"WhatsApp",outro:"Outros sites"},
+DVV={telemovel:"Telemóvel",computador:"Computador",tablet:"Tablet",outro:"Outros dispositivos"},
+DVP={"/":"Início","/imoveis":"Imóveis","/anuncio":"Detalhe de anúncio","/pedidos":"Pedidos de casa","/pedido":"Detalhe de pedido","/novo":"Escolha: publicar","/publicar":"Publicar anúncio","/novo-pedido":"Publicar pedido","/favoritos":"Favoritos","/conta":"Conta","/entrar":"Entrar","/subscricao":"Pagamentos","/meus":"Meus anúncios","/meus-pedidos":"Meus pedidos","/notificacoes":"Notificações","/termos":"Termos","/privacidade":"Privacidade","/eliminar-dados":"Eliminação de dados","/destacar":"Destacar","/combinam":"Pedidos que combinam","/editar":"Editar anúncio","/outra":"Outras"};
+function dvIco(k){return '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+DVI[k]+'</svg>'}
+function dvDelta(cur,prev,n){if(prev===undefined||prev===null)return '<span class="dv-kd dv-na">Comparação indisponível</span>';
+if(!prev)return '<span class="dv-kd dv-na">Sem dados nos '+n+' dias anteriores</span>';
+var p=Math.round((cur-prev)/prev*100);if(!p)return '<span class="dv-kd dv-na">= igual aos '+n+' dias anteriores</span>';
+return '<span class="dv-kd '+(p>0?"dv-up":"dv-dn")+'">'+(p>0?"▲ +":"▼ ")+dvN(p)+'% <span class="dv-na">vs. '+n+' dias anteriores</span></span>'}
+function dvKpi(ic,l,v,sub){return '<div class="dv-kc"><span class="dv-ki">'+dvIco(ic)+'</span><span class="dv-kl">'+l+'</span><span class="dv-kn'+(v===null?" na":"")+'">'+(v===null?"—":dvN(v))+'</span>'+sub+'</div>'}
+function dvStep(m){var q=Math.max(m,4)/4,p=Math.pow(10,Math.floor(Math.log(q)/Math.LN10)),f=q/p;return(f<=1?1:f<=2?2:f<=5?5:10)*p}
+function dvLine(S,key,nome,W,H){var L=44,R=14,T=14,B=28,n=S.length,vals=S.map(function(x){return Number(x[key]||0)}),m=Math.max.apply(null,vals.concat([0])),st=dvStep(m),mx=st*4,
+X=function(i){return n>1?L+i*(W-L-R)/(n-1):L+(W-L-R)/2},Y=function(v){return T+(H-T-B)*(1-v/mx)},g="",i,pts=[],xy=[];
+for(i=0;i<=4;i++){var yy=Y(st*i);g+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+yy+'" y2="'+yy+'" class="dv-gl"/><text x="'+(L-8)+'" y="'+(yy+4)+'" text-anchor="end" class="dv-gt">'+dvN(st*i)+'</text>'}
+vals.forEach(function(v,i){pts.push(X(i).toFixed(1)+","+Y(v).toFixed(1));xy.push([+X(i).toFixed(1),+Y(v).toFixed(1),v,S[i].dia])});
+var line=n?'M'+pts.join(" L"):"",area=n?'M'+X(0).toFixed(1)+","+Y(0)+" L"+pts.join(" L")+" L"+X(n-1).toFixed(1)+","+Y(0)+" Z":"",lb="",idx=n>2?[0,Math.floor((n-1)/2),n-1]:[0,n-1],dots="";
+idx.forEach(function(k,j){if(k<n)lb+='<text x="'+X(k)+'" y="'+(H-8)+'" text-anchor="'+(j===0?"start":j===idx.length-1?"end":"middle")+'" class="dv-gt">'+dvD(S[k].dia)+'</text>'});
+if(n<=31)vals.forEach(function(v,i){dots+='<circle cx="'+X(i).toFixed(1)+'" cy="'+Y(v).toFixed(1)+'" r="3" class="dv-pt"/>'});
+return '<svg viewBox="0 0 '+W+' '+H+'" class="dv-svg" role="img" aria-label="Gráfico: '+esc(nome)+' por dia" data-xy=\''+esc(JSON.stringify(xy))+'\' data-w="'+W+'" data-h="'+H+'">'+g+'<path d="'+area+'" class="dv-ar"/><path d="'+line+'" class="dv-ln"/>'+dots+lb+'<line class="dv-cur" x1="0" x2="0" y1="'+T+'" y2="'+(H-B)+'"/><circle class="dv-cd" r="5" cx="0" cy="0"/></svg><div class="dv-tip" aria-hidden="true"></div>'}
+function dvChart(el,S,key,nome){var W=Math.max(280,Math.min(760,Math.round(el.clientWidth||640))),H=W<480?220:260;el.setAttribute("data-k",key);el.innerHTML=dvLine(S,key,nome,W,H);var sv=el.querySelector("svg"),tip=el.querySelector(".dv-tip"),cur=el.querySelector(".dv-cur"),cd=el.querySelector(".dv-cd"),xy=[];try{xy=JSON.parse(sv.getAttribute("data-xy"))}catch(e){}
+var W=+sv.getAttribute("data-w"),H=+sv.getAttribute("data-h");
+function mv(e){if(!xy.length)return;var r=sv.getBoundingClientRect(),px=(e.clientX-r.left)/r.width*W,b=0,bd=1e9;xy.forEach(function(p,i){var d=Math.abs(p[0]-px);if(d<bd){bd=d;b=i}});var p=xy[b];
+cur.setAttribute("x1",p[0]);cur.setAttribute("x2",p[0]);cur.style.opacity=1;cd.setAttribute("cx",p[0]);cd.setAttribute("cy",p[1]);cd.style.opacity=1;
+tip.textContent=p[3].split("-").reverse().join("/")+" · "+dvN(p[2])+" "+nome.toLowerCase();tip.style.left=(p[0]/W*100)+"%";tip.style.top=Math.max(0,p[1]/H*r.height-44)+"px";tip.style.opacity=1}
+function lv(){cur.style.opacity=0;cd.style.opacity=0;tip.style.opacity=0}
+sv.addEventListener("pointermove",mv);sv.addEventListener("pointerdown",mv);sv.addEventListener("pointerleave",lv);sv.addEventListener("pointerup",function(e){if(e.pointerType!=="mouse")setTimeout(lv,1600)})}
+function dvDonut(it,tot,mapa,tt){var r=15.9155,c=0,seg="",lg="";
+it.forEach(function(x,i){var p=tot?x.v/tot*100:0;seg+='<circle r="'+r+'" cx="21" cy="21" fill="none" stroke-width="5.5" class="dv-s'+(i%6+1)+'" stroke-dasharray="'+p.toFixed(2)+' '+(100-p).toFixed(2)+'" stroke-dashoffset="'+(25-c).toFixed(2)+'"/>';c+=p;
+lg+='<li><i class="dv-b'+(i%6+1)+'"></i><span>'+esc(mapa[x.k]||x.k)+'</span><b>'+dvN(x.v)+'</b><em>'+Math.round(p)+'%</em></li>'});
+return '<div class="dv-do"><svg viewBox="0 0 42 42" class="dv-dn2" role="img" aria-label="'+esc(tt)+'"><circle r="'+r+'" cx="21" cy="21" fill="none" stroke-width="5.5" class="dv-s0" transform="rotate(-90 21 21)"/><g transform="rotate(-90 21 21)">'+seg+'</g><text x="21" y="22" text-anchor="middle" class="dv-dt1">'+dvN(tot)+'</text><text x="21" y="27" text-anchor="middle" class="dv-dt2">visitas</text></svg><ul class="dv-lg">'+lg+'</ul></div>'}
+function dvVazio(t,s){return '<div class="dv-empty"><b>'+t+'</b>'+s+'</div>'}
+function dvSkel(){return '<div class="dv"><div class="dv-k"><div class="dv-sk"></div><div class="dv-sk"></div><div class="dv-sk"></div><div class="dv-sk"></div></div><div class="dv-sk big"></div><div class="dv-2"><div class="dv-sk big"></div><div class="dv-sk big"></div></div></div>'}
+function dvErro(m,n){return '<div class="dv-empty"><b>Não foi possível carregar o painel</b>'+esc(m||"Erro desconhecido")+'<p class="mut" style="margin:10px 0">Se a mensagem falar em "does not exist" ou "schema cache", falta aplicar o ficheiro painel-visitas.sql no Supabase.</p><button class="btn" type="button" data-a="vd" data-i="'+n+'">Tentar novamente</button></div>'}
+function dvHtml(D,n){var T=D.totais||{},P=T.periodo||{},AN=D.anterior,S=D.serie||[],pg=D.paginas||[],novo=AN!==undefined&&AN!==null,
+av=P.anuncios_vistos!==undefined?P.anuncios_vistos:(function(){var x=pg.filter(function(p){return p.pagina==="/anuncio"})[0];return x?x.visualizacoes:0})(),
+ct=P.contactos!==undefined?P.contactos:null,vazio=!(P.visualizacoes||P.visitas),h="",
+OR=(D.origens||[]).slice(0,6).map(function(x){return{k:x.origem,v:+x.visitas||0}}),oT=OR.reduce(function(a,b){return a+b.v},0),
+DV=(D.dispositivos||[]).slice(0,6).map(function(x){return{k:x.dispositivo,v:+x.visitas||0}}),dT=DV.reduce(function(a,b){return a+b.v},0),
+AD=D.anuncios||[],mxv=Math.max.apply(null,AD.map(function(a){return+a.visualizacoes||0}).concat([1])),pmx=Math.max.apply(null,pg.map(function(p){return+p.visualizacoes||0}).concat([1])),
+hora=new Date().toLocaleTimeString("pt-PT",{hour:"2-digit",minute:"2-digit"});
+h+='<div class="dv"><div class="dv-h"><h2>Visitas e desempenho</h2><div class="dv-seg" role="group" aria-label="Período">'+[7,30,90].map(function(k){return '<button type="button" class="'+(n===k?"on":"")+'" data-a="vd" data-i="'+k+'" aria-pressed="'+(n===k)+'">'+k+' dias</button>'}).join("")+'</div></div>';
+if(!novo||ct===null)h+='<div class="dv-note"><b>Atualização pendente.</b> Aplica o ficheiro <b>painel-visitas.sql</b> no Supabase para ver os cliques nos contactos e a comparação com o período anterior.</div>';
+else if(vazio)h+='<div class="dv-note"><b>Ainda sem visitas neste período.</b> O registo conta a partir do momento em que foi ativado; os números aparecem assim que houver visitas.</div>';
+h+='<div class="dv-k">'+dvKpi("vis","Total de visitas",P.visitas||0,dvDelta(P.visitas||0,novo?AN.visitas:undefined,n))+
+dvKpi("usr","Visitantes únicos",null,'<span class="dv-kd dv-na">Ainda não disponível: o site conta visitas, não pessoas.</span>')+
+dvKpi("home","Anúncios visualizados",av,dvDelta(av,novo?AN.anuncios_vistos:undefined,n))+
+dvKpi("tel","Cliques nos contactos",ct,ct===null?'<span class="dv-kd dv-na">Disponível após atualizar o SQL.</span>':dvDelta(ct,novo?AN.contactos:undefined,n))+'</div>';
+h+='<div class="dv-card"><h3>Evolução das visitas</h3><p class="dv-sub">Por dia, nos últimos '+n+' dias.</p><div class="dv-tabs" role="group" aria-label="Métrica"><button type="button" class="on" data-dvk="visitas">Visitas</button><button type="button" data-dvk="visualizacoes">Páginas</button><button type="button" data-dvk="anuncios">Anúncios</button></div>'+(vazio?dvVazio("Sem dados neste período","O gráfico aparece quando houver visitas."):'<div class="dv-ch" id="dvch"></div>')+'</div>';
+h+='<div class="dv-card"><h3>Anúncios com melhor desempenho</h3><p class="dv-sub">Anúncios mais vistos no período'+(ct===null?'.':', com cliques em “Ligar”.')+'</p>'+(AD.length?'<ol class="dv-rk">'+AD.map(function(a,i){var loc=[a.municipio,a.provincia].filter(Boolean).join(", ");return '<li><span class="dv-rn">'+(i+1)+'</span><span class="dv-rt"><a href="#/anuncio/'+esc(a.id)+'">'+esc(a.titulo||"Anúncio")+'</a><small>'+esc(loc||"Localização não indicada")+'</small></span><span class="dv-rv"><b>'+dvN(a.visualizacoes)+'</b>visualizações'+(a.contactos!==undefined?' · '+dvN(a.contactos)+' contactos':'')+'</span><span class="dv-bar"><i style="width:'+Math.max(2,Math.round((+a.visualizacoes||0)/mxv*100))+'%"></i></span></li>'}).join("")+'</ol>':dvVazio("Ainda sem visualizações de anúncios","Os anúncios mais vistos aparecem aqui."))+'</div>';
+h+='<div class="dv-2"><div class="dv-card"><h3>Origem dos visitantes</h3><p class="dv-sub">De onde vieram as visitas.</p>'+(oT?dvDonut(OR,oT,DVO,"Origem das visitas")+'<p class="dv-ft" style="margin-top:12px">Links guardados e abertos a partir de apps aparecem como “Acesso direto”. Para medir o WhatsApp, partilha o site com <b>?origem=whatsapp</b> no fim do endereço.</p>':dvVazio("Sem dados de origem","Aparece quando houver visitas."))+'</div>'+
+'<div class="dv-card"><h3>Dispositivos utilizados</h3><p class="dv-sub">Em que aparelhos entraram.</p>'+(dT?dvDonut(DV,dT,DVV,"Dispositivos das visitas"):dvVazio("Sem dados de dispositivos","Aparece quando houver visitas."))+'</div></div>';
+h+='<div class="dv-card"><h3>Localização dos visitantes</h3><p class="dv-sub">Cidades ou regiões de origem.</p>'+dvVazio("Ainda não disponível","O site não regista a cidade nem a região de quem visita. Só será mostrada quando existir um registo legítimo e fiável.")+'</div>';
+h+='<div class="dv-2"><div class="dv-card"><h3>Páginas mais vistas</h3><p class="dv-sub">Onde as pessoas mais navegam.</p>'+(pg.length?'<ol class="dv-rk">'+pg.slice(0,8).map(function(p,i){return '<li><span class="dv-rn">'+(i+1)+'</span><span class="dv-rt"><a>'+esc(DVP[p.pagina]||p.pagina)+'</a></span><span class="dv-rv"><b>'+dvN(p.visualizacoes)+'</b></span><span class="dv-bar"><i style="width:'+Math.max(2,Math.round(p.visualizacoes/pmx*100))+'%"></i></span></li>'}).join("")+'</ol>':dvVazio("Sem dados","Aparece quando houver visitas."))+'</div>'+
+'<div class="dv-card"><h3>Contas e logins</h3><p class="dv-sub">Utilizadores registados.</p><div class="dv-st"><div><b>'+dvN(D.contas&&D.contas.total)+'</b>Contas no total</div><div><b>'+dvN(D.contas&&D.contas.novas)+'</b>Novas no período</div><div><b>'+dvN(D.logins)+'</b>Entraram no período</div></div><p class="dv-ft" style="margin-top:12px">“Entraram” conta a última entrada de cada utilizador, por isso é aproximado.</p></div></div>';
+h+='<p class="dv-ft">Dados reais do Supabase, atualizados às '+hora+'. Visitas = vezes que alguém entrou no site (sessões). Páginas vistas = páginas abertas. Ninguém é identificado: não há cookies nem IP.</p></div>';return h}
+var dvRT=0;addEventListener("resize",function(){clearTimeout(dvRT);dvRT=setTimeout(function(){var c=document.getElementById("dvch");if(c&&c.__d){dvChart(c,c.__d.S,c.getAttribute("data-k")||"visitas",c.__d.nm[c.getAttribute("data-k")||"visitas"])}},200)});
+function dvBind(ab,D){var S=D.serie||[],ch=document.getElementById("dvch"),nm={visitas:"Visitas",visualizacoes:"Páginas vistas",anuncios:"Anúncios vistos"};if(!ch)return;ch.__d={S:S,nm:nm};dvChart(ch,S,"visitas",nm.visitas);
+[].forEach.call(ab.querySelectorAll("[data-dvk]"),function(b){b.addEventListener("click",function(){var k=b.getAttribute("data-dvk");[].forEach.call(ab.querySelectorAll("[data-dvk]"),function(x){x.classList.toggle("on",x===b)});dvChart(ch,S,k,nm[k])})})}
+/* Cliques em "Ligar" (contacto) nas páginas de anúncio e de pedido, contados de forma anónima */
+var TC="",TCT=0;
+document.addEventListener("click",function(e){try{var a=e.target.closest&&e.target.closest('a[href^="tel:"]');if(!a||a.closest("footer"))return;
+if(navigator.doNotTrack==="1"||window.doNotTrack==="1")return;var h=location.hash.slice(1),id=null,ok=false;
+if(h.indexOf("/anuncio/")===0){var x=h.slice(9).split(/[?#]/)[0];if(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(x)){id=x;ok=true}}else if(h.indexOf("/pedido/")===0)ok=true;
+if(!ok)return;var k=(id||"p")+"|"+a.getAttribute("href"),now=Date.now();if(k===TC&&now-TCT<4000)return;TC=k;TCT=now;
+var w=innerWidth,dev=w<=720?"telemovel":(w<=1100?"tablet":"computador");sb.rpc("registar_visita",{p_pagina:"/contacto",p_anuncio:id,p_origem:"direto",p_dispositivo:dev,p_nova:false}).then(function(){},function(){})}catch(err){}},true);
 var CARD="id,titulo,finalidade,tipo,municipio,provincia,preco,quartos,casas_banho,area_m2,tem_mapa,fotografias(caminho,ordem)";
 var DST={t:0,rows:[]};
 async function destRows(){if(Date.now()-DST.t<120000)return{data:DST.rows};var d=await sb.from("destaques").select("anuncio_id").eq("estado","ativo").gt("fim",new Date().toISOString()).limit(200);if(d.error)return{data:DST.rows};DST={t:Date.now(),rows:d.data||[]};return{data:DST.rows}}
@@ -1085,28 +1228,9 @@ async function admin(){if(!PF||PF.papel!=="admin"){A.innerHTML='<div class="box"
 var T=[["pagamentos","Pagamentos"+(PEND?" ("+PEND+")":"")],["denuncias","Denúncias"],["anuncios","Anúncios"],["pedidos","Pedidos de casa"],["subscricoes","Subscrições"],["destaques","Destaques"],["utilizadores","Utilizadores"],["visitas","Visitas"],["config","Configurações"]];
 A.innerHTML='<div class="box"><h1>Painel administrativo</h1><div class="row" id="at" style="margin-bottom:10px">'+T.map(function(t){return '<button class="btn '+(AT===t[0]?"":"out")+'" type="button" data-t="'+t[0]+'">'+t[1]+'</button>'}).join("")+'</div><div class="msg" id="m" role="alert"></div><div class="tw" id="ab">A carregar…</div></div>';
 var ab=document.getElementById("ab"),W=function(r){return new Date(r).toLocaleDateString("pt-PT")},bd=function(s){return '<span class="badge s-'+esc(s)+'">'+esc(s)+'</span>'},bt=function(c,a,i,t){return '<button class="btn '+c+'" style="min-height:36px;padding:0 10px;margin:2px" type="button" data-a="'+a+'" data-i="'+i+'">'+t+'</button>'};
-if(AT==="visitas"){var r=await sb.rpc("painel_visitas",{p_dias:VD});
-if(r.error){ab.innerHTML='<span class="msg">'+esc(r.error.message)+'</span><p class="mut">Se aparecer "does not exist" ou "schema cache", falta aplicar o SQL do painel de visitas no Supabase.</p>';return}
-var D=r.data||{},S=D.serie||[],N=function(v){return Number(v||0).toLocaleString("pt-PT")},
-PG={"/":"Início","/imoveis":"Imóveis","/anuncio":"Detalhe de anúncio","/pedidos":"Pedidos de casa","/pedido":"Detalhe de pedido","/novo":"Escolha: publicar","/publicar":"Publicar anúncio","/novo-pedido":"Publicar pedido","/favoritos":"Favoritos","/conta":"Conta","/entrar":"Entrar","/subscricao":"Pagamentos","/meus":"Meus anúncios","/meus-pedidos":"Meus pedidos","/notificacoes":"Notificações","/termos":"Termos","/privacidade":"Privacidade","/eliminar-dados":"Eliminação de dados","/destacar":"Destacar","/combinam":"Pedidos que combinam","/editar":"Editar anúncio","/outra":"Outras"},
-OR={direto:"Direto / WhatsApp / link guardado",google:"Pesquisa (Google, Bing…)",whatsapp:"WhatsApp",facebook:"Facebook",instagram:"Instagram",outro:"Outros sites"},
-DV={telemovel:"Telemóvel",tablet:"Tablet",computador:"Computador",outro:"Outro"},
-bars=function(k,t,cor){var mx=Math.max.apply(null,S.map(function(x){return x[k]||0}).concat([1]));return '<div class="mut" style="margin:10px 0 4px"><b>'+t+'</b></div><div style="display:flex;align-items:flex-end;gap:2px;height:90px">'+S.map(function(x){var v=x[k]||0;return '<div title="'+esc(x.dia)+': '+v+'" style="flex:1;min-width:2px;height:'+Math.max(2,Math.round(v/mx*100))+'%;background:'+cor+';border-radius:2px 2px 0 0"></div>'}).join("")+'</div><div class="mut" style="display:flex;justify-content:space-between;font-size:11px"><span>'+(S[0]?esc(S[0].dia.slice(5)):"")+'</span><span>'+(S.length?esc(S[S.length-1].dia.slice(5)):"")+'</span></div>'},
-tt=function(o){o=o||{};return '<td>'+N(o.visualizacoes)+'</td><td>'+N(o.visitas)+'</td><td>'+N(o.visitantes)+'</td>'},
-lst=function(a,f,g){return a&&a.length?'<table style="min-width:0"><tbody>'+a.map(function(x){return '<tr><td>'+f(x)+'</td><td style="text-align:right"><b>'+N(g(x))+'</b></td></tr>'}).join("")+'</tbody></table>':'<p class="mut">Ainda sem dados.</p>'},
-TO=D.totais||{};
-ab.innerHTML='<div class="row" style="margin-bottom:10px">'+[7,30,90].map(function(n){return bt(VD===n?"":"out","vd",n,n+" dias")}).join("")+'</div>'+
-'<div class="tw"><table style="min-width:0"><tr><th>Período</th><th>Visualizações</th><th>Visitas</th><th>Visitantes</th></tr><tr><td>Hoje</td>'+tt(TO.hoje)+'</tr><tr><td>7 dias</td>'+tt(TO.ult7)+'</tr><tr><td>'+esc(D.dias)+' dias</td>'+tt(TO.periodo)+'</tr></table></div>'+
-'<p class="mut">Visualizações = páginas abertas. Visitas = vezes que alguém entrou no site. Visitantes = pessoas distintas em cada dia, somadas (aproximado; ninguém é identificado).</p>'+
-bars("visualizacoes","Visualizações por dia","#087F5B")+bars("visitantes","Visitantes por dia","#6EE7B7")+
-'<h2 style="margin-top:18px">Anúncios mais vistos</h2>'+lst(D.anuncios,function(x){return '<a href="#/anuncio/'+esc(x.id)+'" style="text-decoration:underline">'+esc(x.titulo)+'</a>'},function(x){return x.visualizacoes})+
-'<h2 style="margin-top:18px">Páginas mais vistas</h2>'+lst(D.paginas,function(x){return esc(PG[x.pagina]||x.pagina)},function(x){return x.visualizacoes})+
-'<h2 style="margin-top:18px">De onde vêm as visitas</h2>'+lst(D.origens,function(x){return esc(OR[x.origem]||x.origem)},function(x){return x.visitas})+
-'<p class="mut">O WhatsApp e os links guardados costumam aparecer como “Direto”. Para medir o WhatsApp, partilha o site com <b>?origem=whatsapp</b> no fim do endereço.</p>'+
-'<h2 style="margin-top:18px">Dispositivos</h2>'+lst(D.dispositivos,function(x){return esc(DV[x.dispositivo]||x.dispositivo)},function(x){return x.visitas})+
-'<h2 style="margin-top:18px">Contas e logins</h2><div class="stats"><div class="st"><b>'+N(D.contas&&D.contas.total)+'</b>Contas no total</div><div class="st"><b>'+N(D.contas&&D.contas.novas)+'</b>Novas no período</div><div class="st"><b>'+N(D.logins)+'</b>Entraram no período</div></div>'+
-bars("contas","Novas contas por dia","#065F46")+bars("logins","Utilizadores que entraram, por dia","#6EE7B7")+
-'<p class="mut">“Entraram” conta a última entrada de cada utilizador, por isso é aproximado.</p>'}
+if(AT==="visitas"){ab.innerHTML=dvSkel();var r=await sb.rpc("painel_visitas",{p_dias:VD});
+if(r.error){ab.innerHTML=dvErro(r.error.message,VD);return}
+var D=r.data||{};ab.innerHTML=dvHtml(D,VD);dvBind(ab,D)}
 if(AT==="config"){var r=await sb.from("config").select("chave,valor");if(r.error){ab.innerHTML='<span class="msg">'+esc(r.error.message)+'</span>';return}
 var V={};r.data.forEach(function(x){V[x.chave]=x.valor||""});
 ab.innerHTML='<p class="mut">Preços, duração e dados de pagamento. Os pedidos já feitos mantêm o valor que tinham. Deixa um método vazio para o desativar.</p>'+CK.map(function(k){return '<div class="fld"><label for="cfg_'+k[0]+'">'+k[1]+'</label>'+(k[2]==="n"?'<input id="cfg_'+k[0]+'" type="number" min="0" inputmode="numeric" value="'+esc(V[k[0]])+'">':'<textarea id="cfg_'+k[0]+'">'+esc(V[k[0]])+'</textarea>')+'</div>'}).join("")+'<button class="btn" type="button" data-a="cfg" data-i="x">Guardar configurações</button>'}
