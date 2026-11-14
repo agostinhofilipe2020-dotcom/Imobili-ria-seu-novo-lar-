@@ -353,7 +353,7 @@ html[data-tema="dark"] .badge.s-cancelada,html[data-tema="dark"] .badge.s-expira
 html[data-tema="dark"] .msg,html[data-tema="dark"] .fe,html[data-tema="dark"] .linkbtn,html[data-tema="dark"] .mmenu .dng{color:#F87171}
 html[data-tema="dark"] .fld.bad input,html[data-tema="dark"] .fld.bad select,html[data-tema="dark"] .fld.bad textarea,html[data-tema="dark"] .fld.bad .rc{border-color:#F87171}
 html[data-tema="dark"] .leaflet-tile{filter:invert(1) hue-rotate(180deg) brightness(.92) contrast(.9)}
-html[data-tema="dark"] ::placeholder{color:#8B8577}
+html[data-tema="dark"] ::placeholder{color:#B3AB98}
 /* ===== Dashboard de visitas (Admin) ===== */
 :root{--c1:#087F5B;--c2:#065F46;--c3:#34D399;--c4:#9CA3AF;--c5:#111827;--c6:#A7F3D0;--up:#067647;--dn:#B42318}
 html[data-tema="dark"]{--c1:#E8BA40;--c2:#B8872B;--c3:#F6D47E;--c4:#8B8577;--c5:#FAF6EC;--c6:#6B5A2A;--up:#4ADE80;--dn:#F87171}
@@ -427,6 +427,8 @@ html[data-tema="dark"] .dv-ki,html[data-tema="dark"] .dv-rn{color:var(--at)}
 html[data-tema="dark"] .dv-seg button.on,html[data-tema="dark"] .dv-tabs button.on{color:var(--ad)}
 html[data-tema="dark"] .dv-card,html[data-tema="dark"] .dv-kc{box-shadow:none}
 html[data-tema="dark"] .dv-note{color:var(--ink)}
+#off{position:fixed;left:12px;right:12px;bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:70;max-width:520px;margin:0 auto;padding:12px 16px;border-radius:12px;background:#111827;color:#fff;border:1px solid rgba(255,255,255,.25);font-size:14px;font-weight:600;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+#off[hidden]{display:none}
 /* ===== THE JOURNEY 3D: África > Angola > Luanda > Kilamba > Seu Novo Lar (≈9,6 s) ===== */
 #intro{position:fixed;inset:0;z-index:100;background:#010806;overflow:hidden;color:#fff;touch-action:none;overscroll-behavior:contain;--sw:100vw;--sw2:150vw;--T:9600ms;transition:opacity 1s cubic-bezier(.4,0,.2,1),transform 1s cubic-bezier(.4,0,.2,1),visibility 0s linear 1s}
 @media(min-aspect-ratio:1/1){#intro{--sw2:var(--sw)}}
@@ -885,7 +887,7 @@ var FT=[[TIPOS[a.tipo]||a.tipo,"Tipo de imóvel"]];if(a.quartos!=null)FT.push([a
 var preco=kz(a.preco)+(a.finalidade==="arrendamento"&&a.preco!=null?" / mês":"");
 var cta=own?'<a class="btn" href="#/editar/'+a.id+'">Editar anúncio</a>':(V&&V.telefone_contacto?'<a class="btn" href="tel:'+esc(V.telefone_contacto)+'">Ligar</a>':(V||ACESSO_LIVRE?'':'<a class="btn" href="#/subscricao">Ver contacto</a>'));
 A.innerHTML='<div class="crumb"><a href="#/">Início</a> › <a href="#/imoveis">Imóveis</a> › '+esc(a.titulo)+'</div><div class="dg">'+
-'<div class="box"><div class="gwrap"><div class="gal" id="gal" tabindex="0" aria-label="Fotografias do imóvel">'+(fs.length?fs.map(function(f,i){return '<img src="'+foto(f.caminho)+'" alt="Fotografia '+(i+1)+' de '+fs.length+'"'+(i?' loading="lazy"':' fetchpriority="high"')+' decoding="async">'}).join(""):'<div class="nophoto">Sem fotografias</div>')+'</div><span class="tag">'+(a.finalidade==="venda"?"À venda":"Arrendamento")+'</span><button class="hr" type="button" data-fav="'+a.id+'" aria-pressed="'+(!!FAV[a.id])+'" aria-label="Guardar nos favoritos">'+(FAV[a.id]?"♥":"♡")+'</button>'+(fs.length>1?'<span class="cnt" id="cn">1/'+fs.length+'</span>':'')+'</div>'+(fs.length>1?'<div class="th">'+fs.map(function(f,i){return '<img '+tAttr(f.caminho)+' alt="Miniatura '+(i+1)+'">'}).join("")+'</div>':'')+'</div>'+
+'<div class="box"><div class="gwrap"><div class="gal" id="gal" tabindex="0" aria-label="Fotografias do imóvel">'+(fs.length?fs.map(function(f,i){return '<img src="'+foto(f.caminho)+'" alt="Fotografia '+(i+1)+' de '+fs.length+'"'+(i?' loading="lazy"':' fetchpriority="high"')+' decoding="async">'}).join(""):'<div class="nophoto">Sem fotografias</div>')+'</div><span class="tag">'+(a.finalidade==="venda"?"À venda":"Arrendamento")+'</span><button class="hr" type="button" data-fav="'+a.id+'" aria-pressed="'+(!!FAV[a.id])+'" aria-label="Guardar nos favoritos">'+(FAV[a.id]?"♥":"♡")+'</button>'+(fs.length>1?'<span class="cnt" id="cn">1/'+fs.length+'</span>':'')+'</div>'+(fs.length>1?'<div class="th">'+fs.map(function(f,i){return '<img '+tAttr(f.caminho)+' alt="Miniatura '+(i+1)+'" loading="lazy" decoding="async">'}).join("")+'</div>':'')+'</div>'+
 '<div class="box"><h1>'+esc(a.titulo)+'</h1><div class="mut">'+esc(a.municipio)+', '+esc(a.provincia)+', Angola</div><div class="p" style="font-size:28px;margin:10px 0">'+preco+'</div>'+
 (stats.length?'<div class="stats" style="grid-template-columns:repeat('+stats.length+',1fr)">'+stats.join("")+'</div>':'')+
 (V&&V.telefone_contacto?'<div class="ctc"><b>Contactar anunciante</b>Fala diretamente com o proprietário ou agente.<br><a class="btn" style="width:100%;margin-top:10px" href="tel:'+esc(V.telefone_contacto)+'">Ligar agora · '+esc(V.telefone_contacto)+'</a></div>':
@@ -1285,5 +1287,7 @@ function sync(){b.setAttribute("aria-label",d.getAttribute("data-tema")==="dark"
 b.addEventListener("click",function(){var dk=d.getAttribute("data-tema")!=="dark";d.setAttribute("data-tema",dk?"dark":"light");try{localStorage.setItem("snl_tema",dk?"escuro":"claro")}catch(e){}sync()});
 sync()})();
 </script>
+<div id="off" role="status" aria-live="polite" hidden>Sem ligação à internet. Algumas funções não vão funcionar.</div>
+<script>(function(){var b=document.getElementById("off");function u(){b.hidden=navigator.onLine!==false}addEventListener("online",u);addEventListener("offline",u);u()})();</script>
 </body>
 </html>
