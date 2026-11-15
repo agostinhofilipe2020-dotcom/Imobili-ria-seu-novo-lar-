@@ -578,39 +578,53 @@ html[data-tema="dark"] .hj-p{border:1px solid var(--line)}
 #intro.lite .s2,#intro.lite .s3,#intro.lite .s4a,#intro.lite .iln,#intro.lite .idt{display:none}
 html.introing .hero>h1,html.introing .hero>p,html.introing .hero>.spill,html.introing .hero h1 em,html.introing .hbg i{animation-play-state:paused!important}
 html.nofx #intro{display:none}
-@media(prefers-reduced-motion:reduce){#intro{display:none}}
+#intro.calm{--T:4200ms;--o:6400ms}
+#intro.calm .s1,#intro.calm .iln,#intro.calm .idt{display:none}
+#intro.calm .ph{animation:none!important;transform:none}
+#intro.calm .mp{transform:none;transition:none}
+#intro.calm .bl{transform:none}
+#intro.calm.go .lg,#intro.calm.go .cp,#intro.calm.go .bl,#intro.calm.go .sg span{animation-name:jy-fi}
 </style>
 
 </head>
 <body>
 <div id="intro" aria-label="Seu Novo Lar"><div class="mp"><div class="sc s1"><div class="fit f1"><img data-s="africa" data-l alt="" decoding="async"></div><i class="eg eg1"></i><i class="eg eg2"></i></div><div class="sc s2"><div class="fit f2"><img data-s="angola" alt="" decoding="async"><img class="gl" data-s="angola-glow" alt="" decoding="async"><i class="dim"></i><i class="prg e"></i><i class="prg a"></i><i class="prg b"></i><i class="psh"></i><div class="pin"><div class="pinb"><svg viewBox="0 0 64 96" aria-hidden="true"><defs><radialGradient id="jp1" cx=".34" cy=".26" r=".9"><stop offset="0" stop-color="#ff8080"/><stop offset=".28" stop-color="#e3202f"/><stop offset=".7" stop-color="#a30f1f"/><stop offset="1" stop-color="#5c0610"/></radialGradient><linearGradient id="jp2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3b0208"/><stop offset="1" stop-color="#ff9a9a"/></linearGradient><linearGradient id="jp3" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".45"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".3"/></linearGradient></defs><path fill-rule="evenodd" fill="url(#jp1)" d="M32 1C14.5 1 2 14.2 2 31c0 21 22 42 30 64 8-22 30-43 30-64C62 14.2 49.5 1 32 1ZM32 18.5a12.5 12.5 0 1 0 .01 0Z"/><path fill-rule="evenodd" fill="url(#jp3)" d="M32 1C14.5 1 2 14.2 2 31c0 21 22 42 30 64 8-22 30-43 30-64C62 14.2 49.5 1 32 1ZM32 18.5a12.5 12.5 0 1 0 .01 0Z"/><circle cx="32" cy="31" r="14" fill="none" stroke="url(#jp2)" stroke-width="3" opacity=".9"/><path d="M43 7.5c8 3.6 13 11 13.4 20" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="3.4" stroke-linecap="round"/><circle cx="52" cy="14" r="1.8" fill="#fff" fill-opacity=".85"/></svg></div></div></div></div><div class="sc s3"><img class="ph" data-s="luanda" alt="" decoding="async" style="object-position:45% 50%"><svg class="rt" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><path class="r1" pathLength="100" d="M42 30C46 52 62 58 70 82"/><path class="r2" pathLength="100" d="M42 30C46 52 62 58 70 82"/><path class="r3" pathLength="100" d="M42 30C46 52 62 58 70 82"/><circle class="c1" cx="42" cy="30" r="1.3"/><circle class="c2" cx="70" cy="82" r="1.3"/><text class="ta" x="44.5" y="30.8">Luanda</text><text class="tb" x="63" y="88" >Kilamba</text></svg></div><div class="sc s4a"><img class="ph" data-s="kilamba-avenida" alt="" decoding="async"></div><div class="sc s4b"><img class="ph" data-s="kilamba" data-l alt="" decoding="async" style="object-position:50% 55%"></div><div class="vg"></div><div class="brand"><img class="lg" src="logo-escuro.png" alt="Seu Novo Lar"><p class="sg"><span>Descobre.</span> <span>Conecta.</span><br><span>Encontra o teu lugar.</span></p><i class="bl"></i><div class="cp">O seu novo lar começa aqui</div></div></div><div class="iln iln1" style="--ld:4.8s"></div><div class="iln iln2" style="--ld:5.1s"></div><div class="iln iln3" style="--ld:5.4s"></div><div id="ids" aria-hidden="true"></div><div class="ibar" aria-hidden="true"><i></i></div><button class="isk" id="isk" type="button" aria-label="Saltar apresentação">Saltar apresentação</button></div>
 <script>
-(function(){var el=document.getElementById("intro");if(!el)return;var d=document.documentElement;
-function kill(){if(el.parentNode)el.parentNode.removeChild(el);d.classList.remove("introing")}
-var h=location.hash,s=location.search,p=location.pathname.replace(/\/+$/,""),rm=false,off=false;
-try{rm=matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){}
-try{off=/sem-animacoes/.test(s)||localStorage.getItem("snl_fx")==="off"}catch(e){}
-if(rm||off||/^#\/(anuncio|pedido)\//.test(h)||/access_token=|type=recovery|error_description|error=/.test(h)||/[?&](code|error|error_description)=/.test(s)||/^\/(termos|privacidade|eliminar-dados)$/.test(p)){kill();return}
-d.classList.add("introing");
-var cn=navigator.connection||{},lite=false;
-try{lite=!!(cn.saveData||/^(slow-2g|2g|3g)$/.test(cn.effectiveType||"")||(navigator.deviceMemory&&navigator.deviceMemory<=2)||(navigator.hardwareConcurrency&&navigator.hardwareConcurrency<=2))}catch(e){}
+(function(){var el0=document.getElementById("intro");if(!el0)return;
+/* Abertura 3D: corre ao abrir o site e volta a correr quando o visitante regressa depois de ter saído. */
+var TPL=el0.outerHTML,d=document.documentElement,PAUSA=window.__INTRO_PAUSA||20000,hid=0,run=false,
+SEM=/^\/(anuncio|pedido|publicar|editar|novo-pedido|novo|destacar|entrar|admin|subscricao|termos|privacidade|eliminar-dados)(\/|$)/;
+function rota(){return(location.hash.replace(/^#/,"")||"/").split("?")[0]}
+function reduz(){try{return matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){return false}}
+function desl(){try{return/sem-animacoes/.test(location.search)||localStorage.getItem("snl_fx")==="off"}catch(e){return/sem-animacoes/.test(location.search)}}
+function drop(el){if(el&&el.parentNode)el.parentNode.removeChild(el);d.classList.remove("introing")}
+function start(el){var h=location.hash,s=location.search,force=/[?&]intro=1/.test(s);
+if(!force&&(desl()||/^#\/(anuncio|pedido)\//.test(h)||/access_token=|type=recovery|error_description|error=/.test(h)||/[?&](code|error|error_description)=/.test(s)||/^\/(termos|privacidade|eliminar-dados)$/.test(location.pathname.replace(/\/+$/,"")))){drop(el);return}
+run=true;d.classList.add("introing");
+var calm=reduz(),cn=navigator.connection||{},lite=calm;
+try{lite=lite||!!(cn.saveData||/^(slow-2g|2g|3g)$/.test(cn.effectiveType||"")||(navigator.deviceMemory&&navigator.deviceMemory<=2)||(navigator.hardwareConcurrency&&navigator.hardwareConcurrency<=2))}catch(e){}
 if(/[?&]intro=lite/.test(s))lite=true;
-if(lite)el.classList.add("lite");
-var T=lite?5000:9600,done=false,started=false,t1=0,t2=0,t3=0;
-function end(f){if(done)return;done=true;clearTimeout(t1);clearTimeout(t2);clearTimeout(t3);if(f===true)el.classList.add("fast");el.classList.add("out");d.classList.remove("introing");setTimeout(kill,f===true?450:1150);removeEventListener("keydown",kd);removeEventListener("resize",rs);el.removeEventListener("pointermove",pm)}
+if(lite)el.classList.add("lite");if(calm)el.classList.add("calm");
+var T=calm?4200:lite?5000:9600,done=false,started=false,t1=0,t2=0,t3=0;
+function end(f){if(done)return;done=true;clearTimeout(t1);clearTimeout(t2);clearTimeout(t3);if(f===true)el.classList.add("fast");el.classList.add("out");d.classList.remove("introing");setTimeout(function(){drop(el);run=false},f===true?450:1150);removeEventListener("keydown",kd);removeEventListener("resize",rs);el.removeEventListener("pointermove",pm)}
 function kd(e){if(e.key==="Escape")end(true)}
 function pm(e){var x=e.clientX/innerWidth-.5,y=e.clientY/innerHeight-.5;el.style.setProperty("--ix",x.toFixed(3));el.style.setProperty("--iy",y.toFixed(3))}
 function rs(){var w=innerWidth,hh=innerHeight,k=Math.min(w,hh)/100;el.style.setProperty("--rx",(((w-100*k)/2+70*k)/w*100).toFixed(1)+"%");el.style.setProperty("--ry",(((hh-100*k)/2+82*k)/hh*100).toFixed(1)+"%")}
 rs();addEventListener("resize",rs);
-document.getElementById("isk").onclick=function(){end(true)};addEventListener("keydown",kd);
-try{if(matchMedia("(hover:hover) and (pointer:fine)").matches)el.addEventListener("pointermove",pm)}catch(e){}
-var box=document.getElementById("ids"),n=lite?0:18;
-for(var i=0;i<n;i++){var sp=document.createElement("span"),z=2+Math.random()*3;sp.className="idt";sp.style.cssText="left:"+(Math.random()*100).toFixed(1)+"%;top:"+(18+Math.random()*72).toFixed(1)+"%;width:"+z.toFixed(1)+"px;height:"+z.toFixed(1)+"px;color:"+(Math.random()<.7?"#6EE7B7":"#F5C451")+";--dx:"+((Math.random()-.5)*50).toFixed(0)+"px;--dd:"+(4+Math.random()*2).toFixed(1)+"s;--dl:"+(3+Math.random()*5).toFixed(1)+"s";box.appendChild(sp)}
-var imgs=[].slice.call(el.querySelectorAll("img[data-s]")),first=imgs[0];
-function ld(i){if(i.src)return;if(lite&&!i.hasAttribute("data-l"))return;i.src="intro/"+i.getAttribute("data-s")+".webp"}
+var sk=el.querySelector("#isk");if(sk)sk.onclick=function(){end(true)};addEventListener("keydown",kd);
+try{if(!calm&&matchMedia("(hover:hover) and (pointer:fine)").matches)el.addEventListener("pointermove",pm)}catch(e){}
+var box=el.querySelector("#ids"),n=lite?0:18;
+for(var i=0;i<n&&box;i++){var sp=document.createElement("span"),z=2+Math.random()*3;sp.className="idt";sp.style.cssText="left:"+(Math.random()*100).toFixed(1)+"%;top:"+(18+Math.random()*72).toFixed(1)+"%;width:"+z.toFixed(1)+"px;height:"+z.toFixed(1)+"px;color:"+(Math.random()<.7?"#6EE7B7":"#F5C451")+";--dx:"+((Math.random()-.5)*50).toFixed(0)+"px;--dd:"+(4+Math.random()*2).toFixed(1)+"s;--dl:"+(3+Math.random()*5).toFixed(1)+"s";box.appendChild(sp)}
+var imgs=[].slice.call(el.querySelectorAll("img[data-s]")),first=calm?el.querySelector('img[data-s="kilamba"]'):imgs[0];
+function ld(i){if(i.src)return;if(lite&&!i.hasAttribute("data-l"))return;if(calm&&i.getAttribute("data-s")==="africa")return;i.src="intro/"+i.getAttribute("data-s")+".webp"}
 function go(){if(started||done)return;started=true;el.classList.add("go");t2=setTimeout(end,T);imgs.forEach(ld)}
-first.onload=go;first.onerror=function(){end(true)};ld(first);
-t1=setTimeout(go,1500);t3=setTimeout(end,T+3500)})();
+first.onload=go;
+first.onerror=function(){if(force){el.innerHTML='<p style="margin:auto;padding:28px;max-width:420px;text-align:center;font:600 16px/1.5 system-ui,sans-serif;color:#fff">Não foi possível carregar as imagens da abertura. Confirma que a pasta <b>intro</b> está publicada junto do index.html.</p>';el.style.display="flex";t2=setTimeout(function(){end(true)},7000)}else end(true)};
+ld(first);t1=setTimeout(go,1500);t3=setTimeout(end,T+3500)}
+function repetir(){if(run||SEM.test(rota()))return;var w=document.createElement("div");w.innerHTML=TPL;var el=w.firstChild;document.body.insertBefore(el,document.body.firstChild);start(el)}
+start(el0);
+addEventListener("pageshow",function(e){if(e.persisted){hid=0;repetir()}});
+document.addEventListener("visibilitychange",function(){if(document.hidden){hid=Date.now()}else{var f=hid&&Date.now()-hid>=PAUSA;hid=0;if(f)repetir()}})})();
 </script>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-sol" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol><symbol id="i-lua" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol></svg><header><div class="hd"><a class="logo" href="#/"><img class="lgw" src="logo-escuro.png" alt="Seu Novo Lar"></a><nav id="nav" aria-label="Principal"></nav><button id="tema" class="tmb" type="button" aria-label="Mudar para modo escuro" title="Mudar o aspeto do site"><svg class="lua" aria-hidden="true"><use href="#i-lua"/></svg><svg class="sol" aria-hidden="true"><use href="#i-sol"/></svg><span class="m">Modo </span><span class="n e">escuro</span><span class="n c">claro</span></button><a id="bell" class="bell" href="#/notificacoes" aria-label="Notificações" hidden><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="bc" hidden></span></a><span id="ac"></span></div></header>
 <main id="app" aria-live="polite">A carregar…</main>
