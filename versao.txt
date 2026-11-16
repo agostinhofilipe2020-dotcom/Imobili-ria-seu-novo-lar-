@@ -1,0 +1,6 @@
+Seu Novo Lar - ficheiro de verificação
+Versão: 2026-11-15 b
+Se consegues ler isto, os ficheiros novos estão na pasta certa do site.
+Inclui: abertura 3D com imagens soltas na raiz e repetição ao regressar,
+carrossel 3D do destaque em mais aparelhos, modo escuro dourado,
+chat "Posso ajudar?" (WhatsApp Africell e Gmail), dashboard de visitas.

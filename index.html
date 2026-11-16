@@ -602,7 +602,7 @@ function start(el){var h=location.hash,s=location.search,force=/[?&]intro=1/.tes
 if(!force&&(desl()||/^#\/(anuncio|pedido)\//.test(h)||/access_token=|type=recovery|error_description|error=/.test(h)||/[?&](code|error|error_description)=/.test(s)||/^\/(termos|privacidade|eliminar-dados)$/.test(location.pathname.replace(/\/+$/,"")))){drop(el);return}
 run=true;d.classList.add("introing");
 var calm=reduz(),cn=navigator.connection||{},lite=calm;
-try{lite=lite||!!(cn.saveData||/^(slow-2g|2g|3g)$/.test(cn.effectiveType||"")||(navigator.deviceMemory&&navigator.deviceMemory<=2)||(navigator.hardwareConcurrency&&navigator.hardwareConcurrency<=2))}catch(e){}
+try{lite=lite||!!(cn.saveData||/^(slow-2g|2g|3g)$/.test(cn.effectiveType||"")||(navigator.deviceMemory&&navigator.deviceMemory<=1))}catch(e){}
 if(/[?&]intro=lite/.test(s))lite=true;
 if(lite)el.classList.add("lite");if(calm)el.classList.add("calm");
 var T=calm?4200:lite?5000:9600,done=false,started=false,t1=0,t2=0,t3=0;
@@ -616,10 +616,10 @@ try{if(!calm&&matchMedia("(hover:hover) and (pointer:fine)").matches)el.addEvent
 var box=el.querySelector("#ids"),n=lite?0:18;
 for(var i=0;i<n&&box;i++){var sp=document.createElement("span"),z=2+Math.random()*3;sp.className="idt";sp.style.cssText="left:"+(Math.random()*100).toFixed(1)+"%;top:"+(18+Math.random()*72).toFixed(1)+"%;width:"+z.toFixed(1)+"px;height:"+z.toFixed(1)+"px;color:"+(Math.random()<.7?"#6EE7B7":"#F5C451")+";--dx:"+((Math.random()-.5)*50).toFixed(0)+"px;--dd:"+(4+Math.random()*2).toFixed(1)+"s;--dl:"+(3+Math.random()*5).toFixed(1)+"s";box.appendChild(sp)}
 var imgs=[].slice.call(el.querySelectorAll("img[data-s]")),first=calm?el.querySelector('img[data-s="kilamba"]'):imgs[0];
-function ld(i){if(i.src)return;if(lite&&!i.hasAttribute("data-l"))return;if(calm&&i.getAttribute("data-s")==="africa")return;i.src="intro/"+i.getAttribute("data-s")+".webp"}
+function ld(i){if(i.__t)return;if(lite&&!i.hasAttribute("data-l"))return;if(calm&&i.getAttribute("data-s")==="africa")return;i.__t=1;var nm=i.getAttribute("data-s");if(i!==first)i.onerror=function(){i.onerror=null;i.src="intro/"+nm+".webp"};i.src="intro-"+nm+".webp"}
 function go(){if(started||done)return;started=true;el.classList.add("go");t2=setTimeout(end,T);imgs.forEach(ld)}
 first.onload=go;
-first.onerror=function(){if(force){el.innerHTML='<p style="margin:auto;padding:28px;max-width:420px;text-align:center;font:600 16px/1.5 system-ui,sans-serif;color:#fff">Não foi possível carregar as imagens da abertura. Confirma que a pasta <b>intro</b> está publicada junto do index.html.</p>';el.style.display="flex";t2=setTimeout(function(){end(true)},7000)}else end(true)};
+var tried=0;first.onerror=function(){if(!tried){tried=1;first.src="intro/"+first.getAttribute("data-s")+".webp";return}if(force){el.innerHTML='<p style="margin:auto;padding:28px;max-width:420px;text-align:center;font:600 16px/1.5 system-ui,sans-serif;color:#fff">Não foi possível carregar as imagens da abertura. Confirma que os ficheiros <b>intro-africa.webp</b> e os outros <b>intro-*.webp</b> estão na raiz do site.</p>';el.style.display="flex";t2=setTimeout(function(){end(true)},7000)}else end(true)};
 ld(first);t1=setTimeout(go,1500);t3=setTimeout(end,T+3500)}
 function repetir(){if(run||SEM.test(rota()))return;var w=document.createElement("div");w.innerHTML=TPL;var el=w.firstChild;document.body.insertBefore(el,document.body.firstChild);start(el)}
 start(el0);
@@ -738,7 +738,7 @@ function ico(n,w){return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true
 /* ---------- ANIMAÇÕES (FX): base, banner e carrossel 3D ---------- */
 var FX={rm:matchMedia("(prefers-reduced-motion: reduce)"),fine:matchMedia("(hover:hover) and (pointer:fine)"),on:function(){return!FX.rm.matches&&!FX.lite&&!document.documentElement.classList.contains("nofx")}};
 try{if(/sem-animacoes/.test(location.search)||localStorage.getItem("snl_fx")==="off")document.documentElement.classList.add("nofx")}catch(e){}
-FX.lite=false;try{var cn0=navigator.connection||{};FX.lite=!!(cn0.saveData||/^(slow-2g|2g|3g)$/.test(cn0.effectiveType||"")||(navigator.deviceMemory&&navigator.deviceMemory<=2)||(navigator.hardwareConcurrency&&navigator.hardwareConcurrency<=2));if(FX.lite)document.documentElement.classList.add("lite")}catch(e){}
+FX.lite=false;try{var cn0=navigator.connection||{};FX.lite=!!(cn0.saveData||(navigator.deviceMemory&&navigator.deviceMemory<=1));if(FX.lite)document.documentElement.classList.add("lite")}catch(e){}
 FX.loadThree=function(){return FX._t||(FX._t=import("https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js"))};/* ponto de integração futuro: ainda não é chamado */
 (function(){var tk=0;function u(){tk=0;var h=document.querySelector(".hero");if(!h||!FX.on())return;h.style.setProperty("--py",Math.min(26,Math.max(0,scrollY)*.12).toFixed(1)+"px")}
 addEventListener("scroll",function(){if(!tk){tk=1;requestAnimationFrame(u)}},{passive:true})})();

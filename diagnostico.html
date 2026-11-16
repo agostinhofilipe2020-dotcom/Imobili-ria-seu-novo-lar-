@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pt-AO"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Diagnóstico | Seu Novo Lar</title>
+<style>
+*{box-sizing:border-box}body{margin:0;padding:16px;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#f3f4f6;color:#111827;line-height:1.45}
+h1{font-size:22px;margin:0 0 4px}p.s{margin:0 0 14px;color:#4b5563;font-size:14px}h2{font-size:16px;margin:18px 0 8px}
+.c{background:#fff;border-radius:12px;padding:6px 14px;margin-bottom:10px}.r{display:flex;gap:10px;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee;font-size:14px}.r:last-child{border:0}
+.r b{font-weight:600;flex:1;min-width:0}.v{flex:none;max-width:52%;text-align:right;white-space:normal;overflow-wrap:break-word;word-break:normal}.ok{color:#067647;font-weight:700}.no{color:#b42318;font-weight:700}.av{color:#b54708;font-weight:700}
+#res{background:#065f46;color:#fff;border-radius:12px;padding:14px;font-size:15px;white-space:pre-line}#res b{color:#a7f3d0}
+button{width:100%;min-height:48px;margin-top:10px;border:0;border-radius:10px;background:#087f5b;color:#fff;font:600 16px system-ui;cursor:pointer}
+a{color:#087f5b}
+</style></head><body>
+<h1>Diagnóstico do site</h1><p class="s">Abre esta página no telemóvel onde o site falha e envia uma captura do ecrã (ou o botão “Copiar resumo” no fim).</p>
+<div id="out"><p class="s">A verificar…</p></div>
+<script>
+(function(){
+var out=document.getElementById("out"),sum=[],falhas=[],V={};
+function sec(t){var h=document.createElement("h2");h.textContent=t;out.appendChild(h);var c=document.createElement("div");c.className="c";out.appendChild(c);return c}
+function row(c,k,v,cls){var r=document.createElement("div");r.className="r";var a=document.createElement("b");a.textContent=k;var b=document.createElement("span");b.className="v "+(cls||"");b.textContent=v;r.appendChild(a);r.appendChild(b);c.appendChild(r);sum.push(k+": "+v)}
+function mq(q){try{return matchMedia(q).matches}catch(e){return false}}
+async function get(path,txt){try{var r=await fetch(path+"?d="+Date.now(),{cache:"no-store"});var ct=r.headers.get("content-type")||"";var b=txt?await r.text():await r.blob();return{ok:r.ok,st:r.status,ct:ct,size:txt?b.length:b.size,body:txt?b:""}}catch(e){return{ok:false,st:"sem ligação",ct:"",size:0,body:""}}}
+function isImg(r){return r.ok&&/^image\//.test(r.ct)}
+async function main(){
+/* 1) aparelho e preferências */
+var c=sec("1. Este aparelho"),cn=navigator.connection||{},hc=navigator.hardwareConcurrency,dm=navigator.deviceMemory,rm=mq("(prefers-reduced-motion: reduce)"),sd=!!cn.saveData,et=cn.effectiveType||"n/d",fx="";
+try{fx=localStorage.getItem("snl_fx")||""}catch(e){fx="(localStorage bloqueado)"}
+V.nofx=fx==="off"||/sem-animacoes/.test(location.search);
+row(c,"Navegador",(navigator.userAgent.match(/(iPhone|iPad|Android[^;)]*|Windows|Macintosh|Linux)/)||["?"])[0]+" · "+innerWidth+"×"+innerHeight,"");
+row(c,"Núcleos do processador",hc===undefined?"n/d":String(hc),"");
+row(c,"Memória (GB, arredondada)",dm===undefined?"n/d (o navegador não informa)":String(dm),"");
+row(c,"Ligação",et+(sd?" · poupança de dados LIGADA":""),sd?"av":"");
+row(c,"“Reduzir movimento” no telemóvel",rm?"LIGADO":"desligado",rm?"av":"ok");
+row(c,"Animações desligadas no site (snl_fx)",V.nofx?"SIM":"não",V.nofx?"no":"ok");
+/* 2) o que cada versão do site decide */
+c=sec("2. O que o site faz neste aparelho");
+var velha=[];if(sd)velha.push("poupança de dados");if(/^(slow-2g|2g|3g)$/.test(et))velha.push("ligação "+et);if(dm&&dm<=2)velha.push("memória ≤ 2 GB");if(hc&&hc<=2)velha.push("≤ 2 núcleos");
+var nova=[];if(sd)nova.push("poupança de dados");if(dm&&dm<=1)nova.push("memória ≤ 1 GB");
+var on3d=function(l){return!rm&&!V.nofx&&!l.length};
+row(c,"Carrossel 3D do destaque (versão ANTIGA)",on3d(velha)?"LIGADO":"DESLIGADO"+(velha.length?" por: "+velha.join(", "):rm?" por: reduzir movimento":""),on3d(velha)?"ok":"no");
+row(c,"Carrossel 3D do destaque (versão NOVA)",on3d(nova)?"LIGADO":"DESLIGADO"+(nova.length?" por: "+nova.join(", "):rm?" por: reduzir movimento":""),on3d(nova)?"ok":"no");
+var ab=rm?"calma (4 s, só desvanecimentos)":(sd||/^(slow-2g|2g|3g)$/.test(et)||(dm&&dm<=1))?"curta (5 s)":"completa (9,6 s)";
+row(c,"Abertura 3D prevista",V.nofx?"não corre (animações desligadas)":ab,V.nofx?"no":"ok");
+/* 3) ficheiros publicados */
+c=sec("3. Ficheiros publicados no site");
+var ix=await get("/index.html",true),nv=ix.body;
+row(c,"index.html carrega",ix.ok?"sim ("+Math.round(ix.size/1024)+" KB)":"NÃO ("+ix.st+")",ix.ok?"ok":"no");if(!ix.ok)falhas.push("O index.html não carrega.");
+var feats=[["Botão de modo escuro",'id="tema"'],["Chat “Posso ajudar?”",'id="hj"'],["Abertura que repete ao regressar","__INTRO_PAUSA"],["Dashboard de visitas","painel_visitas"],["Imagens soltas da abertura",'"intro-"+nm']];
+feats.forEach(function(f){var ok=nv.indexOf(f[1])>=0;row(c,f[0]+" (no index.html)",ok?"PRESENTE":"AUSENTE",ok?"ok":"no");if(!ok&&ix.ok)falhas.push("O index.html publicado é uma versão ANTIGA (falta: "+f[0]+").")});
+var vs=await get("/versao.txt",true);row(c,"versao.txt",vs.ok?"sim":"não existe ("+vs.st+")",vs.ok?"ok":"av");
+var nomes=["africa","kilamba","angola","angola-glow","luanda","kilamba-avenida"],em=0;
+for(var i=0;i<nomes.length;i++){var n=nomes[i],a=await get("/intro-"+n+".webp"),b=isImg(a)?a:await get("/intro/"+n+".webp"),ok=isImg(b);if(!ok)em++;
+row(c,"Abertura: imagem "+n,ok?"OK ("+Math.round(b.size/1024)+" KB)":"EM FALTA",ok?"ok":"no");if(!ok&&(n==="africa"||n==="kilamba"))falhas.push("A imagem da abertura “"+n+"” está em falta: sem ela a abertura é saltada.")}
+var outros=[["/hero.jpg","Imagem do destaque (hero.jpg)"],["/banner.jpg","Imagem do banner (banner.jpg)"],["/logo-escuro.png","Logótipo (logo-escuro.png)"],["/manifest.webmanifest","Manifest (instalar no telemóvel)"],["/og-image.jpg","Imagem de partilha (og-image.jpg)"]];
+for(var j=0;j<outros.length;j++){var r=await get(outros[j][0]);row(c,outros[j][1],r.ok?"OK":"EM FALTA ("+r.st+")",r.ok?"ok":"no");if(!r.ok&&j<3)falhas.push("Falta "+outros[j][0].slice(1)+".")}
+/* 4) resumo */
+var res=document.createElement("div");res.id="res";
+var t="";if(!falhas.length&&!rm&&!V.nofx)t="Tudo certo neste aparelho: os ficheiros estão publicados e as animações podem correr.\n\nSe a abertura continuar a não aparecer, abre o site com  /?intro=1  no fim do endereço e diz-me o que acontece.";
+else{t="O que encontrei:\n";falhas.forEach(function(f){t+="• "+f+"\n"});if(rm)t+="• O “Reduzir movimento” está LIGADO neste telemóvel: só aparece a abertura calma e o 3D do destaque fica desligado. Desliga em Definições > Acessibilidade > Movimento.\n";if(V.nofx)t+="• As animações foram desligadas neste navegador (snl_fx).\n"}
+res.textContent=t;var h=document.createElement("h2");h.textContent="4. Resumo";out.appendChild(h);out.appendChild(res);
+var bt=document.createElement("button");bt.type="button";bt.textContent="Copiar resumo";bt.onclick=function(){var x="Diagnóstico Seu Novo Lar\n"+sum.join("\n")+"\n\n"+t;try{navigator.clipboard.writeText(x).then(function(){bt.textContent="Copiado! Cola na conversa"},function(){bt.textContent="Não consegui copiar: envia uma captura"})}catch(e){bt.textContent="Não consegui copiar: envia uma captura"}};out.appendChild(bt);
+out.firstElementChild&&out.firstElementChild.tagName==="P"&&out.firstElementChild.remove()}
+main().catch(function(e){out.textContent="Erro no diagnóstico: "+e})
+})();
+</script></body></html>
