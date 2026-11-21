@@ -1426,5 +1426,14 @@ document.addEventListener("keydown",function(e){if(pn.hidden)return;if(e.key==="
 fm.addEventListener("submit",function(e){e.preventDefault();var v=inp.value.trim();if(!v)return;inp.value="";user(v);clearChips();if(fl)got(v,false);else livreTexto(v)});
 function rota(){d.setAttribute("data-rota",(location.hash.slice(1).split("/")[1]||"").split("?")[0])}addEventListener("hashchange",rota);rota()})();
 </script>
+<script>
+// Regista o Service Worker para permitir a instalação como aplicação (PWA).
+if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('/sw.js', { scope: '/' })
+      .catch(function (error) { console.warn('Não foi possível preparar a aplicação offline:', error); });
+  });
+}
+</script>
 </body>
 </html>
